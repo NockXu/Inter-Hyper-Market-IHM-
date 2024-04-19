@@ -5,4 +5,4 @@ Inter Hyper Market (IHM)
 # membre du groupe
 - GUILMIN Leny
 - DAVID Gabriel
-- FONTAINE Aurelien
+- FONTAINE Aurélien
