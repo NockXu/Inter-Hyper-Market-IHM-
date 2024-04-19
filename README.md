@@ -1,9 +1,7 @@
 # SAE_C12
 Espace de dépôt pour la SAE C12
 # Nom du groupe
-Inter Hyper Market
-# Nom abréger
-IHM
+Inter Hyper Market (IHM)
 # membre du groupe
 - GUILMIN Leny
 - DAVID Gabriel
