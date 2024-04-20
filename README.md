@@ -7,10 +7,10 @@ Inter Hyper Market (IHM)
 - DAVID Gabriel : NockXu
 - FONTAINE Aurélien : Aurelienxx
 # Tuto liage git à VSC
-- ```sh git ini``` dans le fichier git que vous voulez mettre en commun
-- ```sh git remote add origin git@github.com:NockXu/Inter-Hyper-Market-IHM-.git```
-- ```sh git config --global user.name "nomutilisateur"```
-- ```sh git config --global user.email "addresse_mail"```
-- ```sh git fetch origin main```
-- ```sh git merge origin/main --allow-unrelated-histories```
+- ```git ini``` dans le fichier git que vous voulez mettre en commun
+- ```git remote add origin git@github.com:NockXu/Inter-Hyper-Market-IHM-.git```
+- ```git config --global user.name "nomutilisateur"```
+- ```git config --global user.email "addresse_mail"```
+- ```git fetch origin main```
+- ```git merge origin/main --allow-unrelated-histories```
 
