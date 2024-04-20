@@ -10,7 +10,7 @@ Inter Hyper Market (IHM)
 - ```git ini``` dans le fichier git que vous voulez mettre en commun
 - ```git remote add origin git@github.com:NockXu/Inter-Hyper-Market-IHM-.git```
 - ```git config --global user.name "nomutilisateur"```
-- ```git config --global user.email "gabriel.dav@outlook.fr"```
+- ```git config --global user.email "addresse_mail"```
 - ```git fetch origin main```
 - ```git merge origin/main --allow-unrelated-histories```
 
