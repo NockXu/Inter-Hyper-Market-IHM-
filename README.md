@@ -14,3 +14,5 @@ Inter Hyper Market (IHM)
 - ```git fetch origin main```
 - ```git merge origin/main --allow-unrelated-histories```
 
+# Lien vers le Figma des applications 
+https://www.figma.com/file/CahDjaL51DnCNGKa2B6sUh/SAE-IHM?type=design&node-id=0%3A1&mode=design&t=l1UrvPeDxhqXPI6L-1
