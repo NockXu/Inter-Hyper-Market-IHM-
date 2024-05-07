@@ -36,16 +36,25 @@ class Plan :
         
         # on ajoute ses voisins
         self.points.append(point_info)
-
                 
-                
+    def __str__(self) -> str:
+        lines = []
+        for point_info in self.points:
+            coord_str = f"'coordonnees': {point_info['coordonnees']}"
+            produit_str = f"'produit': {point_info['produit']}"
+            voisins_str = f"'voisins': {[str(neighbor) for neighbor in point_info['voisins']]}"
+            
+            point_str = "{" + f"{coord_str}, {produit_str}, {voisins_str}" + "}"
+            lines.append(point_str)
+        
+        return "\n".join(lines)
 
-if __name__ == "__main__" :
-    test : Plan = Plan(2,2)
-    for point in test.points:
-        print(point)
-    
+
+if __name__ == "__main__":
+    test = Plan(3, 3)
+
+    print(test)  # Affichage des points initiaux
+
     test.ajoutPoint(2, 3)
-    for point in test.points:
-        print(point)
-    
+
+    print("\n",test)  # Affichage après ajout du nouveau point
