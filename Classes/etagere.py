@@ -2,8 +2,8 @@ from produit import Produit
 from fonction import Fonction
 
 class Etagere(Fonction):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, rayon : str = None) -> None:
+        super().__init__(rayon, False)
         self._produits: list[Produit] = []
     
     def vider(self) -> None:
@@ -44,9 +44,9 @@ class Etagere(Fonction):
 
 if __name__ == "__main__":
         # Création de quelques produits
-    produit1 = Produit("Livre", 15.99, "Un livre intéressant", "livre.png")
-    produit2 = Produit("Ordinateur portable", 999.99, "Puissant et léger", "ordi.png")
-    produit3 = Produit("Montre", 79.99, "Montre élégante", "montre.png")
+    produit1 = Produit("Livre", 15.99, "Un livre intéressant", "livre.png", "livre")
+    produit2 = Produit("Ordinateur portable", 999.99, "Puissant et léger", "ordi.png", "électronique")
+    produit3 = Produit("Montre", 79.99, "Montre élégante", "montre.png", "élecrtonique")
     
     # Création d'une étagère
     etagere = Etagere()
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     
     # Retrait d'un produit
     print("\nRetrait du produit 'Montre'...")
-    montre = Produit("Montre", 79.99, "Montre élégante", "montre.png")  # Nouvelle instance pour comparer
+    montre = Produit("Montre", 79.99, "Montre élégante", "montre.png", "électronique")  # Nouvelle instance pour comparer
     etagere.retirer(montre)
     
     # Affichage mis à jour des produits sur l'étagère

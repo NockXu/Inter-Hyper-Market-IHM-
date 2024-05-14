@@ -14,6 +14,22 @@ from vuePlan import VuePlan
 ##########################################################
 class VueApplication(QMainWindow):
     # constructeur
+<<<<<<< HEAD
+    def __init__(self, app):
+        super().__init__()
+
+        self.app = app
+
+        #style d'affichage
+        fichier_style = open(sys.path[0] + "/qss/style.qss", 'r')
+        with fichier_style :
+            qss = fichier_style.read()
+            self.setStyleSheet(qss)
+            
+##########################################################
+#                                                        #
+#                       Layouts                          #
+=======
     def __init__(self):
         
         #style d'affichage
@@ -28,6 +44,7 @@ class VueApplication(QMainWindow):
 ##########################################################
 #                                                        #
 #                        Layouts                         #
+>>>>>>> 34d1d4b72263bd6c7054277dfe2bc6d66ce57bdc
 #                                                        #
 ##########################################################
 
@@ -40,7 +57,31 @@ class VueApplication(QMainWindow):
         # Layout vertical pour le menu des magasins et de la liste
         self.menu_selection = QVBoxLayout()
         self.layout_principal.addLayout(self.menu_selection)
+        
+##########################################################
+#                                                        #
+#                        Wigets                          #
+#                                                        #
+##########################################################
 
+<<<<<<< HEAD
+        # Appel des vues du plan et des produits
+        self.produitVue = VueProduit()
+        self.planVue = VuePlan()
+        self.planVue.hide() # Permet de cacher la vue du plan
+
+        # ajout d'une barre d'outils
+        self.menu_bar = self.menuBar()
+
+        # ajout d'un bouton sauvegarde
+        fichier_menu = self.menu_bar.addMenu('Fichier')
+        self.action_save = QAction('Enregistrer', self)
+        fichier_menu.addAction(self.action_save)
+
+        # ajout d'un bouton réinitialiser
+        self.action_reset = QAction('Réinitialiser', self)
+        fichier_menu.addAction(self.action_reset)
+=======
         
 ##########################################################
 #                                                        #
@@ -62,6 +103,7 @@ class VueApplication(QMainWindow):
         self.toolbar.addSeparator() 
         self.icon2 = QAction('Réinitialiser', self)
         self.toolbar.addAction(self.icon2)
+>>>>>>> 34d1d4b72263bd6c7054277dfe2bc6d66ce57bdc
         
         # Choix des magasins avec un ComboBox
         self.magasin = QComboBox()
@@ -78,12 +120,36 @@ class VueApplication(QMainWindow):
         self.menu_selection.addWidget(self.liste)
         
         # Bouton pour voir le plan
+<<<<<<< HEAD
+=======
         
+>>>>>>> 34d1d4b72263bd6c7054277dfe2bc6d66ce57bdc
         self.ajout_plan = QPushButton("Voir le plan")
         self.ajout_plan.setFixedHeight(self.height() // 8)
         self.ajout_plan.setFont(QFont("Arial", 15))
         self.menu_selection.addWidget(self.ajout_plan)
 
+<<<<<<< HEAD
+        self.layout_principal.addWidget(self.produitVue)
+        self.layout_principal.addWidget(self.planVue)
+        
+        # Connecter le clic sur le bouton "Voir le plan" à une fonction
+        self.ajout_plan.clicked.connect(self.changer_vue)
+
+        # Affichage de l'application
+        self.setWindowTitle('Application client')
+        self.showMaximized() # Permet de mettre en ecran total
+
+    def changer_vue(self):
+        if self.produitVue.isVisible():
+            self.produitVue.hide()
+            self.ajout_plan.setText("Ajouter des produits")
+            self.planVue.show()
+        else:
+            self.produitVue.show()
+            self.planVue.hide()
+            self.ajout_plan.setText("Voir le plan")
+=======
 
         self.layout_principal.addWidget(self.produitVue)
 
@@ -102,11 +168,18 @@ class VueApplication(QMainWindow):
         
 
         
+>>>>>>> 34d1d4b72263bd6c7054277dfe2bc6d66ce57bdc
 
 ## Programme principal : test de la vue ---------------------------------------
 if __name__ == "__main__":
 
     print(f' --- main --- ')
+<<<<<<< HEAD
+    app = QApplication(sys.argv)
+    fenetre = VueApplication(app)
+    sys.exit(app.exec())
+=======
 
     fenetre = VueApplication()
     sys.exit(fenetre.app.exec())
+>>>>>>> 34d1d4b72263bd6c7054277dfe2bc6d66ce57bdc

@@ -1,9 +1,10 @@
 class Produit:
-    def __init__(self, nom: str, prix: float, description: str, icone: str) -> None:
+    def __init__(self, nom: str, prix: float, description: str, icone: str, type: str) -> None:
         self._nom = nom
         self._prix = prix
         self._description = description
         self._icone = icone
+        self._type = type
 
     # Méthodes getters
     def get_nom(self) -> str:
@@ -18,6 +19,9 @@ class Produit:
     def get_icone(self) -> str:
         return self._icone
 
+    def get_type(self) -> str:
+        return self._type
+    
     # Méthodes setters
     def set_nom(self, nom: str) -> None:
         self._nom = nom
@@ -30,6 +34,9 @@ class Produit:
     
     def set_icone(self, icone: str) -> None:
         self._icone = icone
+    
+    def set_type(self, type : str) -> None:
+        self._type = type
 
     # Méthode spéciale __str__()
     def __str__(self) -> str:
@@ -39,13 +46,14 @@ class Produit:
     def __eq__(self, other) -> bool:
         if isinstance(other, Produit):
             return (self._nom == other._nom) and (self._prix == other._prix) and \
-                   (self._description == other._description) and (self._icone == other._icone)
+                   (self._description == other._description) and (self._icone == other._icone) and \
+                   (self._type == other._type)
         return False
     
 if __name__ == "__main__":
     # Tester la classe Produit
-    produit1 = Produit("Ordinateur Portable", 1200.0, "Ordinateur portable puissant et léger.", "icone_ordinateur.png")
-    produit2 = Produit("Souris sans Fil", 29.99, "Souris ergonomique avec connectivité sans fil.", "icone_souris.png")
+    produit1 = Produit("Ordinateur Portable", 1200.0, "Ordinateur portable puissant et léger.", "icone_ordinateur.png", "électronique")
+    produit2 = Produit("Souris sans Fil", 29.99, "Souris ergonomique avec connectivité sans fil.", "icone_souris.png", "électronique")
 
     print("Produit 1:")
     print(produit1)
