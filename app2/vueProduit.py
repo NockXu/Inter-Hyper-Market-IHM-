@@ -62,7 +62,6 @@ class VueProduit(QWidget):
         scroll_bar.setWidget(produits)
         layout_produit = QVBoxLayout(produits)
 
-<<<<<<< HEAD
         with open('liste_produits.txt', 'r') as file:
             for line in file:
                 # Ignorer les noms entre crochets
@@ -93,44 +92,12 @@ class VueProduit(QWidget):
                     layout_produit.addWidget(produit_widget)
                     
                      # Ajouter une ligne de séparation
-=======
-        for i in range(70):
-                produit_widget = QWidget()
-                layout = QHBoxLayout(produit_widget)
-                produit_layout = QVBoxLayout()
-                
-                image_produit = QLabel()
-                layout.addWidget(image_produit)
-                pixmap = QPixmap('./image/magasin.jpg')
-                image_produit.setPixmap(pixmap)
-
-                
-                nom_produit = QLabel(f"Produit {i+1}")
-                description = QLabel("Description")                
-                produit_layout.addWidget(nom_produit)
-                produit_layout.addWidget(description)
-                layout.addLayout(produit_layout)
-                
-                ajouter = QPushButton("Ajouter produit")
-                ajouter.setFixedHeight(self.height() // 15)
-                ajouter.setFixedWidth(self.width() // 5)
-                layout.addWidget(ajouter)
-                
-                layout_produit.addWidget(produit_widget)
-                
-                 # Ajouter une ligne de séparation
-                if i < 69:  # Ne pas ajouter de ligne de séparation après le dernier produit
->>>>>>> 34d1d4b72263bd6c7054277dfe2bc6d66ce57bdc
                     line = QFrame()
                     line.setFrameShape(QFrame.Shape.HLine)
                     line.setFrameShadow(QFrame.Shadow.Sunken)
                     layout_produit.addWidget(line)
-<<<<<<< HEAD
                     
                     
-=======
-    
->>>>>>> 34d1d4b72263bd6c7054277dfe2bc6d66ce57bdc
         produits.setLayout(layout_produit)
         scroll_bar.setWidgetResizable(True)
 
