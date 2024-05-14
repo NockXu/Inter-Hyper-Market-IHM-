@@ -3,7 +3,8 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTe
 from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton, QMainWindow, QToolBar, QComboBox
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIcon, QAction, QPixmap, QGuiApplication, QFont
-from vueProduit import *
+from vueProduit import VueProduit
+from vuePlan import VuePlan
 
 
 ##########################################################
@@ -12,34 +13,58 @@ from vueProduit import *
 #                                                        #
 ##########################################################
 class VueApplication(QMainWindow):
-    def __init__(self):
+    # constructeur
+    def __init__(self, app):
         super().__init__()
-        self.app = QApplication(sys.argv)
-        fichier_style = open(sys.path[0] + "/qss/style.qss", 'r')
-        with fichier_style:
-            qss = fichier_style.read()
-            self.app.setStyleSheet(qss)
-        self.setupUI()
 
-    def setupUI(self):
+        self.app = app
+
+        #style d'affichage
+        fichier_style = open(sys.path[0] + "/qss/style.qss", 'r')
+        with fichier_style :
+            qss = fichier_style.read()
+            self.setStyleSheet(qss)
+            
+##########################################################
+#                                                        #
+#                       Layouts                          #
+#                                                        #
+##########################################################
+
+        # Layout vertical principal
         self.layout_principal = QHBoxLayout()
         centre = QWidget()
         centre.setLayout(self.layout_principal)
         self.setCentralWidget(centre)
 
+        # Layout vertical pour le menu des magasins et de la liste
         self.menu_selection = QVBoxLayout()
         self.layout_principal.addLayout(self.menu_selection)
+        
+##########################################################
+#                                                        #
+#                        Wigets                          #
+#                                                        #
+##########################################################
 
-        self.toolbar = QToolBar('')
-        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolbar)
+        # Appel des vues du plan et des produits
+        self.produitVue = VueProduit()
+        self.planVue = VuePlan()
+        self.planVue.hide() # Permet de cacher la vue du plan
 
+        # ajout d'une barre d'outils
+        self.menu_bar = self.menuBar()
+
+        # ajout d'un bouton sauvegarde
+        fichier_menu = self.menu_bar.addMenu('Fichier')
         self.action_save = QAction('Enregistrer', self)
-        self.toolbar.addAction(self.action_save)
+        fichier_menu.addAction(self.action_save)
 
-        self.toolbar.addSeparator() 
-        self.icon2 = QAction('Réinitialiser', self)
-        self.toolbar.addAction(self.icon2)
-
+        # ajout d'un bouton réinitialiser
+        self.action_reset = QAction('Réinitialiser', self)
+        fichier_menu.addAction(self.action_reset)
+        
+        # Choix des magasins avec un ComboBox
         self.magasin = QComboBox()
         self.magasin.addItem("Choix du magasin")
         self.magasin.addItem("Magasin 1")
@@ -48,24 +73,40 @@ class VueApplication(QMainWindow):
         self.magasin.setFixedWidth(self.width() // 3)
         self.menu_selection.addWidget(self.magasin)
 
+        # Liste de course
         self.liste = QTextEdit()
         self.liste.setFixedWidth(self.width() // 3)
         self.menu_selection.addWidget(self.liste)
         
+        # Bouton pour voir le plan
         self.ajout_plan = QPushButton("Voir le plan")
         self.ajout_plan.setFixedHeight(self.height() // 8)
         self.ajout_plan.setFont(QFont("Arial", 15))
         self.menu_selection.addWidget(self.ajout_plan)
 
-        # Appel de la fonction setup_vue_produit depuis le module vueProduit
-        vue_produit(self.layout_principal)
-
-
-        self.show()
+        self.layout_principal.addWidget(self.produitVue)
+        self.layout_principal.addWidget(self.planVue)
         
+        # Connecter le clic sur le bouton "Voir le plan" à une fonction
+        self.ajout_plan.clicked.connect(self.changer_vue)
+
+        # Affichage de l'application
+        self.setWindowTitle('Application client')
+        self.showMaximized() # Permet de mettre en ecran total
+
+    def changer_vue(self):
+        if self.produitVue.isVisible():
+            self.produitVue.hide()
+            self.ajout_plan.setText("Ajouter des produits")
+            self.planVue.show()
+        else:
+            self.produitVue.show()
+            self.planVue.hide()
+            self.ajout_plan.setText("Voir le plan")
+
+## Programme principal : test de la vue ---------------------------------------
 if __name__ == "__main__":
     print(f' --- main --- ')
-    fenetre = VueApplication()
-    fenetre.setWindowTitle('Application client')
-    fenetre.showMaximized()
-    sys.exit(fenetre.app.exec())
+    app = QApplication(sys.argv)
+    fenetre = VueApplication(app)
+    sys.exit(app.exec())
