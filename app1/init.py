@@ -41,8 +41,6 @@ class Init(QMainWindow):
         self.ouvrir.clicked.connect(self.lancer)
         
         
-        
-        
     def lancer(self):
         from vueApp1 import MainWindow
         self.main_window = MainWindow()
