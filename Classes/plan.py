@@ -77,3 +77,5 @@ if __name__ == "__main__":
     test.ajoutPoint(2, 3)
 
     print("\n",test)  # Affichage après ajout du nouveau point
+    
+    test.points[test.points.index()]
