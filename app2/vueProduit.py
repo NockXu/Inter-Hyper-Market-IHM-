@@ -10,26 +10,29 @@ from PyQt6.QtGui import QIcon, QAction, QPixmap, QGuiApplication, QFont
 #                                                        #
 ##########################################################
 class VueProduit(QWidget):
+    # Signal personnalisé qui émet le nom du produit lorsqu'il est ajouté
+    produit_ajoute = pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
         
-##########################################################
-#                                                        #
-#                        Layouts                         #
-#                                                        #
-##########################################################
-        
-
+        # Liste pour stocker les noms des produits
+        self.noms_produits = []
+        ##########################################################
+        #                                                        #
+        #                        Layouts                         #
+        #                                                        #
+        ##########################################################
         filtre_layout = QVBoxLayout()
         self.setLayout(filtre_layout)
         filtre_layout2 = QHBoxLayout()
         
-##########################################################
-#                                                        #
-#                        Widgets                         #
-#                                                        #
-##########################################################
-
+        ##########################################################
+        #                                                        #
+        #                        Widgets                         #
+        #                                                        #
+        ##########################################################
+        
         self.filtre_label = QLabel("Filtre")
         filtre_layout.addWidget(self.filtre_label)
 
@@ -62,7 +65,6 @@ class VueProduit(QWidget):
         scroll_bar.setWidget(produits)
         layout_produit = QVBoxLayout(produits)
 
-<<<<<<< HEAD
         with open('liste_produits.txt', 'r') as file:
             for line in file:
                 # Ignorer les noms entre crochets
@@ -75,65 +77,62 @@ class VueProduit(QWidget):
                     
                     image_produit = QLabel()
                     layout.addWidget(image_produit)
-                    pixmap = QPixmap('./image/magasin.jpg')
-                    image_produit.setPixmap(pixmap)
+                    image = QPixmap('app2/image/magasin.jpg').scaled(100, 100, Qt.AspectRatioMode.KeepAspectRatio)
+                    image_produit.setPixmap(image)
 
                     # Extraire le nom du produit en supprimant les espaces et les sauts de ligne
-                    nom_produit = QLabel(line.strip())
-                    description = QLabel("Description")                
-                    produit_layout.addWidget(nom_produit)
+                    nom_produit = line.strip()
+                    self.noms_produits.append(nom_produit)  # Ajouter le nom du produit à la liste
+                    description = QLabel("Description")
+                    produit_layout.addWidget(QLabel(nom_produit))  # Utilisation directe de nom_produit
                     produit_layout.addWidget(description)
                     layout.addLayout(produit_layout)
-                    
+                    layout.addItem(QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
+
                     ajouter = QPushButton("Ajouter produit")
-                    ajouter.setFixedHeight(self.height() // 15)
+                    ajouter.setFixedHeight(self.height() // 10)
                     ajouter.setFixedWidth(self.width() // 5)
+                    ajouter.setFont(QFont("Arial", 12))
                     layout.addWidget(ajouter)
                     
                     layout_produit.addWidget(produit_widget)
                     
                      # Ajouter une ligne de séparation
-=======
-        for i in range(70):
-                produit_widget = QWidget()
-                layout = QHBoxLayout(produit_widget)
-                produit_layout = QVBoxLayout()
-                
-                image_produit = QLabel()
-                layout.addWidget(image_produit)
-                pixmap = QPixmap('./image/magasin.jpg')
-                image_produit.setPixmap(pixmap)
-
-                
-                nom_produit = QLabel(f"Produit {i+1}")
-                description = QLabel("Description")                
-                produit_layout.addWidget(nom_produit)
-                produit_layout.addWidget(description)
-                layout.addLayout(produit_layout)
-                
-                ajouter = QPushButton("Ajouter produit")
-                ajouter.setFixedHeight(self.height() // 15)
-                ajouter.setFixedWidth(self.width() // 5)
-                layout.addWidget(ajouter)
-                
-                layout_produit.addWidget(produit_widget)
-                
-                 # Ajouter une ligne de séparation
-                if i < 69:  # Ne pas ajouter de ligne de séparation après le dernier produit
->>>>>>> 34d1d4b72263bd6c7054277dfe2bc6d66ce57bdc
                     line = QFrame()
                     line.setFrameShape(QFrame.Shape.HLine)
                     line.setFrameShadow(QFrame.Shadow.Sunken)
                     layout_produit.addWidget(line)
-<<<<<<< HEAD
+
+##########################################################
+#                                                        #
+#                        Signaux                         #
+#                                                        #
+##########################################################
                     
-                    
-=======
-    
->>>>>>> 34d1d4b72263bd6c7054277dfe2bc6d66ce57bdc
+                    # Connecter le clic sur le bouton "Ajouter produit" à la méthode ajouter_produit
+                    ajouter.clicked.connect(self.ajouter_produit)
+
         produits.setLayout(layout_produit)
         scroll_bar.setWidgetResizable(True)
 
+##########################################################
+#                                                        #
+#                       Fonctions                        #
+#                                                        #
+##########################################################
+
+    def ajouter_produit(self):
+        # Récupérer le nom du produit associé au bouton cliqué
+        sender_button = self.sender()  # Obtenir le bouton qui a émis le signal
+        produit_widget = sender_button.parentWidget()  # Obtenir le widget parent (produit_widget)
+        nom_produit = produit_widget.findChild(QLabel).text()  # Récupérer le texte du QLabel (nom du produit)
+
+        # Émettre le signal avec le nom du produit
+        self.produit_ajoute.emit(nom_produit)
+
+
+        
+        
         
 if __name__ == "__main__":
     print(f' --- main --- ')

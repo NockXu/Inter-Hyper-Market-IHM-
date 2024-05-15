@@ -1,5 +1,7 @@
 import sys
 import vueDockMenuOutil
+import vueDockMenuCarre
+import imageDeplacement
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
@@ -38,15 +40,20 @@ class MainWindow(QMainWindow):
 
         # Menu Affichage
         view_menu = self.menu_bar.addMenu('Affichage')
-        self.action_barre = QAction('Menu', self)
+        self.action_barre = QAction('Menu Outil', self)
         view_menu.addAction(self.action_barre)
+        
+        self.action_menu_graphe = QAction('Menu Graphe', self)
+        view_menu.addAction(self.action_menu_graphe)
+        
+        
 
         # Connecter l'action 'Menu' à la méthode toggle_menu_outil
         self.action_barre.triggered.connect(self.toggle_menu_outil)
 
         # Utiliser QScrollArea pour l'image
         self.scroll_area = QScrollArea()
-        self.plan_label = QLabel()
+        self.plan_label = imageDeplacement.ImageDeplacement()
         self.scroll_area.setWidget(self.plan_label)
         self.scroll_area.setWidgetResizable(True)
 
@@ -68,8 +75,14 @@ class MainWindow(QMainWindow):
         self.vueOutil : vueDockMenuOutil = vueDockMenuOutil.VueDockMenuOutil(self)
         self.dock1.setWidget(self.vueOutil)
         self.dock1.setFixedWidth(300)
+        
+        self.dock2 = QDockWidget("Menu Graphe")
+        self.vueCarre : vueDockMenuCarre = vueDockMenuCarre.VueDockMenuCarre(self)
+        self.dock2.setWidget(self.vueCarre)
+        self.dock2.setFixedWidth(300)
 
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock1)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock2)
 
         # Connecter le bouton load_plan_button à la méthode load_plan
         self.vueOutil.get_load_plan_button().clicked.connect(self.load_plan)
@@ -79,6 +92,7 @@ class MainWindow(QMainWindow):
         # Paramètres d'affichage
         self.setWindowTitle('INTER-HYPER-MARKET')
         self.showMaximized()
+        self.polygon = QPolygon()
         self.show()
 
     def load_plan(self):
@@ -89,12 +103,19 @@ class MainWindow(QMainWindow):
             pixmap = QPixmap(file_name)
             self.plan_label.setPixmap(pixmap)
             self.plan_label.adjustSize()
+            self.plan_label.updatePolygon()
 
     def toggle_menu_outil(self):
         if self.dock1.isVisible():
             self.dock1.hide()
         else:
             self.dock1.show()
+            
+    def toggle_menu_graphe(self):
+        if self.dock2.isVisible():
+            self.dock2.hide()
+        else:
+            self.dock2.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
