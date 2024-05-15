@@ -87,12 +87,26 @@ class VueApplication(QMainWindow):
         self.layout_principal.addWidget(self.produitVue)
         self.layout_principal.addWidget(self.planVue)
         
-        # Connecter le clic sur le bouton "Voir le plan" à une fonction
-        self.ajout_plan.clicked.connect(self.changer_vue)
-
         # Affichage de l'application
         self.setWindowTitle('Application client')
         self.showMaximized() # Permet de mettre en ecran total
+
+##########################################################
+#                                                        #
+#                        Signaux                         #
+#                                                        #
+##########################################################
+        
+        # Connecter le clic sur le bouton "Voir le plan" à une fonction
+        self.ajout_plan.clicked.connect(self.changer_vue)
+        self.produitVue.produit_ajoute.connect(self.ajouter_produit_liste)
+
+
+##########################################################
+#                                                        #
+#                       Fonctions                        #
+#                                                        #
+##########################################################
 
     def changer_vue(self):
         if self.produitVue.isVisible():
@@ -103,6 +117,9 @@ class VueApplication(QMainWindow):
             self.produitVue.show()
             self.planVue.hide()
             self.ajout_plan.setText("Voir le plan")
+            
+    def ajouter_produit_liste(self, nom_produit):
+        self.liste.insertPlainText("- " + nom_produit + "\n")
 
 ## Programme principal : test de la vue ---------------------------------------
 if __name__ == "__main__":
