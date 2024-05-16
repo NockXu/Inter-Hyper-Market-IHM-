@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton, QMainWindow, QToolBa
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIcon, QAction, QPixmap, QGuiApplication, QFont
 from vueProduit import VueProduit
+from vueProduit import ProduitWidget
 from vuePlan import VuePlan
 
 
@@ -16,8 +17,6 @@ class VueApplication(QMainWindow):
     # constructeur
     def __init__(self, app):
         super().__init__()
-
-        self.app = app
 
         #style d'affichage
         fichier_style = open(sys.path[0] + "/qss/style.qss", 'r')
@@ -48,7 +47,8 @@ class VueApplication(QMainWindow):
 ##########################################################
 
         # Appel des vues du plan et des produits
-        self.produitVue = VueProduit()
+        self.produitVue = VueProduit(self)
+        self.produitWidget = ProduitWidget(self)
         self.planVue = VuePlan()
         self.planVue.hide() # Permet de cacher la vue du plan
 
@@ -96,10 +96,9 @@ class VueApplication(QMainWindow):
 #                        Signaux                         #
 #                                                        #
 ##########################################################
-        
-        # Connecter le clic sur le bouton "Voir le plan" à une fonction
+
         self.ajout_plan.clicked.connect(self.changer_vue)
-        self.produitVue.produit_ajoute.connect(self.ajouter_produit_liste)
+        self.produitWidget.produit_ajoute.connect(self.ajouter_produit_liste)
 
 
 ##########################################################
