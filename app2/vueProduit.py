@@ -1,52 +1,126 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QSizePolicy, QFrame
-from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton, QMainWindow, QToolBar, QComboBox, QScrollArea, QSpacerItem
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QSizePolicy, QSpacerItem
+from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton, QMainWindow, QToolBar, QComboBox, QFrame, QScrollArea
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIcon, QAction, QPixmap, QGuiApplication, QFont
 
 ##########################################################
 #                                                        #
-#                    Classe vueProduit                   #
+#                  Classe ProduitWidget                  #
+#                                                        #
+##########################################################
+
+class ProduitWidget(QWidget):
+    produit_ajoute = pyqtSignal(str)
+
+    def __init__(self, nom_produit):
+        super().__init__()
+        self.nom_produit = nom_produit
+
+##########################################################
+#                                                        #
+#                        Layout                          #
+#                                                        #
+##########################################################
+
+        produit_layout = QHBoxLayout(self)
+        produit_layout2 = QVBoxLayout()
+        
+##########################################################
+#                                                        #
+#                        Wigets                          #
+#                                                        #
+##########################################################
+
+        image_produit = QLabel()
+        produit_layout.addWidget(image_produit)
+        image = QPixmap('app2/image/magasin.jpg').scaled(100, 100, Qt.AspectRatioMode.KeepAspectRatio)
+        image_produit.setPixmap(image)
+
+        produit_layout.addLayout(produit_layout2)
+
+
+        description = QLabel("Description")
+        produit_layout2.addWidget(QLabel(nom_produit))
+        produit_layout2.addWidget(description)
+        produit_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
+
+        ajouter = QPushButton("Ajouter produit")
+        ajouter.setFixedHeight(self.height() // 10)
+        ajouter.setFixedWidth(self.width() // 5)
+        ajouter.setFont(QFont("Arial", 12))
+        produit_layout.addWidget(ajouter)
+
+
+
+##########################################################
+#                                                        #
+#                        Signaux                         #
+#                                                        #
+##########################################################
+
+        ajouter.clicked.connect(self.ajouter_produit)
+
+##########################################################
+#                                                        #
+#                       Fonctions                        #
+#                                                        #
+##########################################################
+
+    def ajouter_produit(self):
+        self.produit_ajoute.emit(self.nom_produit)
+
+
+
+
+
+
+
+
+
+
+
+
+##########################################################
+#                                                        #
+#                   Classe VueProduit                    #
 #                                                        #
 ##########################################################
 class VueProduit(QWidget):
-    def __init__(self):
+    def __init__(self, vue_application):
         super().__init__()
-        
-##########################################################
-#                                                        #
-#                        Layouts                         #
-#                                                        #
-##########################################################
-        
+        self.vue_application = vue_application  # Stockez une référence à VueApplication
 
-        filtre_layout = QVBoxLayout()
-        self.setLayout(filtre_layout)
+##########################################################
+#                                                        #
+#                       Layouts                          #
+#                                                        #
+##########################################################
+
+        # Layouts des filtres
+        filtre_layout = QVBoxLayout(self)
         filtre_layout2 = QHBoxLayout()
         
 ##########################################################
 #                                                        #
-#                        Widgets                         #
+#                        Wigets                          #
 #                                                        #
 ##########################################################
 
         self.filtre_label = QLabel("Filtre")
         filtre_layout.addWidget(self.filtre_label)
 
-        # Filtre qui vise les types de produits
         self.filtre1 = QComboBox()
         self.filtre1.addItem("Type de produit")
         self.filtre1.addItem("Option 2")
         self.filtre1.setFixedWidth(self.width() // 3)
         filtre_layout2.addWidget(self.filtre1)
 
-        # Filtre qui vise les rayons
         self.filtre2 = QComboBox()
         self.filtre2.addItem("Rayon")
         self.filtre2.addItem("Option B")
         self.filtre2.setFixedWidth(self.width() // 3)
         filtre_layout2.addWidget(self.filtre2)
-        
         
         filtre_layout2.addStretch()
         filtre_layout.addLayout(filtre_layout2)
@@ -54,7 +128,6 @@ class VueProduit(QWidget):
         self.filtre_label1 = QLabel(" ")
         filtre_layout.addWidget(self.filtre_label1)
 
-        # Ajout d'une bare pour se deplacer verticalement dans la liste des produits
         scroll_bar = QScrollArea()
         filtre_layout.addWidget(scroll_bar)
         
@@ -62,44 +135,21 @@ class VueProduit(QWidget):
         scroll_bar.setWidget(produits)
         layout_produit = QVBoxLayout(produits)
 
-        for i in range(70):
-                produit_widget = QWidget()
-                layout = QHBoxLayout(produit_widget)
-                produit_layout = QVBoxLayout()
-                
-                image_produit = QLabel()
-                layout.addWidget(image_produit)
-                pixmap = QPixmap('./image/magasin.jpg')
-                image_produit.setPixmap(pixmap)
+        with open('liste_produits.txt', 'r') as file:
+            for line in file:
+                if '[' in line and ']' in line:
+                    continue
+                else:
+                    nom_produit = line.strip()
+                    produit_widget = ProduitWidget(nom_produit)
+                    produit_widget.produit_ajoute.connect(self.vue_application.ajouter_produit_liste)                    
+                    layout_produit.addWidget(produit_widget)
+                    
+                    ligne_separation = QFrame()
+                    ligne_separation.setFrameShape(QFrame.Shape.HLine)
+                    ligne_separation.setFrameShadow(QFrame.Shadow.Sunken)
+                    layout_produit.addWidget(ligne_separation)
+                    
 
-                
-                nom_produit = QLabel(f"Produit {i+1}")
-                description = QLabel("Description")                
-                produit_layout.addWidget(nom_produit)
-                produit_layout.addWidget(description)
-                layout.addLayout(produit_layout)
-                
-                ajouter = QPushButton("Ajouter produit")
-                ajouter.setFixedHeight(self.height() // 15)
-                ajouter.setFixedWidth(self.width() // 5)
-                layout.addWidget(ajouter)
-                
-                layout_produit.addWidget(produit_widget)
-                
-                 # Ajouter une ligne de séparation
-                if i < 69:  # Ne pas ajouter de ligne de séparation après le dernier produit
-                    line = QFrame()
-                    line.setFrameShape(QFrame.Shape.HLine)
-                    line.setFrameShadow(QFrame.Shadow.Sunken)
-                    layout_produit.addWidget(line)
-    
         produits.setLayout(layout_produit)
         scroll_bar.setWidgetResizable(True)
-
-        
-if __name__ == "__main__":
-    print(f' --- main --- ')
-    app = QApplication(sys.argv)
-    fenetre = VueProduit()
-    fenetre.show()
-    sys.exit(app.exec())

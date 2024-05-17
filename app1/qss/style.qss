@@ -7,6 +7,11 @@ QWidget
 	selection-color: #ffffff;
 }
 
+QDockWidget
+{
+	border: 1px solid #000000;
+}
+
 /*-----QLabel-----*/
 QLabel
 {
@@ -285,6 +290,8 @@ QComboBox::down-arrow
     width: 8px;
     height: 8px;
 }
+
+
 
 /*-----QSpinBox & QDateTimeEdit-----*/
 QSpinBox,
