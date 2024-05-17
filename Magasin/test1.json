@@ -13,12 +13,21 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "étagère",
             "acces": [
                 true,
                 true,
                 true,
                 true
+            ],
+            "produits": [
+                {
+                    "nom": "truc",
+                    "prix": 100,
+                    "description": "un truc",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "objet"
+                }
             ]
         }
     },

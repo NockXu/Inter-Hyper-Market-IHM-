@@ -5,7 +5,7 @@ from entree import Entree
 # Classe qui permet de créer des objet Point qui possède deux attributs x et y
 # Cette classe contient aussi des méthodes qui permette de simplifier son interaction avec les autres points du plan
 class Point:
-    def __init__(self, x: int, y: int, voisins: list = None, fonction: Fonction = Chemin()) -> None:
+    def __init__(self, x : int, y : int, voisins : list = None, fonction: Fonction = Chemin()) -> None :
         self._x : int = x
         self._y : int = y
         self._voisins : list = voisins
@@ -37,19 +37,19 @@ class Point:
         return self._fonction.getDroite()
 
     # Méthodes setters
-    def set_x(self, x: int) -> None:
+    def set_x(self, x : int) -> None :
         self._x = x
     
-    def set_y(self, y: int) -> None:
+    def set_y(self, y : int) -> None :
         self._y = y
     
-    def set_fonction(self, fonction: str) -> None:
+    def set_fonction(self, fonction : Fonction) -> None :
         self._fonction = fonction
 
     # Méthode qui renvoie une liste de tous les voisins d'un point à partir d'une liste donnée
-    def set_voisins(self, liste: list, ajoutoppose: bool = True) -> None:
-        for point in liste:
-            if point != self:  # Ignorer le point lui-même
+    def set_voisins(self, liste : list, ajoutoppose : bool = True) -> None:
+        for point in liste :
+            if point != self :  # Ignorer le point lui-même
                 # Vérifier si le point est un voisin (distance de Manhattan = 1)
                 if abs(point._x - self._x) + abs(point._y - self._y) == 1:
                     self.add_voisin((point._x, point._y))
@@ -58,9 +58,9 @@ class Point:
                     if ajoutoppose:
                             point.add_voisin((self._x, self._y))
     
-    def add_voisin(self, voisin: tuple) -> None:
+    def add_voisin(self, voisin: tuple) -> None :
         # Vérifier si le voisin n'est pas déjà présent dans la liste des voisins et que cette liste ne soit pas vide
-        if self._voisins != None:
+        if self._voisins != None :
             if voisin not in self._voisins:
                     # Ajouter le voisin à la liste des voisins
                     self._voisins.append(voisin)
@@ -68,30 +68,30 @@ class Point:
             # Ajouter le voisin à la liste des voisins
             self._voisins = [voisin]
 
-    def setHaut(self, H : bool = True) -> None:
+    def setHaut(self, H : bool = True) -> None :
         return self._fonction.setHaut(H)
     
-    def setBas(self, B : bool = True) -> None:
+    def setBas(self, B : bool = True) -> None :
         return self._fonction.setBas(B)
     
-    def setGauche(self, G : bool = True) -> None:
+    def setGauche(self, G : bool = True) -> None :
         return self._fonction.setGauche(G)
     
-    def setDroite(self, D : bool = True) -> None:
+    def setDroite(self, D : bool = True) -> None :
         return self._fonction.setDroite(D)
 
     # Méthode spéciale __str__()
-    def __str__(self) -> str:
+    def __str__(self) -> str :
         return f"({self._x}, {self._y}) : [voisins : {self._voisins}, fonction : {self._fonction}]"
 
     # Méthode spéciale __eq__()
-    def __eq__(self, other) -> bool:
-        if isinstance(other, Point):  # Vérifie si 'other' est une instance de la classe Point
+    def __eq__(self, other) -> bool :
+        if isinstance(other, Point) :  # Vérifie si 'other' est une instance de la classe Point
             return (self._x == other._x) and (self._y == other._y)
         return False
 
 # Exemple d'utilisation de la classe Point
-if __name__ == "__main__":
+if __name__ == "__main__" :
     # Création de quelques points
     point1 = Point(0, 0)
     point2 = Point(1, 0)

@@ -3,6 +3,7 @@ from fonction import Fonction
 from etagere import Etagere
 from chemin import Chemin
 from entree import Entree
+from produit import Produit
 import json
 import os
 
@@ -122,10 +123,11 @@ def ecrire_JSON(plan : Plan, nomFichier : str) -> None:
                 # on ajoute le produit dans la liste de produits
                 fonction["produits"].append(
                     {
-                    "nom" : produit.get_nom,
-                    "prix" : produit.get_prix,
-                    "description" : produit.get_description,
-                    "icone" : produit.get_icone
+                    "nom" : produit.get_nom(),
+                    "prix" : produit.get_prix(),
+                    "description" : produit.get_description(),
+                    "icone" : produit.get_icone(),
+                    "type" : produit.get_type()
                     }
                                            )
             
@@ -174,6 +176,9 @@ if __name__ == "__main__":
     print(test)  # Affichage des points initiaux
 
     test.ajoutPoint(3, 2)
+    
+    produitTest : Produit = Produit("truc",100,"un truc","le/chemin/vers/l'icone.png", "objet")
+    test.plan[0].set_fonction(Etagere([produitTest]))
 
     print("\n",test)  # Affichage après ajout du nouveau point
     

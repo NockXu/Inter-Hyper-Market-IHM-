@@ -2,9 +2,9 @@ from produit import Produit
 from fonction import Fonction
 
 class Etagere(Fonction):
-    def __init__(self) -> None:
+    def __init__(self, liste_produit : list[Produit] = []) -> None:
         super().__init__("étagère")
-        self._produits: list[Produit] = []
+        self._produits: list[Produit] = liste_produit
     
     def vider(self) -> None:
         """Vide l'étagère en supprimant tous les produits."""

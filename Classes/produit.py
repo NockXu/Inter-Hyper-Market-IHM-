@@ -1,10 +1,10 @@
 class Produit:
-    def __init__(self, nom: str, prix: float, description: str, icone: str, type: str) -> None:
+    def __init__(self, nom: str, prix: float, description: str, icone: str, nomType: str) -> None:
         self._nom = nom
         self._prix = prix
         self._description = description
         self._icone = icone
-        self._type = type
+        self._type = nomType
 
     # Méthodes getters
     def get_nom(self) -> str:
@@ -35,8 +35,8 @@ class Produit:
     def set_icone(self, icone: str) -> None:
         self._icone = icone
     
-    def set_type(self, type : str) -> None:
-        self._type = type
+    def set_type(self, nomType : str) -> None:
+        self._type = nomType
 
     # Méthode spéciale __str__()
     def __str__(self) -> str:
