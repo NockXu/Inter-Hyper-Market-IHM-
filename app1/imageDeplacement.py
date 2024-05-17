@@ -10,16 +10,23 @@ class ImageDeplacement(QLabel):
         self._offset = QPoint()
         self.setMouseTracking(True)
         self.polygon = QPolygon()
+        self.polygons = []
+
+    def set_polygons(self, polygons):
+        self.polygons = polygons
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            self._drag_active = True
-            self._mouse_position = event.position().toPoint()
-            self._offset = self._mouse_position - self.pos()
+            pixmap_rect = self.getPixmapRect()
+            if pixmap_rect.contains(event.position().toPoint()):
+                self._drag_active = True
+                # L'offset est la position de la souris dans le widget au moment du clic
+                self._offset = event.position().toPoint()
 
     def mouseMoveEvent(self, event):
         if self._drag_active:
-            new_position = event.position().toPoint() - self._offset
+            # Calculer la nouvelle position en fonction de l'offset
+            new_position = self.mapToParent(event.pos() - self._offset)
             self.move(new_position)
             self.updatePolygon()
             print(f'Position : {self.pos().x()}, {self.pos().y()}')
@@ -30,7 +37,6 @@ class ImageDeplacement(QLabel):
             print(f'Image déplacée à la position : {self.pos().x()}, {self.pos().y()}')
 
     def updatePolygon(self):
-        # Mise à jour de la position du polygone
         if not self.pixmap():
             return
         rect = self.pixmap().rect()
@@ -44,12 +50,25 @@ class ImageDeplacement(QLabel):
         ]
         self.polygon = QPolygon(points)
 
+    def getPixmapRect(self):
+        if not self.pixmap():
+            return QRect()
+        rect = self.pixmap().rect()
+        rect.moveCenter(self.rect().center())
+        return rect
 
     def paintEvent(self, event):
         super().paintEvent(event)
-        if not self.polygon.isEmpty():
+        if self.pixmap():
             painter = QPainter(self)
-            pen = QPen(QColor('red'))
-            pen.setWidth(3)
-            painter.setPen(pen)
-            painter.drawPolygon(self.polygon)
+            if self.polygons:
+                pen = QPen(QColor('blue'))
+                pen.setWidth(1)
+                painter.setPen(pen)
+                for polygon in self.polygons:
+                    painter.drawPolygon(polygon)
+            if not self.polygon.isEmpty():
+                pen = QPen(QColor('red'))
+                pen.setWidth(3)
+                painter.setPen(pen)
+                painter.drawPolygon(self.polygon)

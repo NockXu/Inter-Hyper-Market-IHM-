@@ -5,6 +5,7 @@ import imageDeplacement
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
+from Classes.plan import *
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -21,6 +22,7 @@ class MainWindow(QMainWindow):
 
         # Menu Fichier
         file_menu = self.menu_bar.addMenu('Fichier')
+
         self.action_nouveau = QAction('Nouveau', self)
         file_menu.addAction(self.action_nouveau)
 
@@ -35,21 +37,21 @@ class MainWindow(QMainWindow):
 
         # Menu Edition
         edit_menu = self.menu_bar.addMenu('Edition')
+
         self.action_reset = QAction('Réinitialiser', self)
         edit_menu.addAction(self.action_reset)
 
         # Menu Affichage
         view_menu = self.menu_bar.addMenu('Affichage')
+
         self.action_barre = QAction('Menu Outil', self)
         view_menu.addAction(self.action_barre)
         
         self.action_menu_graphe = QAction('Menu Graphe', self)
         view_menu.addAction(self.action_menu_graphe)
         
-        
-
-        # Connecter l'action 'Menu' à la méthode toggle_menu_outil
         self.action_barre.triggered.connect(self.toggle_menu_outil)
+        self.action_menu_graphe.triggered.connect(self.toggle_menu_graphe)
 
         # Utiliser QScrollArea pour l'image
         self.scroll_area = QScrollArea()
@@ -86,6 +88,7 @@ class MainWindow(QMainWindow):
 
         # Connecter le bouton load_plan_button à la méthode load_plan
         self.vueOutil.get_load_plan_button().clicked.connect(self.load_plan)
+        self.vueCarre.carre_button.clicked.connect(self.create_grid)
 
         #--------------------------------------------------------------------------------
 
@@ -116,6 +119,31 @@ class MainWindow(QMainWindow):
             self.dock2.hide()
         else:
             self.dock2.show()
+
+    def create_grid(self):
+        rows = int(self.vueCarre.nb_carre_x.text())
+        cols = int(self.vueCarre.nb_carre_y.text())
+        if self.plan_label.pixmap() and rows > 0 and cols > 0:
+            pixmap_rect = self.plan_label.getPixmapRect()
+            pixmap_width = pixmap_rect.width()
+            pixmap_height = pixmap_rect.height()
+            cell_width = pixmap_width / cols
+            cell_height = pixmap_height / rows
+
+            polygons = []
+            for row in range(rows):
+                for col in range(cols):
+                    top_left = QPointF(pixmap_rect.topLeft()) + QPointF(col * cell_width, row * cell_height)
+                    top_right = top_left + QPointF(cell_width, 0)
+                    bottom_right = top_left + QPointF(cell_width, cell_height)
+                    bottom_left = top_left + QPointF(0, cell_height)
+                    polygon = QPolygonF([top_left, top_right, bottom_right, bottom_left])
+                    polygons.append(polygon)
+
+            self.plan_label.set_polygons(polygons)
+            self.plan_label.update()
+
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
