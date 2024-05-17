@@ -242,24 +242,5 @@
                 true
             ]
         }
-    },
-    {
-        "x": 3,
-        "y": 2,
-        "voisins": [
-            {
-                "x": 2,
-                "y": 2
-            }
-        ],
-        "fonction": {
-            "spécialitée": "chemin",
-            "acces": [
-                true,
-                true,
-                true,
-                true
-            ]
-        }
     }
 ]

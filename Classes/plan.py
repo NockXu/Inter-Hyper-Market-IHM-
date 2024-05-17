@@ -51,10 +51,10 @@ class Plan :
             self.plan[-1].set_voisins(self.plan)
     
     # méthode qui permet de supprimer un point du plan si il existe
-    def suppPoint(self, suppression : Point) -> None :
+    def suppPoint(self, x : int, y : int) -> None :
         # Parcourir la liste de point pour supprimer le point correspondant à suppression
         for point in self.plan:
-            if point == suppression:
+            if point.get_x() == x and point.get_y() == y:
                 self.plan.remove(point)
     
     # méthode qui permet de supprimer les point d'un plan à partir d'une liste de point        
@@ -182,8 +182,9 @@ if __name__ == "__main__":
 
     print("\n",test)  # Affichage après ajout du nouveau point
     
-    for point in test.plan:
-        print(point.get_voisins())
+    test.suppPoint(3, 2)
+    
+    print("\n",test)  # Affichage après suppression
     
     # création d'un fichier json
     ecrire_JSON(test, "test1.json")
