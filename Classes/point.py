@@ -1,11 +1,15 @@
+from fonction import Fonction
+from chemin import Chemin
+from etagere import Etagere
+from entree import Entree
 # Classe qui permet de créer des objet Point qui possède deux attributs x et y
 # Cette classe contient aussi des méthodes qui permette de simplifier son interaction avec les autres points du plan
 class Point:
-    def __init__(self, x: int, y: int, voisins: list = None, fonction: str = None) -> None:
-        self._x: int = x
-        self._y: int = y
-        self._voisins: list = voisins
-        self._fonction: str = fonction
+    def __init__(self, x: int, y: int, voisins: list = None, fonction: Fonction = Chemin()) -> None:
+        self._x : int = x
+        self._y : int = y
+        self._voisins : list = voisins
+        self._fonction : Fonction = fonction
     
     # Méthodes getters
     def get_x(self) -> int:
@@ -17,8 +21,20 @@ class Point:
     def get_voisins(self) -> list:
         return self._voisins
     
-    def get_fonction(self) -> str:
+    def get_fonction(self) -> Fonction:
         return self._fonction
+    
+    def getHaut(self) -> bool:
+        return self._fonction.getHaut()
+    
+    def getBas(self) -> bool:
+        return self._fonction.getBas()
+    
+    def getGauche(self) -> bool:
+        return self._fonction.getGauche()
+    
+    def getDroite(self) -> bool:
+        return self._fonction.getDroite()
 
     # Méthodes setters
     def set_x(self, x: int) -> None:
@@ -47,6 +63,18 @@ class Point:
                             point._voisins = [(self._x, self._y)]
                         else:
                             point._voisins.append((self._x, self._y))
+    
+    def setHaut(self, H : bool = True) -> None:
+        return self._fonction.setHaut(H)
+    
+    def setBas(self, B : bool = True) -> None:
+        return self._fonction.setBas(B)
+    
+    def setGauche(self, G : bool = True) -> None:
+        return self._fonction.setGauche(G)
+    
+    def setDroite(self, D : bool = True) -> None:
+        return self._fonction.setDroite(D)
 
     # Méthode spéciale __str__()
     def __str__(self) -> str:
@@ -73,3 +101,5 @@ if __name__ == "__main__":
     point1.set_voisins([point1, point2, point3, point4])
     
     print(point1, point2, point3, point4)
+    
+    

@@ -3,7 +3,7 @@ from fonction import Fonction
 
 class Etagere(Fonction):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__("étagère")
         self._produits: list[Produit] = []
     
     def vider(self) -> None:
