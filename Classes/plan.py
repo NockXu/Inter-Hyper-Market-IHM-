@@ -146,6 +146,9 @@ def ecrire_JSON(plan : Plan, nomFichier : str) -> None:
         
         # Ajout du point à la liste des points
         points.append(data)
+        data = []
+        voisins = []
+        fonction = []
         
     # Récupérer le chemin du répertoire contenant votre script Python
     chemin = os.path.dirname(__file__)
@@ -166,13 +169,16 @@ def ecrire_JSON(plan : Plan, nomFichier : str) -> None:
         
 
 if __name__ == "__main__":
-    test = Plan(10, 10)
+    test = Plan(3, 3)
 
     print(test)  # Affichage des points initiaux
 
-    test.ajoutPoint(11, 10)
+    test.ajoutPoint(3, 2)
 
     print("\n",test)  # Affichage après ajout du nouveau point
+    
+    for point in test.plan:
+        print(point.get_voisins())
     
     # création d'un fichier json
     ecrire_JSON(test, "test1.json")
