@@ -52,18 +52,22 @@ class Point:
             if point != self:  # Ignorer le point lui-même
                 # Vérifier si le point est un voisin (distance de Manhattan = 1)
                 if abs(point._x - self._x) + abs(point._y - self._y) == 1:
-                    if self._voisins is None:
-                        self._voisins = [(point._x, point._y)]
-                    else:
-                        self._voisins.append((point._x, point._y))
+                    self.add_voisin((point._x, point._y))
                     
                     # Si les points sont accessibles dans les deux sens
                     if ajoutoppose:
-                        if point._voisins is None:
-                            point._voisins = [(self._x, self._y)]
-                        else:
-                            point._voisins.append((self._x, self._y))
+                            point.add_voisin((self._x, self._y))
     
+    def add_voisin(self, voisin: tuple) -> None:
+        # Vérifier si le voisin n'est pas déjà présent dans la liste des voisins et que cette liste ne soit pas vide
+        if self._voisins != None:
+            if voisin not in self._voisins:
+                    # Ajouter le voisin à la liste des voisins
+                    self._voisins.append(voisin)
+        else:
+            # Ajouter le voisin à la liste des voisins
+            self._voisins = [voisin]
+
     def setHaut(self, H : bool = True) -> None:
         return self._fonction.setHaut(H)
     
