@@ -1,5 +1,5 @@
-from produit import Produit
-from fonction import Fonction
+from .produit import Produit
+from .fonction import Fonction
 
 class Etagere(Fonction):
     def __init__(self, liste_produit : list[Produit] = []) -> None:

@@ -1,7 +1,11 @@
-import sys
+import sys, os
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from Classes import *
 
 class Init(QMainWindow):
     def __init__(self):

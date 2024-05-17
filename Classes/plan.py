@@ -1,9 +1,9 @@
-from point import Point
-from fonction import Fonction
-from etagere import Etagere
-from chemin import Chemin
-from entree import Entree
-from produit import Produit
+from .point import Point
+from .fonction import Fonction
+from .etagere import Etagere
+from .chemin import Chemin
+from .entree import Entree
+from .produit import Produit
 import json
 import os
 
