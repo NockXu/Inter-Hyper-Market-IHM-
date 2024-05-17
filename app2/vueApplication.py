@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QSizePolicy
-from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton, QMainWindow, QToolBar, QComboBox
+from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton, QMainWindow, QToolBar, QComboBox, QFileDialog
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIcon, QAction, QPixmap, QGuiApplication, QFont
 from vueProduit import VueProduit
@@ -65,11 +65,7 @@ class VueApplication(QMainWindow):
         fichier_menu.addAction(self.action_reset)
         
         # Choix des magasins avec un ComboBox
-        self.magasin = QComboBox()
-        self.magasin.addItem("Choix du magasin")
-        self.magasin.addItem("Magasin 1")
-        self.magasin.addItem("Magasin 2")
-        self.magasin.addItem("Magasin 3")
+        self.magasin = QPushButton("Choix magasin")
         self.magasin.setFixedWidth(self.width() // 3)
         self.menu_selection.addWidget(self.magasin)
 
@@ -99,6 +95,8 @@ class VueApplication(QMainWindow):
 
         self.ajout_plan.clicked.connect(self.changer_vue)
         self.produitWidget.produit_ajoute.connect(self.ajouter_produit_liste)
+        self.magasin.clicked.connect(self.ouvrir_fichier)
+
 
 
 ##########################################################
@@ -119,6 +117,14 @@ class VueApplication(QMainWindow):
             
     def ajouter_produit_liste(self, nom_produit):
         self.liste.insertPlainText("- " + nom_produit + "\n")
+        
+    def ouvrir_fichier(self):
+        fileName, _ = QFileDialog.getOpenFileName(self, "Ouvrir le fichier", "", "All Files (*);;Text Files (*.txt)")
+        if fileName:
+            print("Fichier sélectionné:", fileName)
+            self.produitVue.charger_produits(fileName)
+            
+    
 
 ## Programme principal : test de la vue ---------------------------------------
 if __name__ == "__main__":
