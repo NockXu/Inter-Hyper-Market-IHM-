@@ -76,11 +76,6 @@ class ProduitWidget(QWidget):
 
 
 
-
-
-
-
-
 ##########################################################
 #                                                        #
 #                   Classe VueProduit                    #
@@ -160,3 +155,14 @@ class VueProduit(QWidget):
         produits.setLayout(layout_produit)
         self.scroll_bar.setWidget(produits)
         self.scroll_bar.setWidgetResizable(True)
+        
+    # Réinitailise la vue en supprimant tous les layouts    
+    def reset_vue(self):
+        # Supprime le contenu de la scroll_area
+        scroll_content = self.scroll_bar.widget()
+        if scroll_content:
+            scroll_content.deleteLater()
+
+        # Réinitialise les filtres
+        self.filtre1.setCurrentIndex(0)
+        self.filtre2.setCurrentIndex(0)
