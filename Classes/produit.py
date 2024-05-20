@@ -1,10 +1,10 @@
 class Produit:
-    def __init__(self, nom: str, prix: float, description: str, icone: str, type: str) -> None:
+    def __init__(self, nom: str, prix: float, description: str, icone: str, nomType: str) -> None:
         self._nom = nom
         self._prix = prix
         self._description = description
         self._icone = icone
-        self._type = type
+        self._type = nomType
 
     # Méthodes getters
     def get_nom(self) -> str:
@@ -35,8 +35,8 @@ class Produit:
     def set_icone(self, icone: str) -> None:
         self._icone = icone
     
-    def set_type(self, type : str) -> None:
-        self._type = type
+    def set_type(self, nomType : str) -> None:
+        self._type = nomType
 
     # Méthode spéciale __str__()
     def __str__(self) -> str:
@@ -49,7 +49,52 @@ class Produit:
                    (self._description == other._description) and (self._icone == other._icone) and \
                    (self._type == other._type)
         return False
+
+def liste_produit(chemin : str) -> dict:
+    produits : dict = {}
+    est_type : bool = False
+    texte : str = ""
+    type_actuel : str = ""
     
+    ##################################################################
+    # Ouverture du fichier                                           #
+    ##################################################################
+    try:
+        # Ouvre le fichier en mode lecture
+        with open(chemin, 'r') as fichier:
+            # Lit tout le contenu du fichier
+            contenu = fichier.read()
+
+    except FileNotFoundError:
+        print(f"Erreur : le fichier '{chemin}' n'a pas été trouvé.")
+
+    except Exception as e:
+        print(f"Erreur lors de la lecture du fichier : {e}")
+    ##################################################################
+    
+    for caractere in contenu:
+        if caractere == "[":
+            est_type = True
+            type_actuel = ""
+        elif caractere == "]":
+            est_type = False
+            if type_actuel:
+                if type_actuel not in produits:
+                    produits[type_actuel] = []
+        else:
+            if est_type:
+                type_actuel += caractere
+            else:
+                if caractere != "\n":
+                    texte += caractere
+                else:
+                    if type_actuel and texte != "":
+                        produits[type_actuel].append(texte.strip())
+                    texte = ""
+
+                
+    return produits
+
 if __name__ == "__main__":
     # Tester la classe Produit
     produit1 = Produit("Ordinateur Portable", 1200.0, "Ordinateur portable puissant et léger.", "icone_ordinateur.png", "électronique")
@@ -62,3 +107,7 @@ if __name__ == "__main__":
 
     print("\nComparaison des produits:")
     print("produit1 == produit2 :", produit1 == produit2)
+    
+    print(liste_produit("./liste_produits.txt"))
+    
+    
