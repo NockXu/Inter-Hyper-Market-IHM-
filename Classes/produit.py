@@ -40,7 +40,7 @@ class Produit:
 
     # Méthode spéciale __str__()
     def __str__(self) -> str:
-        return f"Produit : {self._nom}\nPrix : {self._prix} €\nDescription : {self._description}\nIcône : {self._icone}"
+        return f"{self._nom}\nPrix : {self._prix} €\nDescription : {self._description}\nIcône : {self._icone}"
 
     # Méthode spéciale __eq__()
     def __eq__(self, other) -> bool:

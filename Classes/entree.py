@@ -1,4 +1,4 @@
-from .chemin import Chemin
+from chemin import Chemin
 
 class Entree(Chemin):
     def __init__(self, nom : str = None) -> None:

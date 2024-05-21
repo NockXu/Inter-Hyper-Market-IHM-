@@ -1,5 +1,5 @@
-from .produit import Produit
-from .fonction import Fonction
+from produit import Produit
+from fonction import Fonction
 
 class Etagere(Fonction):
     def __init__(self, liste_produit : list[Produit] = []) -> None:
@@ -30,10 +30,14 @@ class Etagere(Fonction):
     # Méthode spéciale __str__()
     def __str__(self) -> str:
         """Retourne une représentation sous forme de chaîne de l'étagère avec les noms des produits."""
-        produits_str = ", ".join(produit.get_nom() for produit in self._produits)
+        produits_str = ""
+        for produit in self._produits:
+            produits_str += str(produit)
         if produits_str == "":
             produits_str = "vide"
-        return f"Etagere - Produits: {produits_str}"
+        else:
+            produits_str += "]"
+        return f"Etagere : [Produits: {produits_str}"
     
     # Méthode spéciale __eq__()
     def __eq__(self, other : object) -> bool:
