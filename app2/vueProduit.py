@@ -1,4 +1,5 @@
 import sys
+import json
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QSizePolicy, QSpacerItem
 from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton, QMainWindow, QToolBar, QComboBox, QFrame, QScrollArea
 from PyQt6.QtCore import Qt, pyqtSignal
@@ -13,7 +14,7 @@ from PyQt6.QtGui import QIcon, QAction, QPixmap, QGuiApplication, QFont
 class ProduitWidget(QWidget):
     produit_ajoute = pyqtSignal(str)
 
-    def __init__(self, nom_produit):
+    def __init__(self, nom_produit, description, prix, icone):
         super().__init__()
         self.nom_produit = nom_produit
 
@@ -28,7 +29,7 @@ class ProduitWidget(QWidget):
         
 ##########################################################
 #                                                        #
-#                        Wigets                          #
+#                        Widgets                         #
 #                                                        #
 ##########################################################
 
@@ -36,13 +37,15 @@ class ProduitWidget(QWidget):
         produit_layout.addWidget(image_produit)
         image = QPixmap('app2/image/magasin.jpg').scaled(100, 100, Qt.AspectRatioMode.KeepAspectRatio)
         image_produit.setPixmap(image)
+        #if icone:
+        #    image = QPixmap(icone).scaled(100, 100, Qt.AspectRatioMode.KeepAspectRatio)
+        #    image_produit.setPixmap(image)
 
         produit_layout.addLayout(produit_layout2)
 
-
-        description = QLabel("Description")
-        produit_layout2.addWidget(QLabel(nom_produit))
-        produit_layout2.addWidget(description)
+        produit_layout2.addWidget(QLabel(f"Produit: {nom_produit}"))
+        produit_layout2.addWidget(QLabel(f"Description: {description}"))
+        produit_layout2.addWidget(QLabel(f"Prix: {prix} €"))
         produit_layout2.addItem(QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
 
         ajouter = QPushButton("Ajouter produit")
@@ -50,8 +53,6 @@ class ProduitWidget(QWidget):
         ajouter.setFixedWidth(self.width() // 5)
         ajouter.setFont(QFont("Arial", 12))
         produit_layout.addWidget(ajouter)
-
-
 
 ##########################################################
 #                                                        #
@@ -69,6 +70,32 @@ class ProduitWidget(QWidget):
 
     def ajouter_produit(self):
         self.produit_ajoute.emit(self.nom_produit)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -98,7 +125,7 @@ class VueProduit(QWidget):
         
 ##########################################################
 #                                                        #
-#                        Wigets                          #
+#                        Widgets                         #
 #                                                        #
 ##########################################################
 
@@ -123,7 +150,7 @@ class VueProduit(QWidget):
         self.filtre_label1 = QLabel(" ")
         filtre_layout.addWidget(self.filtre_label1)
 
-        self.scroll_bar = QScrollArea()  # Déplacez cette ligne ici pour que la scroll_bar soit accessible à partir de l'instance VueProduit
+        self.scroll_bar = QScrollArea()
         filtre_layout.addWidget(self.scroll_bar)  # Ajoutez la scroll_bar au layout principal
         
         
@@ -135,16 +162,20 @@ class VueProduit(QWidget):
 
     def charger_produits(self, fichier_produits):
         layout_produit = QVBoxLayout()  # Créez un nouveau layout pour les produits
-        with open(fichier_produits, 'r') as file:
-            for line in file:
-                if '[' in line and ']' in line:
-                    continue
-                else:
-                    nom_produit = line.strip()
-                    produit_widget = ProduitWidget(nom_produit)
-                    produit_widget.produit_ajoute.connect(self.vue_application.ajouter_produit_liste)                    
+        with open(fichier_produits, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            for item in data:
+                fonction = item.get('fonction', {})
+                produits = fonction.get('produits', [])
+                for produit in produits:
+                    nom_produit = produit.get('nom', 'N/A')
+                    description = produit.get('description', 'Pas de description')
+                    prix = produit.get('prix', 0)
+                    icone = produit.get('icone', '')
+                    produit_widget = ProduitWidget(nom_produit, description, prix, icone)
+                    produit_widget.produit_ajoute.connect(self.vue_application.ajouter_produit_liste)
                     layout_produit.addWidget(produit_widget)
-                    
+
                     ligne_separation = QFrame()
                     ligne_separation.setFrameShape(QFrame.Shape.HLine)
                     ligne_separation.setFrameShadow(QFrame.Shadow.Sunken)
@@ -156,7 +187,6 @@ class VueProduit(QWidget):
         self.scroll_bar.setWidget(produits)
         self.scroll_bar.setWidgetResizable(True)
         
-    # Réinitailise la vue en supprimant tous les layouts    
     def reset_vue(self):
         # Supprime le contenu de la scroll_area
         scroll_content = self.scroll_bar.widget()
@@ -166,3 +196,42 @@ class VueProduit(QWidget):
         # Réinitialise les filtres
         self.filtre1.setCurrentIndex(0)
         self.filtre2.setCurrentIndex(0)
+
+
+class VueApplication(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle('Vue Application')
+        self.setGeometry(100, 100, 800, 600)
+
+        # Instance of VueProduit
+        self.vue_produit = VueProduit(self)
+        self.setCentralWidget(self.vue_produit)
+
+        # ToolBar and Menu
+        self.createToolBar()
+        self.show()
+
+    def createToolBar(self):
+        toolbar = QToolBar("Main Toolbar")
+        self.addToolBar(toolbar)
+
+        load_action = QAction(QIcon('load.png'), 'Load Products', self)
+        load_action.triggered.connect(self.load_products)
+        toolbar.addAction(load_action)
+
+    def load_products(self):
+        # Here you would have code to select a JSON file
+        self.vue_produit.charger_produits('path_to_your_json_file.json')
+
+    def ajouter_produit_liste(self, nom_produit):
+        print(f"Produit ajouté: {nom_produit}")
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    vue_app = VueApplication()
+    sys.exit(app.exec())
