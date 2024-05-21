@@ -76,11 +76,6 @@ class ProduitWidget(QWidget):
 
 
 
-
-
-
-
-
 ##########################################################
 #                                                        #
 #                   Classe VueProduit                    #
@@ -89,7 +84,7 @@ class ProduitWidget(QWidget):
 class VueProduit(QWidget):
     def __init__(self, vue_application):
         super().__init__()
-        self.vue_application = vue_application  # Stockez une référence à VueApplication
+        self.vue_application = vue_application  # Stocke une référence à VueApplication
 
 ##########################################################
 #                                                        #
@@ -128,14 +123,19 @@ class VueProduit(QWidget):
         self.filtre_label1 = QLabel(" ")
         filtre_layout.addWidget(self.filtre_label1)
 
-        scroll_bar = QScrollArea()
-        filtre_layout.addWidget(scroll_bar)
+        self.scroll_bar = QScrollArea()  # Déplacez cette ligne ici pour que la scroll_bar soit accessible à partir de l'instance VueProduit
+        filtre_layout.addWidget(self.scroll_bar)  # Ajoutez la scroll_bar au layout principal
         
-        produits = QWidget()
-        scroll_bar.setWidget(produits)
-        layout_produit = QVBoxLayout(produits)
+        
+##########################################################
+#                                                        #
+#                       Fonctions                        #
+#                                                        #
+##########################################################
 
-        with open('liste_produits.txt', 'r') as file:
+    def charger_produits(self, fichier_produits):
+        layout_produit = QVBoxLayout()  # Créez un nouveau layout pour les produits
+        with open(fichier_produits, 'r') as file:
             for line in file:
                 if '[' in line and ']' in line:
                     continue
@@ -149,7 +149,20 @@ class VueProduit(QWidget):
                     ligne_separation.setFrameShape(QFrame.Shape.HLine)
                     ligne_separation.setFrameShadow(QFrame.Shadow.Sunken)
                     layout_produit.addWidget(ligne_separation)
-                    
-
+        
+        # Ajoutez le layout_produit à la scroll_bar
+        produits = QWidget()
         produits.setLayout(layout_produit)
-        scroll_bar.setWidgetResizable(True)
+        self.scroll_bar.setWidget(produits)
+        self.scroll_bar.setWidgetResizable(True)
+        
+    # Réinitailise la vue en supprimant tous les layouts    
+    def reset_vue(self):
+        # Supprime le contenu de la scroll_area
+        scroll_content = self.scroll_bar.widget()
+        if scroll_content:
+            scroll_content.deleteLater()
+
+        # Réinitialise les filtres
+        self.filtre1.setCurrentIndex(0)
+        self.filtre2.setCurrentIndex(0)
