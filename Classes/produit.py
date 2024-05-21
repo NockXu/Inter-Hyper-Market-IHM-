@@ -1,3 +1,5 @@
+import sys, os
+
 class Produit:
     def __init__(self, nom: str, prix: float, description: str, icone: str, nomType: str) -> None:
         self._nom = nom
@@ -40,7 +42,7 @@ class Produit:
 
     # Méthode spéciale __str__()
     def __str__(self) -> str:
-        return f"{self._nom}\nPrix : {self._prix} €\nDescription : {self._description}\nIcône : {self._icone}"
+        return f"Nom : '{self._nom}', Prix : '{self._prix}€', Description : '{self._description}', Icône : '{self._icone}'"
 
     # Méthode spéciale __eq__()
     def __eq__(self, other) -> bool:
@@ -59,9 +61,12 @@ def liste_produit(chemin : str) -> dict:
     ##################################################################
     # Ouverture du fichier                                           #
     ##################################################################
+    # Récupérer le chemin du répertoire parent
+    parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+    
     try:
         # Ouvre le fichier en mode lecture
-        with open(chemin, 'r') as fichier:
+        with open(os.path.join(parent_dir, chemin), 'r') as fichier:
             # Lit tout le contenu du fichier
             contenu = fichier.read()
 
@@ -108,6 +113,6 @@ if __name__ == "__main__":
     print("\nComparaison des produits:")
     print("produit1 == produit2 :", produit1 == produit2)
     
-    print(liste_produit("./liste_produits.txt"))
+    print(liste_produit("liste_produits.txt"))
     
     

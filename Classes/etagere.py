@@ -32,12 +32,16 @@ class Etagere(Fonction):
         """Retourne une représentation sous forme de chaîne de l'étagère avec les noms des produits."""
         produits_str = ""
         for produit in self._produits:
-            produits_str += str(produit)
+            produits_str += "{"+str(produit)+"}, "
+        
+        # Enlever la dernière virgule et l'espace
+        if produits_str.endswith(", "):
+            produits_str = produits_str[:-2]
+        
         if produits_str == "":
             produits_str = "vide"
-        else:
-            produits_str += "]"
-        return f"Etagere : [Produits: {produits_str}"
+
+        return f"[Etagere : [Produits: {produits_str}, Accessibilité : {self._acces}]"
     
     # Méthode spéciale __eq__()
     def __eq__(self, other : object) -> bool:
