@@ -1,4 +1,4 @@
-from .fonction import Fonction
+from fonction import Fonction
 
 class Chemin(Fonction):
     def __init__(self):

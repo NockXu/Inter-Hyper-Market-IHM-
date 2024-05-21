@@ -1,4 +1,4 @@
-from .accessibilite import Accessibilite
+from accessibilite import Accessibilite
 
 class Fonction:
     def __init__(self, nom : str = "None"):
