@@ -1,7 +1,7 @@
-from .fonction import Fonction
-from .chemin import Chemin
-from .etagere import Etagere
-from .entree import Entree
+from fonction import Fonction
+from chemin import Chemin
+from etagere import Etagere
+from entree import Entree
 # Classe qui permet de créer des objet Point qui possède deux attributs x et y
 # Cette classe contient aussi des méthodes qui permette de simplifier son interaction avec les autres points du plan
 class Point:

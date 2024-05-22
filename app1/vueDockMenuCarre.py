@@ -27,3 +27,7 @@ class VueDockMenuCarre(QWidget):
         
     def getTailleCarre(self):
         return int(self.nb_carre_x.text()), int(self.nb_carre_y.text())
+
+    def reset(self):
+        self.nb_carre_x.clear()
+        self.nb_carre_y.clear()

@@ -34,24 +34,24 @@ class Accessibilite:
 
     # Méthode spéciale __str__()
     def __str__(self) -> str:
-        texte : str = "Accessibilité :"
+        directions = []
         
         if self._H:
-            texte += " haut"
+            directions.append("haut")
             
         if self._B:
-            texte += " bas"
+            directions.append("bas")
             
         if self._G:
-            texte += " gauche"
+            directions.append("gauche")
             
         if self._D:
-            texte += " droite"
-            
-        if texte == "Accessibilité :":
-            texte += "None"
-            
-        return texte
+            directions.append("droite")
+        
+        if not directions:
+            return "{None}"
+        
+        return "{" + ", ".join(directions) + "}"
 
     # Méthode spéciale __eq__()
     def __eq__(self, other) -> bool:

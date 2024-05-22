@@ -1,12 +1,12 @@
-from PyQt6.QtWidgets import *
-from PyQt6.QtCore import *
-from PyQt6.QtGui import *
+from PyQt6.QtWidgets import QLabel
+from PyQt6.QtCore import Qt, QPoint, QRect, QPointF
+from PyQt6.QtGui import QPixmap, QPolygon, QPolygonF, QPainter, QPen, QColor
 
 class ImageDeplacement(QLabel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._drag_active = False
+        self.deplacement_active = False
         self._offset = QPoint()
         self.setMouseTracking(True)
         self.polygon = QPolygon()
@@ -19,12 +19,12 @@ class ImageDeplacement(QLabel):
         if event.button() == Qt.MouseButton.LeftButton:
             pixmap_rect = self.getPixmapRect()
             if pixmap_rect.contains(event.position().toPoint()):
-                self._drag_active = True
+                self.deplacement_active = True
                 # L'offset est la position de la souris dans le widget au moment du clic
                 self._offset = event.position().toPoint()
 
     def mouseMoveEvent(self, event):
-        if self._drag_active:
+        if self.deplacement_active:
             # Calculer la nouvelle position en fonction de l'offset
             new_position = self.mapToParent(event.pos() - self._offset)
             self.move(new_position)
@@ -33,7 +33,7 @@ class ImageDeplacement(QLabel):
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            self._drag_active = False
+            self.deplacement_active = False
             print(f'Image déplacée à la position : {self.pos().x()}, {self.pos().y()}')
 
     def updatePolygon(self):
@@ -72,3 +72,8 @@ class ImageDeplacement(QLabel):
                 pen.setWidth(3)
                 painter.setPen(pen)
                 painter.drawPolygon(self.polygon)
+
+    def clearAll(self):
+        self.polygons = []
+        self.polygon = QPolygon()
+        self.update()

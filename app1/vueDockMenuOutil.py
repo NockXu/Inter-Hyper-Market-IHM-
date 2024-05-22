@@ -41,3 +41,10 @@ class VueDockMenuOutil(QWidget):
         
     def get_load_plan_button(self):
         return self.load_plan_button
+    
+    def reset(self):
+        self.nom_projet.clear()
+        self.nom_magasin.clear()
+        self.auteur.clear()
+        self.date.setDate(QDate.currentDate())
+        self.adresse.clear()
