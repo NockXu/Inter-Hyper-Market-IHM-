@@ -1,4 +1,7 @@
-from accessibilite import Accessibilite
+import os, sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from Classes import *
 
 class Fonction:
     def __init__(self, nom : str = "None"):

@@ -10,9 +10,9 @@ class ImageDeplacement(QLabel):
         self._offset = QPoint()
         self.setMouseTracking(True)
         self.polygon = QPolygon()
-        self.polygons = []
+        self.polygons : list[QPointF] = []
 
-    def set_polygons(self, polygons):
+    def set_polygons(self, polygons : list[QPointF]):
         self.polygons = polygons
 
     def mousePressEvent(self, event):

@@ -1,11 +1,10 @@
-from point import Point
-from fonction import Fonction
-from etagere import Etagere
-from chemin import Chemin
-from entree import Entree
-from produit import Produit
+from PyQt6.QtCore import QPointF
 import json
-import os
+import os, sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from Classes import *
+
 
 # Cette classe servirat de base à la création du plan des magasins
 class Plan :
@@ -76,6 +75,10 @@ class Plan :
     def suppPlan(self, suppression : list) -> None :
         for point in suppression:
             self.suppPoint(point)
+            
+    def lienQPlan(self, qPlan : list[QPointF]) -> None:
+        for i in range(len(qPlan)):
+            self._plan[i].setQPointF(qPlan[i])
                 
     def __str__(self) -> str:
         texte = "{\n"
