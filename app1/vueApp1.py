@@ -7,7 +7,7 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from Classes import *
+# from Classes import *
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -116,11 +116,11 @@ class MainWindow(QMainWindow):
         # Ouvre une interface pour sélectionner une image
         file_name, _ = QFileDialog.getOpenFileName(self, "Charger un plan", "", "Images (*.png *.xpm *.jpg *.jpeg *.bmp)")
         if file_name:
-            # Affiche l'image sélectionnée dans le QLabel du layout droit
             pixmap = QPixmap(file_name)
+            # Redimensionne l'image pour s'adapter à la taille du QLabel
+            pixmap = pixmap.scaled(self.plan_label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             self.plan_label.setPixmap(pixmap)
-            self.plan_label.adjustSize()
-            self.plan_label.updatePolygon()
+            self.plan_label.update_grid()
 
     def basculer_menu_outil(self):
         if self.dock1.isVisible():
@@ -144,25 +144,8 @@ class MainWindow(QMainWindow):
     def create_grid(self):
         rows = int(self.vueCarre.nb_carre_x.text())
         cols = int(self.vueCarre.nb_carre_y.text())
-        if self.plan_label.pixmap() and rows > 0 and cols > 0:
-            pixmap_rect = self.plan_label.getPixmapRect()
-            pixmap_width = pixmap_rect.width()
-            pixmap_height = pixmap_rect.height()
-            cell_width = pixmap_width / cols
-            cell_height = pixmap_height / rows
-
-            polygons = []
-            for row in range(rows):
-                for col in range(cols):
-                    top_left = QPointF(pixmap_rect.topLeft()) + QPointF(col * cell_width, row * cell_height)
-                    top_right = top_left + QPointF(cell_width, 0)
-                    bottom_right = top_left + QPointF(cell_width, cell_height)
-                    bottom_left = top_left + QPointF(0, cell_height)
-                    polygon = QPolygonF([top_left, top_right, bottom_right, bottom_left])
-                    polygons.append(polygon)
-
-            self.plan_label.set_polygons(polygons)
-            self.plan_label.update()
+        if rows > 0 and cols > 0:
+            self.plan_label.set_grid(rows, cols)
 
 #----------------------------------------------------------------------------------------
 #                           Main
