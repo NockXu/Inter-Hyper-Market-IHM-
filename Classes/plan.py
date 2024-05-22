@@ -3,8 +3,11 @@ import json
 import os, sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from Classes import *
-
+from Classes.point import Point
+from Classes.entree import Entree
+from Classes.etagere import Etagere
+from Classes.chemin import Chemin
+from Classes.produit import Produit
 
 # Cette classe servirat de base à la création du plan des magasins
 class Plan :
