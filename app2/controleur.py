@@ -4,6 +4,7 @@ from vueApplication import VueApplication
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from Classes import *
 
 class Controleur:
     def __init__(self):
