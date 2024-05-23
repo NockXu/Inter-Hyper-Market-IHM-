@@ -4,11 +4,14 @@ from vueApplication import VueApplication
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from Classes import *
+
 class Controleur:
     def __init__(self):
         self.app = QApplication(sys.argv)
         self.vue_application = VueApplication(self)
         self.connect_signals()
+        self.plan = Plan()
         self.vue_application.show()
         sys.exit(self.app.exec())
 
@@ -18,6 +21,7 @@ class Controleur:
         self.vue_application.magasin.clicked.connect(self.ouvrir_fichier)
         self.vue_application.supp.clicked.connect(self.vider_liste)
         self.vue_application.action_reset.triggered.connect(self.reset_application)
+        self.vue_application.ouvrir.triggered.connect(self.ouvrir_fichier)
         
     def changer_vue(self):
         if self.vue_application.produitVue.isVisible():
@@ -75,10 +79,11 @@ class Controleur:
                 item.widget().deleteLater()
 
     def ouvrir_fichier(self):
-        fileName, _ = QFileDialog.getOpenFileName(self.vue_application, "Ouvrir le fichier", "", "All Files (*);;Text Files (*.txt)")
+        fileName, _ = QFileDialog.getOpenFileName(self.vue_application, "Ouvrir le fichier", "", "JSON Files (*.json);;All Files (*)")
         if fileName:
             self.vider_liste()
-            self.vue_application.produitVue.charger_produits(fileName)
+            self.plan.lire_JSON(fileName)  # Lire le fichier JSON et remplir le plan
+            self.vue_application.produitVue.charger_produits(self.plan.get_plan())
             self.vue_application.produitVue.filtre1.setCurrentIndex(0)
 
     def reset_application(self):
