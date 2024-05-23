@@ -10,11 +10,11 @@ from Classes.chemin import Chemin
 from Classes.produit import Produit
 
 # Cette classe servirat de base à la création du plan des magasins
-class Plan :
-    def __init__(self, h : int = 9, l : int = 9) -> None:
+class Plan:
+    def __init__(self, h: int = 9, l: int = 9) -> None:
         # on définit un liste contenant un dictionnaire contenant toutes les coordonnées des point du plan ses voisins et sa fonction dans le magasin (None par défaut)
-        self._plan : list[Point] = []
-        self._fichier : str = "MonPlan"
+        self._plan: list[Point] = []
+        self._fichier: str = "MonPlan"
         
         # ajout des points dans la liste des points
         for x in range(h):
@@ -31,10 +31,10 @@ class Plan :
             point.set_voisins(self._plan)
     
     # Méthodes setters
-    def set_plan(self, plan : list) -> None:
+    def set_plan(self, plan: list) -> None:
         self._plan = plan
         
-    def set_fichier(self, fichier : str) -> None:
+    def set_fichier(self, fichier: str) -> None:
         self._fichier = fichier
     
     # Méthodes getters    
@@ -45,9 +45,9 @@ class Plan :
         return self._fichier
             
     # méthode qui permet d'ajouter un point dans le plan
-    def ajoutPoint(self, x : int, y : int) -> None:
+    def ajoutPoint(self, x: int, y: int) -> None:
         # on crée le point
-        nouveauPoint : Point = Point(x, y)
+        nouveauPoint: Point = Point(x, y)
         
         # on l'ajoute dans le plan
         self._plan.append(nouveauPoint)
@@ -56,7 +56,7 @@ class Plan :
         self._plan[-1].set_voisins(self._plan)
     
     # méthode qui permet d'ajouter un plan dans un autre  
-    def ajoutPlan(self, plan : list) -> None :
+    def ajoutPlan(self, plan: list) -> None:
         
         # pour chaque point dans plan
         for point in plan:
@@ -68,18 +68,18 @@ class Plan :
             self._plan[-1].set_voisins(self._plan)
     
     # méthode qui permet de supprimer un point du plan si il existe
-    def suppPoint(self, x : int, y : int) -> None :
+    def suppPoint(self, x: int, y: int) -> None:
         # Parcourir la liste de point pour supprimer le point correspondant à suppression
         for point in self._plan:
             if point.get_x() == x and point.get_y() == y:
                 self._plan.remove(point)
     
     # méthode qui permet de supprimer les point d'un plan à partir d'une liste de point        
-    def suppPlan(self, suppression : list) -> None :
+    def suppPlan(self, suppression: list) -> None:
         for point in suppression:
             self.suppPoint(point)
             
-    def lienQPlan(self, qPlan : list[QPointF]) -> None:
+    def lienQPlan(self, qPlan: list[QPointF]) -> None:
         for i in range(len(qPlan)):
             self._plan[i].setQPointF(qPlan[i])
                 
@@ -96,11 +96,11 @@ class Plan :
             return self._plan == other.get_plan() and self._fichier == other.get_fichier()
         return False
 
-    def ecrire_JSON(self, nomFichier : str) -> None:
-        data : dict = []
-        voisins : list = []
-        foction : dict = {}
-        points : list = []
+    def ecrire_JSON(self, nomFichier: str) -> None:
+        data: dict = []
+        voisins: list = []
+        fonction: dict = {}
+        points: list = []
 
         # Création/Ouverture du fichier JSON
         file = open(nomFichier, 'w')
@@ -114,29 +114,29 @@ class Plan :
                 for voisin in point.get_voisins():
                     voisins.append(
                         {
-                            "x" : voisin[0],
-                            "y" : voisin[1]
+                            "x": voisin[0],
+                            "y": voisin[1]
                         }
-                                )
+                    )
                 
-            # on fait un définision générale de sa fonction
-            fonction : dict = {
-                            "spécialitée" : point.get_fonction().getNom(),
-                            "acces" : [
-                                        point.getHaut(), 
-                                        point.getBas(), 
-                                        point.getGauche(), 
-                                        point.getDroite()
-                                        ]
-                            }
+            # on fait une définition générale de sa fonction
+            fonction: dict = {
+                "spécialitée": point.get_fonction().getNom(),
+                "acces": [
+                    point.getHaut(), 
+                    point.getBas(), 
+                    point.getGauche(), 
+                    point.getDroite()
+                ]
+            }
             # on ajoute à la fonction ses infos spécialisées
             
             if fonction["spécialitée"] == "étagère":
-                # on crée la noyuvelle clé
+                # on crée la nouvelle clé
                 fonction["produits"] = []
                 
                 # on récupere les info de l'etagere
-                etagere : Etagere = point.get_fonction()
+                etagere: Etagere = point.get_fonction()
                 
                 # pour chaque produit dans la liste de produits de l'étagère
                 for produit in etagere.get_produits():
@@ -144,28 +144,28 @@ class Plan :
                     # on ajoute le produit dans la liste de produits
                     fonction["produits"].append(
                         {
-                        "nom" : produit.get_nom(),
-                        "prix" : produit.get_prix(),
-                        "description" : produit.get_description(),
-                        "icone" : produit.get_icone(),
-                        "type" : produit.get_type()
+                            "nom": produit.get_nom(),
+                            "prix": produit.get_prix(),
+                            "description": produit.get_description(),
+                            "icone": produit.get_icone(),
+                            "type": produit.get_type()
                         }
-                                            )
+                    )
                 
             elif fonction["spécialitée"] == "entrée":
                 # on récupere les info de l'entree
-                entree : Entree = point.get_fonction()
+                entree: Entree = point.get_fonction()
                 
                 # on l'ajoute
                 fonction["nomEntree"] = entree.getNomEntree()
                 
-            # on met le tout dans un dictionnaire qui regroupe toute les infos du point
+            # on met le tout dans un dictionnaire qui regroupe toutes les infos du point
             data = {
-                        "x" : point.get_x(), 
-                        "y" : point.get_y(),
-                        "voisins" : voisins,
-                        "fonction" : fonction
-                }
+                "x": point.get_x(), 
+                "y": point.get_y(),
+                "voisins": voisins,
+                "fonction": fonction
+            }
             
             # Ajout du point à la liste des points
             points.append(data)
@@ -180,9 +180,9 @@ class Plan :
         chemin = os.path.dirname(chemin)
         
         # Aller dans le dossier Magasin
-        chemin = os.path.join(chemin,"Magasin")
+        chemin = os.path.join(chemin, "Magasin")
         
-        # Ajouter le nom du fichier
+        # Ajouter le nom du fichier au chemin
         chemin = os.path.join(chemin, nomFichier)
 
         # Écriture des données dans le fichier JSON
@@ -264,14 +264,14 @@ if __name__ == "__main__":
 
     test.ajoutPoint(3, 2)
     
-    produitTest : Produit = Produit("truc",100,"un truc","le/chemin/vers/l'icone.png", "objet")
+    produitTest: Produit = Produit("truc", 100, "un truc", "le/chemin/vers/l'icone.png", "objet")
     test.get_plan()[0].set_fonction(Etagere([produitTest]))
 
-    print("\n",test)  # Affichage après ajout du nouveau point
+    print("\n", test)  # Affichage après ajout du nouveau point
     
     test.suppPoint(3, 2)
     
-    print("\n",test)  # Affichage après suppression
+    print("\n", test)  # Affichage après suppression
     
     # création d'un fichier json
     print("\n... écriture de test en fichier json ...")
@@ -285,5 +285,5 @@ if __name__ == "__main__":
         
     test2 = Plan()
     test2.lire_JSON("test1.json")
-    print("\nlecture de test1.json sur test2:\n",test2)
+    print("\nlecture de test1.json sur test2:\n", test2)
     print("test == test2 ?", test == test2)
