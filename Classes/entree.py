@@ -1,4 +1,8 @@
-from chemin import Chemin
+import os, sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from Classes.fonction import Fonction
+from Classes.chemin import Chemin
 
 class Entree(Chemin):
     def __init__(self, nom : str = None) -> None:

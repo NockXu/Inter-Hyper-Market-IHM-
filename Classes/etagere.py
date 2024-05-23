@@ -1,5 +1,8 @@
-from produit import Produit
-from fonction import Fonction
+import os, sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from Classes.produit import Produit
+from Classes.fonction import Fonction
 
 class Etagere(Fonction):
     def __init__(self, liste_produit : list[Produit] = []) -> None:
