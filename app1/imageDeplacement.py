@@ -21,7 +21,7 @@ class ImageDeplacement(QLabel):
         self.rows = rows
         self.cols = cols
         self.update_grid() 
-        self.get_polygon()
+        self.add_polygon()
 
     def update_grid(self):
         for frame in self.findChildren(QFrame):
@@ -89,7 +89,7 @@ class ImageDeplacement(QLabel):
                     x = int(col * cell_width)
                     painter.drawLine(x, 0, x, self.height())
     
-    def get_polygon(self):
+    def add_polygon(self):
         self.getPolygonDeclanchee.emit(self.polygons)
 
     def updatePolygon(self, index, new_polygon):

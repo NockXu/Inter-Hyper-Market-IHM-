@@ -159,10 +159,10 @@ class MainWindow(QMainWindow):
     def set_plan(self, polygon : QPolygonF):
         rows = int(self.vueCarre.nb_carre_x.text())
         cols = int(self.vueCarre.nb_carre_y.text())
-        nom = self.vueOutil.nom_magasin
-        auteur = self.vueOutil.auteur
-        date = self.vueOutil.date
-        adresse = self.vueOutil.adresse
+        nom = self.vueOutil.nom_magasin.text()
+        auteur = self.vueOutil.auteur.text()
+        date = self.vueOutil.date.text()
+        adresse = self.vueOutil.adresse.text()
         self.modele = Plan(rows, cols, nom, auteur, date, adresse)
         self.modele.lienQPlan(polygon)
 
