@@ -70,13 +70,19 @@ class Controleur:
     def vider_liste(self):
         while self.vue_application.liste_layout.count() > 1:
             item = self.vue_application.liste_layout.itemAt(0)
-            if isinstance(item, QHBoxLayout):
-                self.retirer_produit_liste(item, item.itemAt(1).widget())
+            if isinstance(item.layout(), QHBoxLayout):
+                for i in reversed(range(item.layout().count())):
+                    widget = item.layout().itemAt(i).widget()
+                    if widget:
+                        widget.setParent(None)
+                self.vue_application.liste_layout.removeItem(item.layout())
+                item.layout().deleteLater()
             elif isinstance(item.widget(), QFrame):
                 item.widget().setParent(None)
             else:
                 self.vue_application.liste_layout.removeItem(item)
                 item.widget().deleteLater()
+
 
     def ouvrir_fichier(self):
         fileName, _ = QFileDialog.getOpenFileName(self.vue_application, "Ouvrir le fichier", "", "JSON Files (*.json);;All Files (*)")
@@ -89,6 +95,7 @@ class Controleur:
     def reset_application(self):
         self.vue_application.produitVue.reset_vue()
         self.vider_liste()
+
 
 if __name__ == "__main__":
     controleur = Controleur()
