@@ -87,8 +87,8 @@ class Controleur:
             self.vue_application.produitVue.filtre1.setCurrentIndex(0)
 
     def reset_application(self):
-        self.vider_liste()
         self.vue_application.produitVue.reset_vue()
+        self.vider_liste()
 
 if __name__ == "__main__":
     controleur = Controleur()

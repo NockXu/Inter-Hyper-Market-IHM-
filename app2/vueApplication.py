@@ -25,7 +25,12 @@ class VueApplication(QMainWindow):
             qss = fichier_style.read()
             self.setStyleSheet(qss)
 
-        # Layouts
+##########################################################
+#                                                        #
+#                       Layouts                          #
+#                                                        #
+##########################################################
+
         self.layout_principal = QHBoxLayout()
         centre = QWidget()
         centre.setLayout(self.layout_principal)
@@ -34,28 +39,51 @@ class VueApplication(QMainWindow):
         self.menu_selection = QVBoxLayout()
         self.layout_principal.addLayout(self.menu_selection)
 
+        # Layout de la liste des produits séléctionner
         self.liste_layout = QVBoxLayout()
 
-        # Vues
+##########################################################
+#                                                        #
+#                          Vue                           #
+#                                                        #
+##########################################################
+
         self.produitVue = VueProduit(self.controleur)
         self.planVue = VuePlan()
         self.planVue.hide()
 
-        # Barre d'outils
+
+##########################################################
+#                                                        #
+#                        Widgets                         #
+#                                                        #
+##########################################################
+             
+        # Barre d'outils qui permet d'ajouter des fonctionnalités 
+        # supplémentaires à l'application
         self.menu_bar = self.menuBar()
         fichier_menu = self.menu_bar.addMenu('Options')
 
-        self.action_save = QAction('Enregistrer', self)
-        fichier_menu.addAction(self.action_save)
 
+        # Option de choix du magasin, permet à l'utilisateur de 
+        # choisir le magasin de plusieurs manières
+        self.ouvrir = QAction('Choisir magasin', self)
+        fichier_menu.addAction(self.ouvrir)
+
+
+        # Option qui supprime toutes les modifications et remet l'application 
+        # dans l'état d'origine, comme si elle venait d'être lancée
         self.action_reset = QAction('Réinitialiser', self)
         fichier_menu.addAction(self.action_reset)
 
-        # Widgets
-        self.magasin = QPushButton("Choix magasin")
-        self.magasin.setFixedWidth(self.width() // 3)
+
+        # Bouton de choix du magasin
+        self.magasin = QPushButton("Choisir magasin")
+        self.magasin.setFixedWidth(self.width() // 3) # Redimensionne la largeur du bouton à un tiers de la taille de l'écran
         self.menu_selection.addWidget(self.magasin)
 
+
+        # Zone de scroll qui permet de se deplacer de manière vertical
         self.scroll_area = QScrollArea()
         self.scroll_area_widget = QWidget()
         self.scroll_area_widget.setLayout(self.liste_layout)
@@ -64,36 +92,64 @@ class VueApplication(QMainWindow):
         self.scroll_area.setFixedWidth(self.width() // 3)
         self.menu_selection.addWidget(self.scroll_area)
 
+
+        # Ajout d'un espace pour que les produits s'ajoute en haut de la liste 
         self.spacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         self.liste_layout.addItem(self.spacer)
 
+
+        # Bouton qui à pour effet de vider entièrement la liste des produits séléctionné
         self.supp = QPushButton("Supprimer la liste")
         self.supp.setFont(QFont("Arial", 12))
         self.menu_selection.addWidget(self.supp)
+        
+        
+        # Ligne de separation 
+        separation = QFrame()
+        separation.setFrameShape(QFrame.Shape.HLine)
+        separation.setFrameShadow(QFrame.Shadow.Sunken)
+        self.menu_selection.addWidget(separation)
 
+
+        # Bouton qui affiche la vu du plan avec le chemin le plus optimisé 
         self.ajout_plan = QPushButton("Voir le plan")
-        self.ajout_plan.setFixedHeight(self.height() // 8)
+        self.ajout_plan.setFixedHeight(self.height() // 8) # Redimensionne la largeur du bouton à un huitième de la taille de l'écran
         self.ajout_plan.setFont(QFont("Arial", 15))
         self.menu_selection.addWidget(self.ajout_plan)
         
+        
+        # Ajout des vu à l'affichage 
         self.layout_principal.addWidget(self.produitVue)
         self.layout_principal.addWidget(self.planVue)
 
+
         # Affichage
         self.setWindowTitle('Application client')
-        self.showMaximized()
+        self.showMaximized() # Affiche la fenêtre à la taille de l'ecran
+        
 
+
+##########################################################
+#                                                        #
+#                       Fonction                         #
+#                                                        #
+##########################################################
+    
+    # Fonction qui crée un layout pour y incorporer le 
+    # produit qui vient d'être ajouté à la liste
     def creer_produit_layout(self, nom_produit):
         layout = QHBoxLayout()
         label = QLabel(nom_produit)
-        button = QPushButton("X")
+        button = QPushButton("X") # Bouton pour supprimer le produit de la liste
         button.setFixedWidth(30)
         button.setFixedHeight(30)
+        
         ligne_separation = QFrame()
         ligne_separation.setFrameShape(QFrame.Shape.HLine)
         ligne_separation.setFrameShadow(QFrame.Shadow.Sunken)
         
-        button.clicked.connect(lambda: self.retirer_produit_liste(layout, ligne_separation))
+        # Signal qui appel la fonction pour supprimer le produit
+        button.clicked.connect(lambda: self.retirer_produit_liste(layout, ligne_separation)) 
         
         layout.addWidget(label)
         layout.addWidget(button)
