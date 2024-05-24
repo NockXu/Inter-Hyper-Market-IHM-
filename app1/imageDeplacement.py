@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QLabel, QFrame
-from PyQt6.QtCore import Qt, QPointF, pyqtSignal
-from PyQt6.QtGui import QPainter, QPixmap, QPolygonF, QColor, QPen
+from PyQt6.QtCore import Qt, QRectF, QPointF, pyqtSignal
+from PyQt6.QtGui import QPainter, QPixmap, QColor, QPen
 
 class ImageDeplacement(QLabel):
     def __init__(self, parent=None):
@@ -9,25 +9,25 @@ class ImageDeplacement(QLabel):
         self.deplacement_active = False
         self._offset = QPointF()
         self.setMouseTracking(True)
-        self.polygons = []
+        self.rects = []  # Liste pour stocker les rectangles
         self.rows = 0
         self.cols = 0
         self.selected_cells = set()
     
-    #signaux
-    getPolygonDeclanchee = pyqtSignal(list)
+    # Signaux
+    getRectsDeclenchee = pyqtSignal(list)
 
     def set_grid(self, rows, cols):
         self.rows = rows
         self.cols = cols
         self.update_grid() 
-        self.get_polygon()
+        self.get_rects()
 
     def update_grid(self):
         for frame in self.findChildren(QFrame):
             frame.deleteLater()
 
-        self.polygons.clear() 
+        self.rects.clear()  # Nettoyer la liste des rectangles
 
         if self.rows > 0 and self.cols > 0:
             cell_width = self.width() / self.cols
@@ -41,29 +41,21 @@ class ImageDeplacement(QLabel):
                     frame.setStyleSheet("background-color: transparent; border: 1px solid blue;")
                     frame.setObjectName(f"frame_{row}_{col}")
 
-                    # Point des polygones
-                    top_left = QPointF(col * cell_width, row * cell_height)
-                    top_right = QPointF((col + 1) * cell_width, row * cell_height)
-                    bottom_right = QPointF((col + 1) * cell_width, (row + 1) * cell_height)
-                    bottom_left = QPointF(col * cell_width, (row + 1) * cell_height)
-                    
-                    polygon = QPolygonF([top_left, top_right, bottom_right, bottom_left])
-                    
-                    # Ajout du polygon a la liste
-                    self.polygons.append(polygon)
+                    # Créer un rectangle pour chaque cellule
+                    rect = QRectF(col * cell_width, row * cell_height, cell_width, cell_height)
+
+                    # Ajouter le rectangle à la liste
+                    self.rects.append(rect)
 
             self.update()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            point = event.position()
-            for index, polygon in enumerate(self.polygons):
-                if polygon.containsPoint(point, Qt.FillRule.WindingFill):
-                    print(f"Clicked on polygon at index {index}, position: {point}")
-                    polygon_points = self.get_polygon_points(index)
-                    for i, pt in enumerate(polygon_points):
-                        print(f"Point {i}: ({pt.x()}, {pt.y()})")
-                    break
+            if self.rects:
+                painter = QPainter(self)
+                painter.setBrush(QColor(255, 192, 203))  # Rose
+                for rect in self.rects:
+                    painter.drawRect(rect)
 
     def paintEvent(self, event):
         super().paintEvent(event)
@@ -88,12 +80,12 @@ class ImageDeplacement(QLabel):
                 for col in range(self.cols + 1):
                     x = int(col * cell_width)
                     painter.drawLine(x, 0, x, self.height())
-    
-    def get_polygon(self):
-        self.getPolygonDeclanchee.emit(self.polygons)
 
-    def updatePolygon(self, index, new_polygon):
-        self.polygons[index] = new_polygon
+    def get_rects(self):
+        self.getRectsDeclenchee.emit(self.rects)
+
+    def updateRect(self, index, new_rect):
+        self.rects[index] = new_rect
         self.update()
 
     def clearAll(self):

@@ -1,13 +1,14 @@
 import sys, os
-import vueDockMenuOutil
-import vueDockMenuCarre
-import imageDeplacement
+from typing import List
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
+from Classes import Plan
+import vueDockMenuOutil
+import vueDockMenuCarre
+import imageDeplacement
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from Classes import *
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -62,7 +63,7 @@ class MainWindow(QMainWindow):
         #                           Slots controleur
         #--------------------------------------------------------------------------------
 
-        self.plan_label.getPolygonDeclanchee.connect(self.set_plan)
+        self.plan_label.getRectsDeclenchee.connect(self.set_plan)
 
         #--------------------------------------------------------------------------------
         #                           Zone de l'image déplaçable
@@ -156,21 +157,12 @@ class MainWindow(QMainWindow):
         if rows > 0 and cols > 0:
             self.plan_label.set_grid(rows, cols)
 
-    def set_plan(self, polygon : QPolygonF):
+    def set_plan(self, rects: List[QRectF]):
         rows = int(self.vueCarre.nb_carre_x.text())
         cols = int(self.vueCarre.nb_carre_y.text())
-        nom = self.vueOutil.nom_magasin
-        auteur = self.vueOutil.auteur
-        date = self.vueOutil.date
-        adresse = self.vueOutil.adresse
+        nom = self.vueOutil.nom_magasin.text()
+        auteur = self.vueOutil.auteur.text()
+        date = self.vueOutil.date.text()
+        adresse = self.vueOutil.adresse.text()
         self.modele = Plan(rows, cols, nom, auteur, date, adresse)
-        self.modele.lienQPlan(polygon)
-
-#----------------------------------------------------------------------------------------
-#                           Main
-#----------------------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    sys.exit(app.exec())
+        self.modele.lienQPlan(rects)
