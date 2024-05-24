@@ -1,5 +1,5 @@
 import os, sys
-from PyQt6.QtCore import QPointF
+from PyQt6.QtGui import QPolygonF
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Classes.fonction import Fonction
@@ -10,12 +10,12 @@ from Classes.entree import Entree
 # Classe qui permet de créer des objet Point qui possède deux attributs x et y
 # Cette classe contient aussi des méthodes qui permette de simplifier son interaction avec les autres points du plan
 class Point:
-    def __init__(self, x : int, y : int, voisins : list = None, fonction: Fonction = Chemin(), qPoint : QPointF = None) -> None :
+    def __init__(self, x : int, y : int, voisins : list = None, fonction: Fonction = Chemin(), qPolygonF : QPolygonF = None) -> None :
         self._x : int = x
         self._y : int = y
         self._voisins : list = voisins
         self._fonction : Fonction = fonction
-        self._qPoint : QPointF = qPoint
+        self._qPolygon : QPolygonF = qPolygonF
     
     # Méthodes getters
     def get_x(self) -> int:
@@ -42,8 +42,8 @@ class Point:
     def getDroite(self) -> bool:
         return self._fonction.getDroite()
 
-    def getQPointF(self) -> QPointF:
-        return self._qPoint
+    def getQPolygonF(self) -> QPolygonF:
+        return self._qPolygon
 
     # Méthodes setters
     def set_x(self, x : int) -> None :
@@ -55,8 +55,8 @@ class Point:
     def set_fonction(self, fonction : Fonction) -> None :
         self._fonction = fonction
         
-    def setQPointF(self, qPoint : QPointF) -> None:
-        self._qPoint = qPoint
+    def setQPolygonF(self, qPolygon : QPolygonF) -> None:
+        self._qPolygon = qPolygon
 
     # Méthode qui renvoie une liste de tous les voisins d'un point à partir d'une liste donnée
     def set_voisins(self, liste : list, ajoutoppose : bool = True) -> None:

@@ -1,4 +1,4 @@
-from PyQt6.QtCore import QPointF
+from PyQt6.QtGui import QPolygonF
 import json
 import os, sys
 
@@ -8,10 +8,14 @@ from Classes import *
 
 # Cette classe servirat de base à la création du plan des magasins
 class Plan :
-    def __init__(self, h : int = 9, l : int = 9) -> None:
+    def __init__(self, h : int = 9, l : int = 9, nom  : str = "MonMagasin", auteur : str = "", date : str = "17/11/2005", adresse : str = "None of your business") -> None:
         # on définit un liste contenant un dictionnaire contenant toutes les coordonnées des point du plan ses voisins et sa fonction dans le magasin (None par défaut)
         self._plan : list[Point] = []
-        self._fichier : str = "MonPlan"
+        self._fichier : str = nom + "_Info"
+        self._nom : str = nom
+        self._auteur : str = auteur
+        self._date : str = date
+        self._adresse : str = adresse
         
         # ajout des points dans la liste des points
         for x in range(h):
@@ -22,17 +26,31 @@ class Plan :
         for i in range(len(self._plan)):
             self._plan[i].set_voisins(self._plan)
             
+    # Méthodes setters
+            
     # méthode mettant à jour la totalitée des voisins pour tout les points      
     def set_voisinage(self) -> None:
         for point in self._plan:
             point.set_voisins(self._plan)
     
-    # Méthodes setters
     def set_plan(self, plan : list) -> None:
         self._plan = plan
         
     def set_fichier(self, fichier : str) -> None:
         self._fichier = fichier
+    
+    def set_nom(self, nom : str) -> None:
+        self._nom = nom
+        self._fichier = nom + "_Info"
+    
+    def set_auteur(self, auteur : str) -> None:
+        self._auteur = auteur
+    
+    def set_date(self, date : str) -> None:
+        self._date = date
+    
+    def set_adresse(self, adresse : str) -> None:
+        self._adresse = adresse
     
     # Méthodes getters    
     def get_plan(self) -> list:
@@ -40,6 +58,18 @@ class Plan :
     
     def get_fichier(self) -> str:
         return self._fichier
+    
+    def get_nom(self) -> str:
+        return self._nom
+
+    def get_auteur(self) -> str:
+        return self._auteur
+    
+    def get_date(self) -> str:
+        return self._date
+    
+    def get_adresse(self) -> str:
+        return self._adresse
             
     # méthode qui permet d'ajouter un point dans le plan
     def ajoutPoint(self, x : int, y : int) -> None:
@@ -76,9 +106,9 @@ class Plan :
         for point in suppression:
             self.suppPoint(point)
             
-    def lienQPlan(self, qPlan : list[QPointF]) -> None:
+    def lienQPlan(self, qPlan : list[QPolygonF]) -> None:
         for i in range(len(qPlan)):
-            self._plan[i].setQPointF(qPlan[i])
+            self._plan[i].setQPolygonF(qPlan[i])
                 
     def __str__(self) -> str:
         texte = "{\n"
@@ -155,13 +185,34 @@ class Plan :
                 
                 # on l'ajoute
                 fonction["nomEntree"] = entree.getNomEntree()
+            
+            co_pol = point.getQPolygonF().point()
+            polygon = {
+                    "top_left" : {
+                                    "x" : co_pol[0].x(),
+                                    "y" : co_pol[0].y()
+                                 },
+                    "top_right" :{
+                                    "x" : co_pol[1].x(),
+                                    "y" : co_pol[1].y()
+                                 },
+                    "bottom_left" :{
+                                    "x" : co_pol[2].x(),
+                                    "y" : co_pol[2].y()
+                                 },
+                    "bottom_right" :{
+                                    "x" : co_pol[3].x(),
+                                    "y" : co_pol[3].y()
+                                 }
+                }
                 
             # on met le tout dans un dictionnaire qui regroupe toute les infos du point
             data = {
                         "x" : point.get_x(), 
                         "y" : point.get_y(),
                         "voisins" : voisins,
-                        "fonction" : fonction
+                        "fonction" : fonction,
+                        "QpolygonF" : polygon
                 }
             
             # Ajout du point à la liste des points
