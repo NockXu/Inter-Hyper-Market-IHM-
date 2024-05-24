@@ -7,7 +7,7 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-# from Classes import *
+from Classes import *
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -48,6 +48,8 @@ class MainWindow(QMainWindow):
         self.action_menu_graphe = QAction('Menu Graphe', self)
         menu_affichage.addAction(self.action_menu_graphe)
 
+        self.plan_label = imageDeplacement.ImageDeplacement()
+
         #--------------------------------------------------------------------------------
         #                           Connexions des actions
         #--------------------------------------------------------------------------------
@@ -55,18 +57,26 @@ class MainWindow(QMainWindow):
         self.action_barre.triggered.connect(self.basculer_menu_outil)
         self.action_reset.triggered.connect(self.reset_all)
         self.action_menu_graphe.triggered.connect(self.basculer_menu_graphe)
+        
+        #--------------------------------------------------------------------------------
+        #                           Slots controleur
+        #--------------------------------------------------------------------------------
+
+        self.plan_label.getPolygonDeclanchee.connect(self.set_plan)
 
         #--------------------------------------------------------------------------------
         #                           Zone de l'image déplaçable
         #--------------------------------------------------------------------------------
 
         self.scroll_area = QScrollArea()
-        self.plan_label = imageDeplacement.ImageDeplacement()
+        
         self.scroll_area.setWidget(self.plan_label)
         self.scroll_area.setWidgetResizable(True)
 
         self.layout_right = QVBoxLayout()
         self.layout_right.addWidget(self.scroll_area)
+
+        self.modele = Plan()
 
         #--------------------------------------------------------------------------------
         #                           Layout principal
@@ -105,7 +115,6 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle('INTER-HYPER-MARKET')
         self.showMaximized()
-        self.polygon = QPolygon()
         self.show()
 
     #------------------------------------------------------------------------------------
@@ -146,6 +155,16 @@ class MainWindow(QMainWindow):
         cols = int(self.vueCarre.nb_carre_y.text())
         if rows > 0 and cols > 0:
             self.plan_label.set_grid(rows, cols)
+
+    def set_plan(self, polygon : QPolygonF):
+        rows = int(self.vueCarre.nb_carre_x.text())
+        cols = int(self.vueCarre.nb_carre_y.text())
+        nom = self.vueOutil.nom_magasin
+        auteur = self.vueOutil.auteur
+        date = self.vueOutil.date
+        adresse = self.vueOutil.adresse
+        self.modele = Plan(rows, cols, nom, auteur, date, adresse)
+        self.modele.lienQPlan(polygon)
 
 #----------------------------------------------------------------------------------------
 #                           Main
