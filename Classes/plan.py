@@ -188,14 +188,33 @@ class Plan :
                 
                 # on l'ajoute
                 fonction["nomEntree"] = entree.getNomEntree()
+            
+            co_pol = point.getQPolygonF().point()
+            polygon = {
+                    "top_left" : {
+                                    "x" : co_pol[0].x(),
+                                    "y" : co_pol[0].y()
+                                 },
+                    "top_right" :{
+                                    "x" : co_pol[1].x(),
+                                    "y" : co_pol[1].y()
+                                 },
+                    "bottom_left" :{
+                                    "x" : co_pol[2].x(),
+                                    "y" : co_pol[2].y()
+                                 },
+                    "bottom_right" :{
+                                    "x" : co_pol[3].x(),
+                                    "y" : co_pol[3].y()
+                                 }
+                }
                 
-            # on met le tout dans un dictionnaire qui regroupe toute les infos du point
+            # on met le tout dans un dictionnaire qui regroupe toutes les infos du point
             data = {
                         "x" : point.get_x(), 
                         "y" : point.get_y(),
                         "voisins" : voisins,
-                        "fonction" : fonction,
-                        "QpolygonF" : polygon
+                        "fonction" : fonction
                 }
             
             # Ajout du point à la liste des points
