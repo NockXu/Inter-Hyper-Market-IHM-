@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QLabel, QFrame
-from PyQt6.QtCore import Qt, QPointF
+from PyQt6.QtCore import Qt, QPointF, pyqtSignal
 from PyQt6.QtGui import QPainter, QPixmap, QPolygonF, QColor, QPen
 
 class ImageDeplacement(QLabel):
@@ -13,15 +13,21 @@ class ImageDeplacement(QLabel):
         self.rows = 0
         self.cols = 0
         self.selected_cells = set()
+    
+    #signaux
+    getPolygonDeclanchee = pyqtSignal(list)
 
     def set_grid(self, rows, cols):
         self.rows = rows
         self.cols = cols
-        self.update_grid()
+        self.update_grid() 
+        self.add_polygon()
 
     def update_grid(self):
         for frame in self.findChildren(QFrame):
             frame.deleteLater()
+
+        self.polygons.clear() 
 
         if self.rows > 0 and self.cols > 0:
             cell_width = self.width() / self.cols
@@ -35,20 +41,28 @@ class ImageDeplacement(QLabel):
                     frame.setStyleSheet("background-color: transparent; border: 1px solid blue;")
                     frame.setObjectName(f"frame_{row}_{col}")
 
-            self.update()  # Ajout de l'appel à update() pour que les changements soient appliqués
+                    # Point des polygones
+                    top_left = QPointF(col * cell_width, row * cell_height)
+                    top_right = QPointF((col + 1) * cell_width, row * cell_height)
+                    bottom_right = QPointF((col + 1) * cell_width, (row + 1) * cell_height)
+                    bottom_left = QPointF(col * cell_width, (row + 1) * cell_height)
+                    
+                    polygon = QPolygonF([top_left, top_right, bottom_right, bottom_left])
+                    
+                    # Ajout du polygon a la liste
+                    self.polygons.append(polygon)
+
+            self.update()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            for frame in self.findChildren(QFrame):
-                if frame.geometry().contains(event.position().toPoint()):
-                    frame_name = frame.objectName()
-                    row, col = map(int, frame_name.split('_')[1:])
-                    index = row * self.cols + col
-                    if index in self.selected_cells:
-                        self.selected_cells.remove(index)
-                    else:
-                        self.selected_cells.add(index)
-                    self.update()
+            point = event.position()
+            for index, polygon in enumerate(self.polygons):
+                if polygon.containsPoint(point, Qt.FillRule.WindingFill):
+                    print(f"Clicked on polygon at index {index}, position: {point}")
+                    polygon_points = self.get_polygon_points(index)
+                    for i, pt in enumerate(polygon_points):
+                        print(f"Point {i}: ({pt.x()}, {pt.y()})")
                     break
 
     def paintEvent(self, event):
@@ -74,6 +88,9 @@ class ImageDeplacement(QLabel):
                 for col in range(self.cols + 1):
                     x = int(col * cell_width)
                     painter.drawLine(x, 0, x, self.height())
+    
+    def add_polygon(self):
+        self.getPolygonDeclanchee.emit(self.polygons)
 
     def updatePolygon(self, index, new_polygon):
         self.polygons[index] = new_polygon

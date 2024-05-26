@@ -7,10 +7,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from Classes import *
 
+
 class Init(QMainWindow):
     def __init__(self):
         super().__init__()
-        
+
         # Boutons
         self.nouveau = QPushButton('Nouveau Projet')
         self.ouvrir = QPushButton('Ouvrir')
