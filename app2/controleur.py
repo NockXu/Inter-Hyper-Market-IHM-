@@ -93,8 +93,9 @@ class Controleur:
             self.vue_application.produitVue.filtre1.setCurrentIndex(0)
 
     def reset_application(self):
-        self.vue_application.produitVue.reset_vue()
+        self.vue_application.produitVue.reset_vue() # Supprime les produits afficher sur la page
         self.vider_liste()
+        self.vue_application.produitVue.reset_vue() # Supprime la totalité des produits 
 
 
 if __name__ == "__main__":
