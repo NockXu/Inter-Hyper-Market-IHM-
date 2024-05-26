@@ -11,6 +11,7 @@ class Controleur:
         self.app = QApplication(sys.argv)
         self.vue_application = VueApplication(self)
         self.connect_signals()
+        self.plan = Plan()
         self.vue_application.show()
         sys.exit(self.app.exec())
 
@@ -69,24 +70,33 @@ class Controleur:
     def vider_liste(self):
         while self.vue_application.liste_layout.count() > 1:
             item = self.vue_application.liste_layout.itemAt(0)
-            if isinstance(item, QHBoxLayout):
-                self.retirer_produit_liste(item, item.itemAt(1).widget())
+            if isinstance(item.layout(), QHBoxLayout):
+                for i in reversed(range(item.layout().count())):
+                    widget = item.layout().itemAt(i).widget()
+                    if widget:
+                        widget.setParent(None)
+                self.vue_application.liste_layout.removeItem(item.layout())
+                item.layout().deleteLater()
             elif isinstance(item.widget(), QFrame):
                 item.widget().setParent(None)
             else:
                 self.vue_application.liste_layout.removeItem(item)
                 item.widget().deleteLater()
 
+
     def ouvrir_fichier(self):
-        fileName, _ = QFileDialog.getOpenFileName(self.vue_application, "Ouvrir le fichier", "", "All Files (*);;Text Files (*.txt)")
+        fileName, _ = QFileDialog.getOpenFileName(self.vue_application, "Ouvrir le fichier", "", "JSON Files (*.json);;All Files (*)")
         if fileName:
             self.vider_liste()
-            self.vue_application.produitVue.charger_produits(fileName)
+            self.plan.lire_JSON(fileName)  # Lire le fichier JSON et remplir le plan
+            self.vue_application.produitVue.charger_produits(self.plan.get_plan())
             self.vue_application.produitVue.filtre1.setCurrentIndex(0)
 
     def reset_application(self):
+        self.vue_application.produitVue.reset_vue() # Supprime les produits afficher sur la page
         self.vider_liste()
-        self.vue_application.produitVue.reset_vue()
+        self.vue_application.produitVue.reset_vue() # Supprime la totalité des produits 
+
 
 if __name__ == "__main__":
     controleur = Controleur()
