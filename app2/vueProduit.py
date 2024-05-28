@@ -38,8 +38,7 @@ class ProduitWidget(QWidget):
 
         ajouter = QPushButton("Ajouter produit")
         ajouter.setFixedHeight(self.height() // 10)
-        ajouter.setFixedWidth(self.width() // 5)
-        ajouter.setFont(QFont("Arial", 12))
+        ajouter.setFixedWidth(self.width() // 4)
         produit_layout.addWidget(ajouter)
 
         ajouter.clicked.connect(self.ajouter_produit)

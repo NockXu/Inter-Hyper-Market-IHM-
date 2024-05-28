@@ -38,7 +38,10 @@
                 }
             ]
         },
-        "rectangle": "None"
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
     },
     {
         "x": 0,
@@ -66,7 +69,10 @@
                 true
             ]
         },
-        "rectangle": "None"
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
     },
     {
         "x": 0,
@@ -90,7 +96,10 @@
                 true
             ]
         },
-        "rectangle": "None"
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
     },
     {
         "x": 1,
@@ -118,7 +127,10 @@
                 true
             ]
         },
-        "rectangle": "None"
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
     },
     {
         "x": 1,
@@ -150,7 +162,10 @@
                 true
             ]
         },
-        "rectangle": "None"
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
     },
     {
         "x": 1,
@@ -178,7 +193,10 @@
                 true
             ]
         },
-        "rectangle": "None"
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
     },
     {
         "x": 2,
@@ -202,7 +220,10 @@
                 true
             ]
         },
-        "rectangle": "None"
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
     },
     {
         "x": 2,
@@ -230,7 +251,10 @@
                 true
             ]
         },
-        "rectangle": "None"
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
     },
     {
         "x": 2,
@@ -258,6 +282,9 @@
                 true
             ]
         },
-        "rectangle": "None"
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
     }
 ]

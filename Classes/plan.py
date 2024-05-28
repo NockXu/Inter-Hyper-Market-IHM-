@@ -1,4 +1,6 @@
-from PyQt6.QtGui import QPolygonF
+from PyQt6.QtGui import QColor
+from PyQt6.QtCore import QRectF
+
 import json
 import os, sys
 
@@ -8,6 +10,7 @@ from Classes.entree import Entree
 from Classes.etagere import Etagere
 from Classes.chemin import Chemin
 from Classes.produit import Produit
+from Classes.rayon import Rayon
 
 # Cette classe servirat de base à la création du plan des magasins
 class Plan :
@@ -109,7 +112,7 @@ class Plan :
         for point in suppression:
             self.suppPoint(point)
             
-    def lienQPlan(self, qPlan : list[QPolygonF]) -> None:
+    def lienQPlan(self, qPlan : list[QRectF]) -> None:
         for i in range(len(qPlan)):
             self._plan[i].setQRectF(qPlan[i])
                 
@@ -150,7 +153,7 @@ class Plan :
             
             # on récupere son/ses voisin(s) sous la forme d'une liste de dictionnaire de deux coordonnées
             # si il est pas vide
-            if point.get_voisins() != None:
+            if point.get_voisins() is not None:
                 for voisin in point.get_voisins():
                     voisins.append(
                         {
@@ -201,7 +204,7 @@ class Plan :
             
             # on récupère les données du rectangle
             rect = point.getQRectF()
-            if rect != None:
+            if rect is not None:
                 width = rect.width()
                 height = rect.height()
                 left = rect.left()
@@ -210,21 +213,32 @@ class Plan :
                 rectangle = {
                             "top" : top,
                             "left" : left,
-                            "height" : width,
+                            "width" : width,
                             "height" : height
                             }
             else:
                 rectangle = "None"
                 
-            # on récupere les couleurs
-            coul = point.getCouleur()
-            couleur = {
-                    "rouge" : coul.redF(),
-                    "vert" : coul.greenF(),
-                    "bleu": coul.blueF(),
-                    "alpha" : coul.alphaF()
-                }
+            # on récupere le rayon
+            ray = point.getRayon()
             
+            # si il y a un rayon
+            if ray is not None:
+                rayon = {
+                    "nom" : ray.getNom()
+                }
+                
+                # on récupere la couleur (pas besoin de vérifier car lors de la création d'un rayon on sera obligé d'en mettre une)
+                coul = ray.getCouleur()
+                
+                if coul is not None:
+                    couleur = {
+                        "rouge": coul.redF(),
+                        "vert": coul.greenF(),
+                        "bleu": coul.blueF(),
+                        "alpha": coul.alphaF()
+                    }
+                    rayon["couleur"] = couleur      
                 
             # on met le tout dans un dictionnaire qui regroupe toutes les infos du point
             data = {
@@ -233,16 +247,17 @@ class Plan :
                         "voisins" : voisins,
                         "fonction" : fonction,
                         "rectangle" : rectangle,
-                        "couleur" : couleur
+                        "rayon" : rayon
                 }
             
             # Ajout du point à la liste des points
             points.append(data)
-            data = []
+            
+            data = {}
             voisins = []
-            fonction = []
+            fonction = {}
             rectangle = {}
-            rect = None
+            rayon = {}
             
         # Récupérer le chemin du répertoire contenant votre script Python
         chemin = os.path.dirname(__file__)
@@ -294,10 +309,33 @@ class Plan :
             else:
                 x = point_data['x']
                 y = point_data['y']
+                
+                # Création du rectangle du point
+                rectangle = point_data['rectangle']
+                if rectangle != "None":
+                    left = rectangle['left']
+                    top = rectangle['right']
+                    width = rectangle['width']
+                    height = rectangle['height']
+                    rectangle = QRectF(left, top, width, height)
+                    
+                # Création du rayon du point
+                if 'rayon' in point_data:
+                    
+                    rayon = point_data['rayon']
+                    nom_rayon = rayon['nom']
+                    
+                    if 'couleur' in rayon:
+                        
+                        couleur_rayon = QColor(rayon['couleur']['rouge'],rayon['couleur']['vert'],rayon['couleur']['bleu'],rayon['couleur']['alpha'])
+                        rayon = Rayon(nom_rayon, couleur_rayon)
+                        
+                    rayon = Rayon(nom_rayon)
+                
+                # Création de la fonction du point
                 fonction_data = point_data['fonction']
                 specialite = fonction_data['spécialitée']
 
-                # Création de la fonction du point
                 if specialite == "étagère":
                     produits = [
                         Produit(
@@ -315,7 +353,7 @@ class Plan :
                     fonction = Chemin()
 
                 # Création du point sans les voisins pour l'instant
-                point = Point(x, y, fonction=fonction)
+                point = Point(x, y, fonction=fonction, qRectF=rectangle, rayon=rayon)
                 points_dict[(x, y)] = point
                 self._plan.append(point)
 

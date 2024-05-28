@@ -1,4 +1,4 @@
-# Programme donner par Monsieur Cozot et modifier pour collé à la demande de la SAE
+# Programme réaliser par Monsieur Cozot et modifier pour coller à la demande de la SAE
 # Le programme à pour but d'afficher une image venant de google
 
 
