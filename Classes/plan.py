@@ -115,6 +115,8 @@ class Plan :
                 
     def __str__(self) -> str:
         texte = "{\n"
+        texte += self._nom + ",\n" + self._fichier + ",\n" + self._auteur + ",\n" + self._adresse + ",\n" + self._date + ",\n"
+        
         for point in self._plan:
             texte += str(point) + "\n"  # Concaténer chaque point converti en chaîne à texte
         
@@ -134,6 +136,14 @@ class Plan :
 
         # Création/Ouverture du fichier JSON
         file = open(nomFichier, 'w')
+        
+        info_plan = {"info_plan" : {
+            "nom" : self._nom,
+            "auteur" : self._auteur,
+            "adresse" : self._adresse,
+            "date" : self._date
+        }}
+        points.append(info_plan)
         
         # pour chaque point du plan
         for point in self._plan:
@@ -189,32 +199,30 @@ class Plan :
                 # on l'ajoute
                 fonction["nomEntree"] = entree.getNomEntree()
             
-            co_pol = point.getQPolygonF().point()
-            polygon = {
-                    "top_left" : {
-                                    "x" : co_pol[0].x(),
-                                    "y" : co_pol[0].y()
-                                 },
-                    "top_right" :{
-                                    "x" : co_pol[1].x(),
-                                    "y" : co_pol[1].y()
-                                 },
-                    "bottom_left" :{
-                                    "x" : co_pol[2].x(),
-                                    "y" : co_pol[2].y()
-                                 },
-                    "bottom_right" :{
-                                    "x" : co_pol[3].x(),
-                                    "y" : co_pol[3].y()
-                                 }
-                }
+            # on récupère les données du rectangle
+            rect = point.getQRectF()
+            if rect != None:
+                width = rect.width()
+                height = rect.height()
+                left = rect.left()
+                top = rect.top()
+                
+                rectangle = {
+                            "top" : top,
+                            "left" : left,
+                            "height" : width,
+                            "height" : height
+                            }
+            else:
+                rectangle = "None"
                 
             # on met le tout dans un dictionnaire qui regroupe toutes les infos du point
             data = {
                         "x" : point.get_x(), 
                         "y" : point.get_y(),
                         "voisins" : voisins,
-                        "fonction" : fonction
+                        "fonction" : fonction,
+                        "rectangle" : rectangle
                 }
             
             # Ajout du point à la liste des points
@@ -222,6 +230,8 @@ class Plan :
             data = []
             voisins = []
             fonction = []
+            rectangle = {}
+            rect = None
             
         # Récupérer le chemin du répertoire contenant votre script Python
         chemin = os.path.dirname(__file__)
@@ -254,55 +264,63 @@ class Plan :
 
         # Lecture des données à partir du fichier JSON
         with open(chemin, 'r', encoding='utf-8') as file:
-            points_data = json.load(file)
-
-        # Liste pour stocker les nouveaux points
+            info = json.load(file)
+            
+        # On supprime le plan
         self._plan = []
 
         # Dictionnaire pour stocker les points créés afin de référencer les voisins correctement
         points_dict = {}
 
         # Création de tous les points sans les voisins
-        for point_data in points_data:
-            x = point_data['x']
-            y = point_data['y']
-            fonction_data = point_data['fonction']
-            specialite = fonction_data['spécialitée']
-
-            # Création de la fonction du point
-            if specialite == "étagère":
-                produits = [
-                    Produit(
-                        p['nom'],
-                        p['prix'],
-                        p['description'],
-                        p['icone'],
-                        p['type']
-                    ) for p in fonction_data['produits']
-                ]
-                fonction = Etagere(produits)
-            elif specialite == "entrée":
-                fonction = Entree(fonction_data['nomEntree'])
+        for point_data in info:
+            if 'info_plan' in point_data:
+                self.set_nom(point_data['info_plan']['nom'])
+                self._auteur = point_data['info_plan']['auteur']
+                self._adresse = point_data['info_plan']['adresse']
+                self._date = point_data['info_plan']['date']
+            
             else:
-                fonction = Chemin()
+                x = point_data['x']
+                y = point_data['y']
+                fonction_data = point_data['fonction']
+                specialite = fonction_data['spécialitée']
 
-            # Création du point sans les voisins pour l'instant
-            point = Point(x, y, fonction=fonction)
-            points_dict[(x, y)] = point
-            self._plan.append(point)
+                # Création de la fonction du point
+                if specialite == "étagère":
+                    produits = [
+                        Produit(
+                            p['nom'],
+                            p['prix'],
+                            p['description'],
+                            p['icone'],
+                            p['type']
+                        ) for p in fonction_data['produits']
+                    ]
+                    fonction = Etagere(produits)
+                elif specialite == "entrée":
+                    fonction = Entree(fonction_data['nomEntree'])
+                else:
+                    fonction = Chemin()
+
+                # Création du point sans les voisins pour l'instant
+                point = Point(x, y, fonction=fonction)
+                points_dict[(x, y)] = point
+                self._plan.append(point)
 
         # Ajout des voisins pour chaque point
-        for point_data in points_data:
-            x = point_data['x']
-            y = point_data['y']
-            point = points_dict[(x, y)]
-            voisins_data = point_data['voisins']
-            voisins = []
-            for voisin_data in voisins_data:
-                voisin = points_dict.get((voisin_data['x'], voisin_data['y']))
-                if voisin:
-                    voisins.append(voisin)
-            point.set_voisins(voisins)
+        for point_data in info:
+            if 'info_plan' not in point_data:
+                x = point_data['x']
+                y = point_data['y']
+                point = points_dict[(x, y)]
+                voisins_data = point_data['voisins']
+                voisins = []
+                for voisin_data in voisins_data:
+                    voisin = points_dict.get((voisin_data['x'], voisin_data['y']))
+                    if voisin:
+                        voisins.append(voisin)
+                point.set_voisins(voisins)
         
         
         
@@ -333,7 +351,7 @@ if __name__ == "__main__":
     else:
         print("Le fichier n'a pas été créé.")
         
-    test2 = Plan()
+    test2 = Plan(3, 3)
     test2.lire_JSON("test1.json")
     print("\nlecture de test1.json sur test2:\n", test2)
     print("test == test2 ?", test == test2)
