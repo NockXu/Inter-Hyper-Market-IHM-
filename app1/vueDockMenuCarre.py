@@ -19,6 +19,7 @@ class VueDockMenuCarre(QWidget):
         self.nb_carre_y = QLineEdit()
         self.carre_button = QPushButton('Carre')
 
+
         # Layout pour les options de carrés
         self.layout_carre = QVBoxLayout()
         self.layout_carre.addWidget(self.nb_carre_x_label)
@@ -98,6 +99,13 @@ class VueDockMenuCarre(QWidget):
     def reset(self):
         self.nb_carre_x.clear()
         self.nb_carre_y.clear()
+        self.nom_rayon.clear()
+        self.couleur_rayon.setStyleSheet('')
+        # Supprimer tous les widgets de rayons
+        while self.rayons_layout.count():
+            child = self.rayons_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
 
     def ajouter_rayon(self):
         nom = self.nom_rayon.text()
