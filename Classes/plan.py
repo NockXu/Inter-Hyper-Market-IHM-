@@ -216,13 +216,24 @@ class Plan :
             else:
                 rectangle = "None"
                 
+            # on récupere les couleurs
+            coul = point.getCouleur()
+            couleur = {
+                    "rouge" : coul.redF(),
+                    "vert" : coul.greenF(),
+                    "bleu": coul.blueF(),
+                    "alpha" : coul.alphaF()
+                }
+            
+                
             # on met le tout dans un dictionnaire qui regroupe toutes les infos du point
             data = {
                         "x" : point.get_x(), 
                         "y" : point.get_y(),
                         "voisins" : voisins,
                         "fonction" : fonction,
-                        "rectangle" : rectangle
+                        "rectangle" : rectangle,
+                        "couleur" : couleur
                 }
             
             # Ajout du point à la liste des points
