@@ -126,38 +126,7 @@ class VueApplication(QMainWindow):
         # Affichage
         self.setWindowTitle('Application client')
         self.showMaximized() # Affiche la fenêtre à la taille de l'ecran
-        
-
-
-##########################################################
-#                                                        #
-#                       Fonction                         #
-#                                                        #
-##########################################################
     
-    # Fonction qui crée un layout pour y incorporer le 
-    # produit qui vient d'être ajouté à la liste
-    def creer_produit_layout(self, nom_produit):
-        layout = QHBoxLayout()
-        label = QLabel(nom_produit)
-        button = QPushButton("X") # Bouton pour supprimer le produit de la liste
-        button.setFixedWidth(30)
-        button.setFixedHeight(30)
-        
-        ligne_separation = QFrame()
-        ligne_separation.setFrameShape(QFrame.Shape.HLine)
-        ligne_separation.setFrameShadow(QFrame.Shadow.Sunken)
-        
-        # Signal qui appel la fonction pour supprimer le produit
-        button.clicked.connect(lambda: self.retirer_produit_liste(layout, ligne_separation)) 
-        
-        layout.addWidget(label)
-        layout.addWidget(button)
-
-        if self.liste_layout.count() > 1:
-            self.liste_layout.insertWidget(self.liste_layout.count() - 1, ligne_separation)
-        
-        return layout
 
 ## Programme principal : test de la vue ---------------------------------------
 if __name__ == "__main__":

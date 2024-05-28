@@ -34,6 +34,16 @@ class Controleur:
             self.vue_application.ajout_plan.setText("Voir le plan")
     
     def ajouter_produit_liste(self, nom_produit):
+        # Vérifier si le produit est déjà dans la liste
+        for i in range(self.vue_application.liste_layout.count()):
+            item = self.vue_application.liste_layout.itemAt(i)
+            if isinstance(item, QHBoxLayout):
+                label = item.itemAt(0).widget()  # Le premier widget est le QLabel contenant le nom du produit
+                if label.text() == nom_produit:
+                    print("Le produit", nom_produit, "est déjà dans la liste.")
+                    return
+
+        # Si le produit n'est pas déjà dans la liste, l'ajouter
         layout = QHBoxLayout()
         
         label = QLabel(nom_produit)
@@ -50,12 +60,13 @@ class Controleur:
         layout.addWidget(label)
         layout.addWidget(button)
         
-        if self.vue_application.liste_layout.count() > 1:  # Si il sagit du premier produit dans la liste, on n'ajoute pas de ligne separatrice
+        if self.vue_application.liste_layout.count() > 1:  # Si il s'agit du premier produit dans la liste, on n'ajoute pas de ligne séparatrice
             self.vue_application.liste_layout.insertWidget(self.vue_application.liste_layout.count() - 1, ligne_separation)
         
         self.vue_application.liste_layout.insertLayout(self.vue_application.liste_layout.count() - 1, layout)
         
         print("produit ajouté : " + nom_produit)
+
 
     def retirer_produit_liste(self, layout, ligne_separation):
         for i in reversed(range(layout.count())):
