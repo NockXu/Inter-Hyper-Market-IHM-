@@ -45,6 +45,7 @@ class VueDockMenuCarre(QWidget):
         self.layout_form.addRow(self.couleur_entree, self.couleur_entree_label)
         self.layout_form.addRow(self.couleur_etagere, self.couleur_etagere_label)
         self.layout_form.setVerticalSpacing(20)
+        self.layout_form.setHorizontalSpacing(50)
 
         self.nom_rayon = QLineEdit()
         self.nom_rayon.setPlaceholderText('Nom')
@@ -110,15 +111,14 @@ class VueDockMenuCarre(QWidget):
             remove_button.setStyleSheet("background-color: red; color: white;")
             remove_button.clicked.connect(lambda: self.supprimer_rayon(rayon_widget))
 
-            rayon_layout.addWidget(rayon_color)
-            rayon_layout.addWidget(rayon_label)
-            rayon_layout.addWidget(remove_button)
-            rayon_layout.addStretch()
+            rayon_layout.addWidget(rayon_color, 0)
+            rayon_layout.addWidget(rayon_label, 1)
+            rayon_layout.addWidget(remove_button, 2)
             
             rayon_widget.setLayout(rayon_layout)
             self.rayons_layout.addWidget(rayon_widget)
 
-            rayon_widget.mousePressEvent = lambda event: self.colorSelected.emit(couleur)  # Émettre le signal lorsque le rayon est cliqué
+            rayon_widget.mousePressEvent = lambda event : self.colorSelected.emit(couleur)  # Émettre le signal lorsque le rayon est cliqué
 
             self.nom_rayon.clear()
             self.couleur_rayon.setStyleSheet('')
