@@ -15,6 +15,7 @@ class ImageDeplacement(QLabel):
         self.cols = 0
         self.selected_cells = set()
         self.colored_rects = set()  # Ensemble pour stocker les rectangles colorés
+        self.brush_color = QColor('black')
     
     # Signaux
     getRectsDeclenchee = pyqtSignal(list)
@@ -102,3 +103,9 @@ class ImageDeplacement(QLabel):
         self.cols = 0
         self.selected_cells = set()
         self.update_grid()
+
+    def set_brush_color(self, color):
+        """Met à jour la couleur de la brosse."""
+        
+        self.brush_color = color
+        self.update()
