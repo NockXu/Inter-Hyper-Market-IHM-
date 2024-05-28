@@ -60,8 +60,8 @@ class Point:
     def set_fonction(self, fonction : Fonction) -> None :
         self._fonction = fonction
         
-    def setQRect(self, qRectF : QRectF) -> None:
-        self._qRect = qRectF
+    def setQRectF(self, qRectF : QRectF) -> None:
+        self._qRectF = qRectF
     
     def setCouleur(self, couleur : QColor) -> None :
         self._couleur = couleur

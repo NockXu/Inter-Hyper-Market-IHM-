@@ -111,7 +111,7 @@ class Plan :
             
     def lienQPlan(self, qPlan : list[QPolygonF]) -> None:
         for i in range(len(qPlan)):
-            self._plan[i].setQPolygonF(qPlan[i])
+            self._plan[i].setQRectF(qPlan[i])
                 
     def __str__(self) -> str:
         texte = "{\n"
