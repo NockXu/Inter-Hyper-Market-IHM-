@@ -7,17 +7,18 @@ from Classes.fonction import Fonction
 from Classes.chemin import Chemin
 from Classes.etagere import Etagere
 from Classes.entree import Entree
+from Classes.rayon import Rayon
 
 # Classe qui permet de créer des objet Point qui possède deux attributs x et y
 # Cette classe contient aussi des méthodes qui permette de simplifier son interaction avec les autres points du plan
 class Point:
-    def __init__(self, x : int, y : int, voisins : list = None, fonction: Fonction = Chemin(), qRectF : QRectF = None, qColor : QColor = None) -> None :
+    def __init__(self, x : int, y : int, voisins : list = None, fonction: Fonction = Chemin(), qRectF : QRectF = None, rayon : Rayon = None) -> None :
         self._x : int = x
         self._y : int = y
         self._voisins : list = voisins
         self._fonction : Fonction = fonction
         self._qRectF : QRectF = qRectF
-        self._couleur : QColor = qColor
+        self._rayon : Rayon = Rayon()
     
     # Méthodes getters
     def get_x(self) -> int:
@@ -47,8 +48,8 @@ class Point:
     def getQRectF(self) -> QRectF:
         return self._qRectF
     
-    def getCouleur(self) -> QColor:
-        return self._couleur
+    def getRayon(self) -> Rayon:
+        return self._rayon
 
     # Méthodes setters
     def set_x(self, x : int) -> None :
@@ -62,9 +63,9 @@ class Point:
         
     def setQRectF(self, qRectF : QRectF) -> None:
         self._qRectF = qRectF
-    
-    def setCouleur(self, couleur : QColor) -> None :
-        self._couleur = couleur
+        
+    def setRayon(self, rayon : Rayon) -> None:
+        self._rayon = rayon
 
     # Méthode qui renvoie une liste de tous les voisins d'un point à partir d'une liste donnée
     def set_voisins(self, liste : list, ajoutoppose : bool = True) -> None:
