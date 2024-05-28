@@ -63,10 +63,21 @@ class VueProduit(QWidget):
         self.types_produits = set()
         self.produits = []  # Liste de tout les produits
 
-        # Layouts des filtres
+##########################################################
+#                                                        #
+#                       Layouts                          #
+#                                                        #
+##########################################################
+
         filtre_layout = QVBoxLayout(self)
         filtre_layout2 = QHBoxLayout()
         
+##########################################################
+#                                                        #
+#                        Widgets                         #
+#                                                        #
+##########################################################
+
         self.filtre_label = QLabel("Filtre")
         filtre_layout.addWidget(self.filtre_label)
 
@@ -85,6 +96,13 @@ class VueProduit(QWidget):
         filtre_layout.addWidget(self.scroll_bar)  
 
         self.filtre1.currentIndexChanged.connect(self.filtrer_produits)
+
+
+##########################################################
+#                                                        #
+#                       Fonction                         #
+#                                                        #
+##########################################################
 
     def charger_produits(self, points):
         self.produits = []  # Liste des produits du magasin
