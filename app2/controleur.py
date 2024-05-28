@@ -64,6 +64,7 @@ class Controleur:
             self.vue_application.liste_layout.insertWidget(self.vue_application.liste_layout.count() - 1, ligne_separation)
         
         self.vue_application.liste_layout.insertLayout(self.vue_application.liste_layout.count() - 1, layout)
+
         
         print("produit ajouté : " + nom_produit)
 
