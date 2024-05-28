@@ -1,9 +1,12 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit, QFormLayout, QGridLayout, QColorDialog
-from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit, QFormLayout, QGridLayout, QColorDialog, QHBoxLayout
+from PyQt6.QtCore import QSize, Qt, pyqtSignal
+from PyQt6.QtGui import QIcon, QColor
 
 class VueDockMenuCarre(QWidget):
+
+    colorSelected = pyqtSignal(QColor)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         
@@ -48,25 +51,29 @@ class VueDockMenuCarre(QWidget):
         self.couleur_rayon = QPushButton('Couleur')
         self.couleur_rayon.clicked.connect(self.open_color_dialog)
         self.ajout_rayon = QPushButton(QIcon('./images/add.svg'), 'Add', self)
+        self.ajout_rayon.clicked.connect(self.ajouter_rayon)
 
         self.layout_rayon = QGridLayout()
         self.layout_rayon.addWidget(self.nom_rayon, 0, 0, alignment=Qt.AlignmentFlag.AlignCenter)
         self.layout_rayon.addWidget(self.couleur_rayon, 0, 1, alignment=Qt.AlignmentFlag.AlignCenter)
         self.layout_rayon.addWidget(self.ajout_rayon, 0, 2, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        
+        self.rayons_layout = QVBoxLayout()
+
         self.layout_fonction = QVBoxLayout()
         self.layout_fonction.addWidget(self.bouton_fonction)
         self.layout_fonction.addLayout(self.layout_form)
-        self.layout_fonction.addStretch(1) 
+        self.layout_fonction.addStretch(1)
 
         # Layout principal
         self.layout_dock = QVBoxLayout()
         self.layout_dock.addLayout(self.layout_carre)
         self.layout_dock.addLayout(self.layout_fonction)
         self.layout_dock.addLayout(self.layout_rayon)
+        self.layout_dock.addLayout(self.rayons_layout)
 
         self.setLayout(self.layout_dock)
+        self.selected_color = QColor('white')
 
     def carre_couleur(self, color):
         """Crée un carré de couleur avec une taille fixe."""
@@ -78,7 +85,8 @@ class VueDockMenuCarre(QWidget):
     def open_color_dialog(self):
         color = QColorDialog.getColor()
         if color.isValid():
-            print(f'Couleur sélectionnée: {color.name()}')
+            self.selected_color = color
+            self.couleur_rayon.setStyleSheet(f'background-color: {color.name()};')
 
     def getTailleCarre(self):
         return int(self.nb_carre_x.text()), int(self.nb_carre_y.text())
@@ -86,3 +94,35 @@ class VueDockMenuCarre(QWidget):
     def reset(self):
         self.nb_carre_x.clear()
         self.nb_carre_y.clear()
+
+    def ajouter_rayon(self):
+        nom = self.nom_rayon.text()
+        couleur = self.selected_color
+
+        if nom:
+            rayon_widget = QWidget()
+            rayon_layout = QHBoxLayout()
+            
+            rayon_label = QLabel(nom)
+            rayon_color = self.carre_couleur(couleur.name())
+            remove_button = QPushButton('X')
+            remove_button.setFixedSize(QSize(20, 20))
+            remove_button.setStyleSheet("background-color: red; color: white;")
+            remove_button.clicked.connect(lambda: self.supprimer_rayon(rayon_widget))
+
+            rayon_layout.addWidget(rayon_color)
+            rayon_layout.addWidget(rayon_label)
+            rayon_layout.addWidget(remove_button)
+            rayon_layout.addStretch()
+            
+            rayon_widget.setLayout(rayon_layout)
+            self.rayons_layout.addWidget(rayon_widget)
+
+            rayon_widget.mousePressEvent = lambda event: self.colorSelected.emit(couleur)  # Émettre le signal lorsque le rayon est cliqué
+
+            self.nom_rayon.clear()
+            self.couleur_rayon.setStyleSheet('')
+
+    def supprimer_rayon(self, rayon_widget):
+        self.rayons_layout.removeWidget(rayon_widget)
+        rayon_widget.deleteLater()

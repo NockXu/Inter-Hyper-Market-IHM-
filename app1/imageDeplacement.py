@@ -1,6 +1,7 @@
-from PyQt6.QtWidgets import QLabel, QFrame
+from PyQt6.QtWidgets import QLabel, QFrame, QApplication, QMainWindow, QScrollArea, QVBoxLayout, QWidget, QFileDialog, QDockWidget
 from PyQt6.QtCore import Qt, QRectF, QPointF, pyqtSignal
-from PyQt6.QtGui import QPainter, QPixmap, QColor, QPen
+from PyQt6.QtGui import QPainter, QPixmap, QColor, QPen,  QAction
+import sys, os
 
 class ImageDeplacement(QLabel):
     def __init__(self, parent=None):
@@ -13,6 +14,7 @@ class ImageDeplacement(QLabel):
         self.rows = 0
         self.cols = 0
         self.selected_cells = set()
+        self.colored_rects = set()  # Ensemble pour stocker les rectangles colorés
     
     # Signaux
     getRectsDeclenchee = pyqtSignal(list)
@@ -23,11 +25,14 @@ class ImageDeplacement(QLabel):
         self.update_grid() 
         self.get_rects()
 
+    
+
     def update_grid(self):
         for frame in self.findChildren(QFrame):
             frame.deleteLater()
 
         self.rects.clear()  # Nettoyer la liste des rectangles
+        self.colored_rects.clear()  # Nettoyer la liste des rectangles colorés
 
         if self.rows > 0 and self.cols > 0:
             cell_width = self.width() / self.cols
@@ -51,35 +56,39 @@ class ImageDeplacement(QLabel):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            if self.rects:
-                painter = QPainter(self)
-                painter.setBrush(QColor(255, 192, 203))  # Rose
-                for rect in self.rects:
-                    painter.drawRect(rect)
+            for i in range(len(self.rects)):
+                if self.rects[i].contains(event.position()):
+                    if i in self.colored_rects:
+                        self.colored_rects.remove(i)
+                    else:
+                        self.colored_rects.add(i)
+                    self.update()
+                    break
 
     def paintEvent(self, event):
-        super().paintEvent(event)
-        painter = QPainter(self)
-        if self.pixmap():
-            # Dessiner l'image
-            painter.drawPixmap(self.rect(), self.pixmap())
+            super().paintEvent(event)
+            painter = QPainter(self)
+            if self.pixmap():
+                painter.drawPixmap(self.rect(), self.pixmap())
 
-            # Dessiner le quadrillage
-            if self.rows > 0 and self.cols > 0:
-                cell_width = self.width() / self.cols
-                cell_height = self.height() / self.rows
+                if self.rows > 0 and self.cols > 0:
+                    cell_width = self.width() / self.cols
+                    cell_height = self.height() / self.rows
 
-                pen = QPen(QColor('blue'))
-                pen.setWidth(1)
-                painter.setPen(pen)
+                    pen = QPen(QColor('blue'))
+                    pen.setWidth(1)
+                    painter.setPen(pen)
 
-                for row in range(self.rows + 1):
-                    y = int(row * cell_height)
-                    painter.drawLine(0, y, self.width(), y)
+                    for row in range(self.rows + 1):
+                        y = int(row * cell_height)
+                        painter.drawLine(0, y, self.width(), y)
 
-                for col in range(self.cols + 1):
-                    x = int(col * cell_width)
-                    painter.drawLine(x, 0, x, self.height())
+                    for col in range(self.cols + 1):
+                        x = int(col * cell_width)
+                        painter.drawLine(x, 0, x, self.height())
+
+                    for i in self.colored_rects:
+                        painter.fillRect(self.rects[i], self.brush_color)
 
     def get_rects(self):
         self.getRectsDeclenchee.emit(self.rects)

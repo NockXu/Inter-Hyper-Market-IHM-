@@ -109,6 +109,7 @@ class MainWindow(QMainWindow):
 
         self.vueOutil.get_load_plan_button().clicked.connect(self.load_plan)
         self.vueCarre.carre_button.clicked.connect(self.create_grid)
+        self.vueCarre.colorSelected.connect(self.update_brush_color)
 
         #--------------------------------------------------------------------------------
         #                           Paramètres d'affichage
@@ -166,3 +167,6 @@ class MainWindow(QMainWindow):
         adresse = self.vueOutil.adresse.text()
         self.modele = Plan(rows, cols, nom, auteur, date, adresse)
         self.modele.lienQPlan(rects)
+    
+    def update_brush_color(self, color):
+        self.plan_label.set_brush_color(color)
