@@ -1,7 +1,9 @@
-import sys
+import sys, os
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit, QFormLayout, QGridLayout, QColorDialog, QHBoxLayout
 from PyQt6.QtCore import QSize, Qt, pyqtSignal
 from PyQt6.QtGui import QIcon, QColor
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 class VueDockMenuCarre(QWidget):
 
@@ -51,7 +53,8 @@ class VueDockMenuCarre(QWidget):
         self.nom_rayon.setPlaceholderText('Nom')
         self.couleur_rayon = QPushButton('Couleur')
         self.couleur_rayon.clicked.connect(self.open_color_dialog)
-        self.ajout_rayon = QPushButton(QIcon('./images/add.svg'), 'Add', self)
+        
+        self.ajout_rayon = QPushButton(QIcon('./app1/images/add.svg'), 'Add', self)
         self.ajout_rayon.clicked.connect(self.ajouter_rayon)
 
         self.layout_rayon = QGridLayout()
