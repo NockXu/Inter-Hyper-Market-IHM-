@@ -1,5 +1,6 @@
 import os, sys
-from PyQt6.QtGui import QPolygonF
+from PyQt6.QtCore import QRectF
+from PyQt6.QtGui import QColor
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Classes.fonction import Fonction
@@ -10,12 +11,13 @@ from Classes.entree import Entree
 # Classe qui permet de créer des objet Point qui possède deux attributs x et y
 # Cette classe contient aussi des méthodes qui permette de simplifier son interaction avec les autres points du plan
 class Point:
-    def __init__(self, x : int, y : int, voisins : list = None, fonction: Fonction = Chemin(), qPolygonF : QPolygonF = None) -> None :
+    def __init__(self, x : int, y : int, voisins : list = None, fonction: Fonction = Chemin(), qRectF : QRectF = None, qColor : QColor = None) -> None :
         self._x : int = x
         self._y : int = y
         self._voisins : list = voisins
         self._fonction : Fonction = fonction
-        self._qPolygon : QPolygonF = qPolygonF
+        self._qRectF : QRectF = qRectF
+        self._couleur : QColor = qColor
     
     # Méthodes getters
     def get_x(self) -> int:
@@ -42,8 +44,11 @@ class Point:
     def getDroite(self) -> bool:
         return self._fonction.getDroite()
 
-    def getQPolygonF(self) -> QPolygonF:
-        return self._qPolygon
+    def getQRectF(self) -> QRectF:
+        return self._qRectF
+    
+    def getCouleur(self) -> QColor:
+        return self._couleur
 
     # Méthodes setters
     def set_x(self, x : int) -> None :
@@ -55,8 +60,11 @@ class Point:
     def set_fonction(self, fonction : Fonction) -> None :
         self._fonction = fonction
         
-    def setQPolygonF(self, qPolygon : QPolygonF) -> None:
-        self._qPolygon = qPolygon
+    def setQRect(self, qRectF : QRectF) -> None:
+        self._qRect = qRectF
+    
+    def setCouleur(self, couleur : QColor) -> None :
+        self._couleur = couleur
 
     # Méthode qui renvoie une liste de tous les voisins d'un point à partir d'une liste donnée
     def set_voisins(self, liste : list, ajoutoppose : bool = True) -> None:
