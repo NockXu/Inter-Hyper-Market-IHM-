@@ -3,22 +3,19 @@ from typing import List
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
-from Classes import Plan
 import vueDockMenuOutil
 import vueDockMenuCarre
 import imageDeplacement
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from Classes import *
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.app = QApplication(sys.argv)
-        fichier_style = open(sys.path[0] + "/qss/style.qss", 'r')
-        with fichier_style:
-            qss = fichier_style.read()
-            self.app.setStyleSheet(qss)
+
 
         #--------------------------------------------------------------------------------
         #                           Barre de menus
@@ -108,7 +105,10 @@ class MainWindow(QMainWindow):
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock2)
 
         self.vueOutil.get_load_plan_button().clicked.connect(self.load_plan)
+        
         self.vueCarre.carre_button.clicked.connect(self.create_grid)
+        self.vueCarre.rayCreated.connect(self.addRayon)
+        
         self.vueCarre.colorSelected.connect(self.update_brush_color)
 
         #--------------------------------------------------------------------------------
@@ -132,6 +132,7 @@ class MainWindow(QMainWindow):
             pixmap = pixmap.scaled(self.plan_label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             self.plan_label.setPixmap(pixmap)
             self.plan_label.update_grid()
+
 
     def basculer_menu_outil(self):
         if self.dock1.isVisible():
@@ -170,3 +171,19 @@ class MainWindow(QMainWindow):
     
     def update_brush_color(self, color):
         self.plan_label.set_brush_color(color)
+
+    def addRayon(self, text, color):
+        ray = Rayon(text, color)
+
+if __name__ == "__main__" :
+
+    app = QApplication(sys.argv)
+    fichier_style = open(sys.path[0] + "/qss/style.qss", 'r')
+    with fichier_style:
+        qss = fichier_style.read()
+        app.setStyleSheet(qss)
+
+    main = MainWindow()
+    main.show()
+    sys.exit(app.exec())
+        
