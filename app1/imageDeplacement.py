@@ -19,6 +19,7 @@ class ImageDeplacement(QLabel):
     
     # Signaux
     getRectsDeclenchee = pyqtSignal(list)
+    rectangleTrouvee = pyqtSignal(QRectF)
 
     def set_grid(self, rows, cols):
         """
@@ -97,7 +98,9 @@ class ImageDeplacement(QLabel):
                         painter.drawLine(x, 0, x, self.height())
 
                     for i in self.colored_rects:
+                        
                         painter.fillRect(self.rects[i], self.brush_color)
+                        self.rectangleTrouvee.emit(self.rects[i])
 
     def get_rects(self):
         """

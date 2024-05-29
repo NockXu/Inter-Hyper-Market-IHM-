@@ -8,6 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 class VueDockMenuCarre(QWidget):
 
     colorSelected = pyqtSignal(QColor)
+    rayCreated = pyqtSignal(str, QColor)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -129,6 +130,8 @@ class VueDockMenuCarre(QWidget):
             rayon_widget.setLayout(rayon_layout)
             self.rayons_layout.addWidget(rayon_widget)
 
+
+            self.rayCreated.emit(self.nom_rayon.text(), couleur)
             rayon_widget.mousePressEvent = lambda event : self.colorSelected.emit(couleur)  # Émettre le signal lorsque le rayon est cliqué
 
             self.nom_rayon.clear()
@@ -137,3 +140,4 @@ class VueDockMenuCarre(QWidget):
     def supprimer_rayon(self, rayon_widget):
         self.rayons_layout.removeWidget(rayon_widget)
         rayon_widget.deleteLater()
+
