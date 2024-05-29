@@ -103,7 +103,7 @@ class Point:
 
     # Méthode spéciale __str__()
     def __str__(self) -> str :
-        return f"({self._x}, {self._y}) : [voisins : {self._voisins}, fonction : {self._fonction}]"
+        return f"({self._x}, {self._y}) : [voisins : {self._voisins}, fonction : {self._fonction}, rayon : "+"{"+f" {self._rayon}"+"}]"
 
     # Méthode spéciale __eq__()
     def __eq__(self, other) -> bool :
