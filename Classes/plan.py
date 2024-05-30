@@ -11,6 +11,7 @@ from Classes.etagere import Etagere
 from Classes.chemin import Chemin
 from Classes.produit import Produit
 from Classes.rayon import Rayon
+from Classes.dijkstra import dijkstra
 
 # Cette classe servirat de base à la création du plan des magasins
 class Plan :
@@ -61,6 +62,14 @@ class Plan :
     # Méthodes getters    
     def get_plan(self) -> list:
         return self._plan
+    
+    def get_planSimple(self) -> dict:
+        dico : dict = {}
+        
+        for point in self._plan:
+            dico[point.get_coordonnee()] = point.get_voisins()
+            
+        return dico
     
     def get_fichier(self) -> str:
         return self._fichier
@@ -115,6 +124,43 @@ class Plan :
     def lienQPlan(self, qPlan : list[QRectF]) -> None:
         for i in range(len(qPlan)):
             self._plan[i].setQRectF(qPlan[i])
+            
+    def dijkstra(self, depart : Point, arrivee : Point) -> list[Point]:
+        chemin : list[tuple] = []
+        
+        # on récupère le plan sous la forme d'un dictionnaire de coordonnées et de leurs voisins
+        dico = self.get_planSimple()
+        
+        # on récupère les coordonnées du départ et de l'arrivée
+        depart = depart.get_coordonnee()
+        arrivee = arrivee.get_coordonnee()
+        
+        chemins : dict = {}
+        chemins = dijkstra(dico, depart)
+        
+        # pour chaque point dans chemins
+        for point in chemins.keys():
+            # si le point correspond à l'arriver
+            if point == arrivee:
+                # alors on définit le point de retour depuis le point en liaison avec ce point
+                # le programe vat donc faire le chemin inverse pour arriver au départ depuis l'arrivée
+                pointRetour : tuple = chemins[point][1]
+                
+                # tant que le cout du chemin est supérieur à zéro
+                while chemins[pointRetour][0] > 0:
+                    # on ajoute le point de retour au chemin finale
+                    chemin.append(pointRetour)
+                    # on prend un nouveau point de retour à partir de l'ancien
+                    pointRetour = chemins[pointRetour][1]
+
+        # inversement de la liste
+        chemin.reverse()
+        # ajout du départ et de l'arriver
+        chemin.insert(0, depart)          
+        chemin.append(arrivee)
+        
+        # on renvoie la liste de coordonner
+        return chemin
                 
     def __str__(self) -> str:
         texte = "{\n"
@@ -404,3 +450,5 @@ if __name__ == "__main__":
     test2.lire_JSON("test1.json")
     print("\nlecture de test1.json sur test2:\n", test2)
     print("test == test2 ?", test == test2)
+    
+    print("chemin : ",test2.get_plan()[0].get_coordonnee()," -> ",test2.get_plan()[5].get_coordonnee()," :", test2.dijkstra(test2.get_plan()[0], test2.get_plan()[5]))

@@ -154,14 +154,14 @@ class MainWindow(QMainWindow):
         self.vueOutil.reset()
 
     def create_grid(self):
-        rows = int(self.vueCarre.nb_carre_x.text())
-        cols = int(self.vueCarre.nb_carre_y.text())
+        rows = int(self.vueCarre.nb_carre_x.valeur)
+        cols = int(self.vueCarre.nb_carre_y.valeur)
         if rows > 0 and cols > 0:
             self.plan_label.set_grid(rows, cols)
 
     def set_plan(self, rects: List[QRectF]):
-        rows = int(self.vueCarre.nb_carre_x.text())
-        cols = int(self.vueCarre.nb_carre_y.text())
+        rows = int(self.vueCarre.nb_carre_x.valeur)
+        cols = int(self.vueCarre.nb_carre_y.valeur)
         nom = self.vueOutil.nom_magasin.text()
         auteur = self.vueOutil.auteur.text()
         date = self.vueOutil.date.text()

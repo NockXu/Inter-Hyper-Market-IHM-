@@ -1,7 +1,10 @@
 import sys, os
-from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit, QFormLayout, QGridLayout, QColorDialog, QHBoxLayout
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit, QFormLayout, QGridLayout, QColorDialog, QHBoxLayout, QFrame
 from PyQt6.QtCore import QSize, Qt, pyqtSignal
 from PyQt6.QtGui import QIcon, QColor
+from valeurAdjuster import ValeurAdjuster
+from frame import LineFrame
+from TableWidget import TableWidget
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -14,12 +17,15 @@ class VueDockMenuCarre(QWidget):
         super().__init__(parent)
         
         # Initialisation des composants de layout_carre
-        self.nb_carre_x_label = QLabel('Nombre de carre en hauteur')
-        self.nb_carre_x = QLineEdit()
-        self.nb_carre_y_label = QLabel('Nombre de carre en longueur')
-        self.nb_carre_y = QLineEdit()
-        self.carre_button = QPushButton('Carre')
+        self.nb_carre_x_label = QLabel('Nombre de carrés en hauteur')
+        self.nb_carre_x = ValeurAdjuster(50, False)
+        self.nb_carre_y_label = QLabel('Nombre de carrés en longueur')
+        self.nb_carre_y = ValeurAdjuster(50, False)
+        self.carre_button = QPushButton('Ajouter plan')
 
+        # Initialisation des lignes de séparation
+        self.carreFonc = LineFrame()
+        self.foncRay = LineFrame()
 
         # Layout pour les options de carrés
         self.layout_carre = QVBoxLayout()
@@ -28,7 +34,10 @@ class VueDockMenuCarre(QWidget):
         self.layout_carre.addWidget(self.nb_carre_y_label)
         self.layout_carre.addWidget(self.nb_carre_y)
         self.layout_carre.addWidget(self.carre_button)
-        self.layout_carre.addStretch(1)
+        self.layout_carre.addSpacing(5)
+        self.layout_carre.addWidget(self.carreFonc)
+        self.layout_carre.addSpacing(5)
+
 
         # Initialisation des composants de layout_fonction
         self.bouton_fonction = QPushButton('Activer ?')
@@ -50,33 +59,27 @@ class VueDockMenuCarre(QWidget):
         self.layout_form.addRow(self.couleur_etagere, self.couleur_etagere_label)
         self.layout_form.setVerticalSpacing(20)
         self.layout_form.setHorizontalSpacing(50)
-
-        self.nom_rayon = QLineEdit()
-        self.nom_rayon.setPlaceholderText('Nom')
-        self.couleur_rayon = QPushButton('Couleur')
-        self.couleur_rayon.clicked.connect(self.open_color_dialog)
         
-        self.ajout_rayon = QPushButton(QIcon('./app1/images/add.svg'), 'Add', self)
-        self.ajout_rayon.clicked.connect(self.ajouter_rayon)
-
-        self.layout_rayon = QGridLayout()
-        self.layout_rayon.addWidget(self.nom_rayon, 0, 0, alignment=Qt.AlignmentFlag.AlignCenter)
-        self.layout_rayon.addWidget(self.couleur_rayon, 0, 1, alignment=Qt.AlignmentFlag.AlignCenter)
-        self.layout_rayon.addWidget(self.ajout_rayon, 0, 2, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        self.rayons_layout = QVBoxLayout()
+        self.tableRayon = TableWidget()
+        
+        # connection des signaux de TableWidget
+        # self.tableRayon.nomRayonChangee.connect()
+        # self.tableRayon.couleurRayonChangee.connect()
+        self.tableRayon.rayonAjoute.connect(self.rayonAjoutee)
+        # self.tableRayon.rayonRetire.connect()
 
         self.layout_fonction = QVBoxLayout()
         self.layout_fonction.addWidget(self.bouton_fonction)
         self.layout_fonction.addLayout(self.layout_form)
-        self.layout_fonction.addStretch(1)
 
         # Layout principal
         self.layout_dock = QVBoxLayout()
         self.layout_dock.addLayout(self.layout_carre)
         self.layout_dock.addLayout(self.layout_fonction)
-        self.layout_dock.addLayout(self.layout_rayon)
-        self.layout_dock.addLayout(self.rayons_layout)
+        self.layout_dock.addSpacing(5)
+        self.layout_dock.addWidget(self.foncRay)
+        self.layout_dock.addSpacing(5)
+        self.layout_dock.addWidget(self.tableRayon)
 
         self.setLayout(self.layout_dock)
         self.selected_color = QColor('white')
@@ -95,7 +98,7 @@ class VueDockMenuCarre(QWidget):
             self.couleur_rayon.setStyleSheet(f'background-color: {color.name()};')
 
     def getTailleCarre(self):
-        return int(self.nb_carre_x.text()), int(self.nb_carre_y.text())
+        return int(self.nb_carre_x.valeur), int(self.nb_carre_y.valeur)
 
     def reset(self):
         self.nb_carre_x.clear()
@@ -108,36 +111,17 @@ class VueDockMenuCarre(QWidget):
             if child.widget():
                 child.widget().deleteLater()
 
-    def ajouter_rayon(self):
-        nom = self.nom_rayon.text()
-        couleur = self.selected_color
+    def rayonAjoutee(self, nom, couleur): 
+        self.rayCreated.emit(nom, couleur)
 
-        if nom:
-            rayon_widget = QWidget()
-            rayon_layout = QHBoxLayout()
-            
-            rayon_label = QLabel(nom)
-            rayon_color = self.carre_couleur(couleur.name())
-            remove_button = QPushButton('X')
-            remove_button.setFixedSize(QSize(20, 20))
-            remove_button.setStyleSheet("background-color: red; color: white;")
-            remove_button.clicked.connect(lambda: self.supprimer_rayon(rayon_widget))
-
-            rayon_layout.addWidget(rayon_color, 0)
-            rayon_layout.addWidget(rayon_label, 1)
-            rayon_layout.addWidget(remove_button, 2)
-            
-            rayon_widget.setLayout(rayon_layout)
-            self.rayons_layout.addWidget(rayon_widget)
-
-
-            self.rayCreated.emit(self.nom_rayon.text(), couleur)
-            rayon_widget.mousePressEvent = lambda event : self.colorSelected.emit(couleur)  # Émettre le signal lorsque le rayon est cliqué
-
-            self.nom_rayon.clear()
-            self.couleur_rayon.setStyleSheet('')
 
     def supprimer_rayon(self, rayon_widget):
         self.rayons_layout.removeWidget(rayon_widget)
         rayon_widget.deleteLater()
 
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    mainWin = VueDockMenuCarre()
+    mainWin.setWindowTitle('test')
+    mainWin.show()
+    sys.exit(app.exec())

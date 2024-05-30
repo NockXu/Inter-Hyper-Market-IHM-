@@ -27,6 +27,9 @@ class Point:
     def get_y(self) -> int:
         return self._y
     
+    def get_coordonnee(self) -> tuple:
+        return (self._x,self._y)
+    
     def get_voisins(self) -> list:
         return self._voisins
     
