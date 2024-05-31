@@ -15,6 +15,7 @@ class TableWidget(QWidget):
     nomRayonChangee = pyqtSignal(str)
     rayonRetire = pyqtSignal()
     couleurRayonChangee = pyqtSignal(QColor)
+    rayonSelectionee = pyqtSignal(QColor)
     
     def initUI(self):
         self.layout = QVBoxLayout()
@@ -50,6 +51,8 @@ class TableWidget(QWidget):
         
         self.setLayout(self.layout)
         self.setWindowTitle('Tableau avec Actions')
+        
+        self.table.cellClicked.connect(self.get_color)
 
     def add_row_from_input(self):
         name = self.name_edit.text()
@@ -107,7 +110,7 @@ class TableWidget(QWidget):
             if color.isValid():
                 color_item.setBackground(color)
         
-        self.couleurRayonChangee.emit(color_item.background().color())
+                self.couleurRayonChangee.emit(color_item.background().color())
 
     def hover_enter(self, label):
         label.setStyleSheet("background-color: green;")
@@ -123,7 +126,11 @@ class TableWidget(QWidget):
             color = self.table.item(row, 1).background().color().name()
             data.append((name, color))
         return data
-
+    
+    def get_color(self, row : int, column : int) -> QColor:
+        print(self.table.item(row, 1).background().color())
+        return self.table.item(row, 1).background().color()
+    
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     widget = TableWidget()

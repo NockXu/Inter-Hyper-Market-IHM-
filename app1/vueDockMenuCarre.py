@@ -66,6 +66,7 @@ class VueDockMenuCarre(QWidget):
         # self.tableRayon.nomRayonChangee.connect()
         # self.tableRayon.couleurRayonChangee.connect()
         self.tableRayon.rayonAjoute.connect(self.rayonAjoutee)
+        self.tableRayon.rayonSelectionee.connect(self.set_selected_color)
         # self.tableRayon.rayonRetire.connect()
 
         self.layout_fonction = QVBoxLayout()
@@ -90,13 +91,10 @@ class VueDockMenuCarre(QWidget):
         square.setFixedSize(QSize(50, 50))
         square.setStyleSheet(f'background-color: {color}; border: 5px solid black; border-radius: 10px;')
         return square
-    
-    def open_color_dialog(self):
-        color = QColorDialog.getColor()
-        if color.isValid():
-            self.selected_color = color
-            self.couleur_rayon.setStyleSheet(f'background-color: {color.name()};')
 
+    def set_selected_color(self, color = QColor) -> None:
+        self.colorSelected.emit(color)
+        
     def getTailleCarre(self):
         return int(self.nb_carre_x.valeur), int(self.nb_carre_y.valeur)
 
