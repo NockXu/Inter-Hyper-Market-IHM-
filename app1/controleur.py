@@ -7,9 +7,9 @@ from Classes import Plan
 class Controleur:
     def __init__(self):
         self.main_window = MainWindow()
-        self.model = Plan()  # Initialiser le modèle
+        self.model = Plan() 
 
-        # Connecter les signaux de la vue aux méthodes du contrôleur
+        # Connexion des signaux
         self.main_window.action_nouveau.triggered.connect(self.nouveau_projet)
         self.main_window.action_ouvrir.triggered.connect(self.ouvrir_projet)
         self.main_window.action_enregistrer.triggered.connect(self.enregistrer_projet)
@@ -47,8 +47,6 @@ class Controleur:
     def basculer_menu_graphe(self):
         # Afficher ou masquer le menu graphe
         pass
-
-    # Ajoutez d'autres méthodes au besoin
 
 
 # Programme principal : test du controleur ------------------------------------
