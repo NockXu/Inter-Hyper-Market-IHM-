@@ -32,6 +32,7 @@ class ImageDeplacement(QLabel):
             frame.deleteLater()
 
         self.rects.clear()  # Nettoyer la liste des rectangles
+        self.rect_colors.clear()  # Nettoyer le dictionnaire des couleurs
         self.colored_rects.clear()  # Nettoyer la liste des rectangles colorés
 
         if self.rows > 0 and self.cols > 0:

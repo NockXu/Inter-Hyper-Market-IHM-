@@ -85,8 +85,13 @@ class VueDockMenuCarre(QWidget):
         self.setLayout(self.layout_dock)
         self.selected_color = QColor('white')
 
+        self.bouton_fonction.clicked.connect(self.toggle_grid)
+        
+
     def carre_couleur(self, color):
-        """Crée un carré de couleur avec une taille fixe."""
+        """
+        Crée un carré de couleur avec une taille fixe.
+        """
         square = QWidget()
         square.setFixedSize(QSize(50, 50))
         square.setStyleSheet(f'background-color: {color}; border: 5px solid black; border-radius: 10px;')
@@ -96,9 +101,15 @@ class VueDockMenuCarre(QWidget):
         self.colorSelected.emit(color)
         
     def getTailleCarre(self):
+        """
+        Permet de recuperer la taille d'un carre
+        """
         return int(self.nb_carre_x.valeur), int(self.nb_carre_y.valeur)
 
     def reset(self):
+        """
+        Permet de reintialiser l'affichage
+        """
         self.nb_carre_x.clear()
         self.nb_carre_y.clear()
         self.nom_rayon.clear()
@@ -110,12 +121,26 @@ class VueDockMenuCarre(QWidget):
                 child.widget().deleteLater()
 
     def rayonAjoutee(self, nom, couleur): 
+        """
+        Permet d'ajouter un rayon, avec son nom et sa couleur
+        """
         self.rayCreated.emit(nom, couleur)
 
 
     def supprimer_rayon(self, rayon_widget):
+        """
+        Permet de supprimer un rayon
+        """
         self.rayons_layout.removeWidget(rayon_widget)
         rayon_widget.deleteLater()
+
+    def toggle_grid(self):
+        if self.bouton_fonction.text() == 'Activer ?':
+            self.bouton_fonction.setText('Desactiver?')
+        else:
+            self.bouton_fonction.setText('Activer ?')
+
+    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -123,3 +148,4 @@ if __name__ == "__main__":
     mainWin.setWindowTitle('test')
     mainWin.show()
     sys.exit(app.exec())
+
