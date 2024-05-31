@@ -11,6 +11,7 @@ class Controleur:
     def __init__(self):
         self.app = QApplication(sys.argv)
         self.vue_application = VueApplication(self)
+        self.panier = [] #Produits de la liste de course du client
         self.connect_signals()
         self.plan = Plan()
         self.vue_application.show()
@@ -28,22 +29,25 @@ class Controleur:
         if self.vue_application.produitVue.isVisible():
             self.vue_application.produitVue.hide()
             self.vue_application.ajout_plan.setText("Ajouter des produits")
-            self.vue_application.planVue.afficher_chemin()
+            self.afficher_chemin()
             self.vue_application.planVue.show()
         else:
             self.vue_application.produitVue.show()
             self.vue_application.planVue.hide()
             self.vue_application.ajout_plan.setText("Voir le plan")
+            
+            
+    def afficher_chemin(self):
+        pass
     
     def ajouter_produit_liste(self, nom_produit):
         # Vérifier si le produit est déjà dans la liste
-        for i in range(self.vue_application.liste_layout.count()):
-            item = self.vue_application.liste_layout.itemAt(i)
-            if isinstance(item, QHBoxLayout):
-                label = item.itemAt(0).widget()  # Le premier widget est le QLabel contenant le nom du produit
-                if label.text() == nom_produit:
-                    print("Le produit", nom_produit, "est déjà dans la liste.")
-                    return
+        if nom_produit in self.panier:
+            print("Le produit", nom_produit, "est déjà dans le panier.")
+            return
+
+        # Ajouter le produit au panier
+        self.panier.append(nom_produit)
 
         # Si le produit n'est pas déjà dans la liste, l'ajouter
         layout = QHBoxLayout()
@@ -73,6 +77,15 @@ class Controleur:
 
 
     def retirer_produit_liste(self, layout, ligne_separation):
+        
+        # Récuperation du nom du produit dans le label pour supprimer le produit du panier
+        label = layout.itemAt(0).widget()
+        if isinstance(label, QLabel):
+            nom_produit = label.text()
+            if nom_produit in self.panier:
+                self.panier.remove(nom_produit)
+                print("Produit retiré : " + nom_produit)
+                
         for i in reversed(range(layout.count())):
             widget = layout.itemAt(i).widget()
             if widget:
@@ -82,7 +95,7 @@ class Controleur:
         
         ligne_separation.setParent(None)
      
-    def vider_liste(self):
+    def vider_liste(self):        
         while self.vue_application.liste_layout.count() > 1:
             item = self.vue_application.liste_layout.itemAt(0)
             if isinstance(item.layout(), QHBoxLayout):
@@ -97,7 +110,8 @@ class Controleur:
             else:
                 self.vue_application.liste_layout.removeItem(item)
                 item.widget().deleteLater()
-
+        
+        self.panier.clear()
 
     def ouvrir_fichier(self):
         fileName, _ = QFileDialog.getOpenFileName(self.vue_application, "Ouvrir le fichier", "", "JSON Files (*.json);;All Files (*)")

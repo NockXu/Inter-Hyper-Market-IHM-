@@ -1,8 +1,12 @@
-import sys
+import sys, os
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QSizePolicy, QFrame
 from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton, QMainWindow, QToolBar, QComboBox, QScrollArea, QSpacerItem
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIcon, QAction, QPixmap, QGuiApplication, QFont
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from Classes import *
+
 
 class VuePlan(QWidget):
     def __init__(self):
@@ -22,8 +26,7 @@ class VuePlan(QWidget):
         self.setWindowTitle('Application client')
         self.showMaximized() 
 
-def afficher_chemin():
-    pass
+
 
 
 if __name__ == "__main__":
