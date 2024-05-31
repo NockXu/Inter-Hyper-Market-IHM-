@@ -114,7 +114,7 @@ class VueApplication(QMainWindow):
         # Bouton qui affiche la vu du plan avec le chemin le plus optimisé 
         self.ajout_plan = QPushButton("Voir le plan")
         self.ajout_plan.setFixedHeight(self.height() // 8) # Redimensionne la largeur du bouton à un huitième de la taille de l'écran
-        self.ajout_plan.setFont(QFont("Arial", 15))
+        self.ajout_plan.setFont(QFont("Arial", 30))
         self.menu_selection.addWidget(self.ajout_plan)
         
         

@@ -24,7 +24,7 @@ class WImage(QLabel):
     def query(self, image: str) -> None:
         r = requests.get("https://api.qwant.com/v3/search/images",
                          params={
-                             'count': 50,
+                             'count': 10,  # Augmenter le nombre d'images pour avoir plus d'options
                              'q': image,
                              't': 'images',
                              'safesearch': 1,
@@ -38,22 +38,28 @@ class WImage(QLabel):
                          )
 
         response = r.json().get('data').get('result').get('items')
-        urls = [r.get('media') for r in response]
+        if not response:
+            return
 
-        pixmap = QPixmap()
+        urls = [item.get('media') for item in response if item.get('media')]
 
         for url in urls:
-            response = requests.get(url)
-            pixmap.loadFromData(response.content)
+            head_response = requests.head(url)
+            content_length = head_response.headers.get('Content-Length')
 
-            if not pixmap.isNull():
-                break
+            # Prioritize smaller images by setting a threshold (e.g., 1 MB)
+            if content_length and int(content_length) < 1024 * 1024:
+                image_response = requests.get(url)
+                pixmap = QPixmap()
+                pixmap.loadFromData(image_response.content)
 
-        w = min(pixmap.width(), self.minSize)
-        h = min(pixmap.height(), self.minSize)
-        self.pixmax = pixmap.scaled(w, h, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.FastTransformation)
-        self.setPixmap(self.pixmax.scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.FastTransformation))
-        self.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+                if not pixmap.isNull():
+                    w = min(pixmap.width(), self.minSize)
+                    h = min(pixmap.height(), self.minSize)
+                    self.pixmax = pixmap.scaled(w, h, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.FastTransformation)
+                    self.setPixmap(self.pixmax.scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.FastTransformation))
+                    self.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+                    break
 
     def resizeEvent(self, event):
         pixmap = self.pixmax
