@@ -1,5 +1,6 @@
 import sys, os
 from PyQt6.QtWidgets import QApplication, QFileDialog, QHBoxLayout, QFrame, QLabel, QPushButton
+from PyQt6.QtGui import QIcon
 from vueApplication import VueApplication
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -27,6 +28,7 @@ class Controleur:
         if self.vue_application.produitVue.isVisible():
             self.vue_application.produitVue.hide()
             self.vue_application.ajout_plan.setText("Ajouter des produits")
+            self.vue_application.planVue.afficher_chemin()
             self.vue_application.planVue.show()
         else:
             self.vue_application.produitVue.show()
@@ -47,7 +49,8 @@ class Controleur:
         layout = QHBoxLayout()
         
         label = QLabel(nom_produit)
-        button = QPushButton("X")
+        button = QPushButton()
+        button.setIcon(QIcon('app2/image/poubelle.png'))
         button.setFixedWidth(30)
         button.setFixedHeight(30)
         

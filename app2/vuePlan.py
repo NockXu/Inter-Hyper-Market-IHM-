@@ -16,9 +16,15 @@ class VuePlan(QWidget):
 
         pixmap = QPixmap('app2/image/plan1.jpg').scaled(700, 700, Qt.AspectRatioMode.KeepAspectRatio)
         self.plan_label.setPixmap(pixmap)
-            
+        
+
+                    
         self.setWindowTitle('Application client')
         self.showMaximized() 
+
+def afficher_chemin():
+    pass
+
 
 if __name__ == "__main__":
     print(f' --- main --- ')
