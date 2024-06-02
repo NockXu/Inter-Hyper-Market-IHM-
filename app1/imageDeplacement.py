@@ -7,19 +7,15 @@ class ImageDeplacement(QLabel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.deplacement_active = False
-        self._offset = QPointF()
         self.setMouseTracking(True)
-        self.rects: dict = {}
+        self.rects = {}
         self.rows = 0
         self.cols = 0
-        self.selected_cells = set()
-        self.colored_rects = set()  # Ensemble pour stocker les rectangles colorés
-        self.brush_color = QColor('black')  # Couleur de base du pinceau
+        self.brush_color = QColor("white")
 
     # Signaux
     getRectsDeclenchee = pyqtSignal(list)
-    rectangleTrouvee = pyqtSignal(QRectF)
+    rectColoriee = pyqtSignal(tuple)
 
     def set_grid(self, rows, cols):
         self.rows = rows
@@ -28,12 +24,7 @@ class ImageDeplacement(QLabel):
         self.get_rects()
 
     def update_grid(self):
-        for frame in self.findChildren(QFrame):
-            frame.deleteLater()
-
-        self.rects.clear()  # Nettoyer la liste des rectangles
-        self.rect_colors.clear()  # Nettoyer le dictionnaire des couleurs
-        self.colored_rects.clear()  # Nettoyer la liste des rectangles colorés
+        self.rects.clear()
 
         if self.rows > 0 and self.cols > 0:
             cellule_width = self.width() / self.cols
@@ -41,14 +32,8 @@ class ImageDeplacement(QLabel):
 
             for row in range(self.rows):
                 for col in range(self.cols):
-                    frame = QFrame(self)
-                    frame.setGeometry(int(col * cellule_width), int(row * cellule_height), int(cellule_width), int(cellule_height))
-                    frame.setFrameShape(QFrame.Shape.Box)
-                    frame.setStyleSheet("background-color: transparent; border: 1px solid blue;")
-                    frame.setObjectName(f"frame_{row}_{col}")
-
                     rect = QRectF(col * cellule_width, row * cellule_height, cellule_width, cellule_height)
-                    self.rects[(row, col)] = {"rect" : rect, "color" : QColor("white")}
+                    self.rects[(row, col)] = {"rect": rect, "color": QColor("white")}
 
             self.update()
 
@@ -56,12 +41,10 @@ class ImageDeplacement(QLabel):
         if event.button() == Qt.MouseButton.LeftButton:
             for rect in self.rects.keys():
                 if self.rects[rect]["rect"].contains(event.position()):
-                    if self.rects[rect]["color"] != QColor("white"):
-                        self.rects[rect]["color"] = QColor("white")
-                    else:
-                        self.rects[rect]["color"] = self.brush_color
+                    self.rects[rect]["color"] = self.brush_color
                     self.update()
-                    return None
+                    self.rectColoriee.emit(rect)
+                    return
 
     def paintEvent(self, event):
         super().paintEvent(event)
@@ -69,26 +52,13 @@ class ImageDeplacement(QLabel):
         if self.pixmap():
             painter.drawPixmap(self.rect(), self.pixmap())
 
-            if self.rows > 0 and self.cols > 0:
-                cellule_width = self.width() / self.cols
-                cellule_height = self.height() / self.rows
+        pen = QPen(QColor("black"))
+        pen.setWidth(1)
+        painter.setPen(pen)
 
-                pen = QPen(QColor('black'))
-                pen.setWidth(1)
-                painter.setPen(pen)
-
-                for row in range(self.rows + 1):
-                    y = int(row * cellule_height)
-                    painter.drawLine(0, y, self.width(), y)
-
-                for col in range(self.cols + 1):
-                    x = int(col * cellule_width)
-                    painter.drawLine(x, 0, x, self.height())
-
-                for i in self.colored_rects:
-                    color = self.rect_colors.get(i, self.brush_color)  # Récupérer la couleur du rectangle
-                    painter.fillRect(self.rects[i], color)
-                    self.rectangleTrouvee.emit(self.rects[i])
+        for rect in self.rects.keys():
+            painter.fillRect(self.rects[rect]["rect"], self.rects[rect]["color"])
+            painter.drawRect(self.rects[rect]["rect"])
 
     def get_rects(self):
         self.getRectsDeclenchee.emit(self.rects)
@@ -100,19 +70,17 @@ class ImageDeplacement(QLabel):
     def clearAll(self):
         self.rows = 0
         self.cols = 0
-        self.selected_cells = set()
         self.update_grid()
+
+    def updateColor(self, rects: dict[tuple[int, int], QColor]):
+        for point in rects.keys():
+            if point in self.rects:
+                self.rects[point]["color"] = rects[point]
+        self.update()
 
     def set_brush_color(self, color):
         self.brush_color = color
         self.update()
-
-    def get_rect_color(self, rect: QRectF):
-        try:
-            index = self.rects.index(rect)
-            return self.rect_colors.get(index, None)
-        except ValueError:
-            return None
 
 # Exemple d'utilisation
 if __name__ == "__main__":

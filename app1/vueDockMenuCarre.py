@@ -10,9 +10,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 class VueDockMenuCarre(QWidget):
 
-    colorSelected = pyqtSignal(QColor)
-    rayCreated = pyqtSignal(str, QColor)
-
     def __init__(self, parent=None):
         super().__init__(parent)
         
@@ -61,13 +58,6 @@ class VueDockMenuCarre(QWidget):
         self.layout_form.setHorizontalSpacing(50)
         
         self.tableRayon = TableWidget()
-        
-        # connection des signaux de TableWidget
-        # self.tableRayon.nomRayonChangee.connect()
-        # self.tableRayon.couleurRayonChangee.connect()
-        self.tableRayon.rayonAjoute.connect(self.rayonAjoutee)
-        self.tableRayon.rayonSelectionee.connect(self.set_selected_color)
-        # self.tableRayon.rayonRetire.connect()
 
         self.layout_fonction = QVBoxLayout()
         self.layout_fonction.addWidget(self.bouton_fonction)
@@ -86,7 +76,6 @@ class VueDockMenuCarre(QWidget):
         self.selected_color = QColor('white')
 
         self.bouton_fonction.clicked.connect(self.toggle_grid)
-        
 
     def carre_couleur(self, color):
         """
@@ -96,9 +85,6 @@ class VueDockMenuCarre(QWidget):
         square.setFixedSize(QSize(50, 50))
         square.setStyleSheet(f'background-color: {color}; border: 5px solid black; border-radius: 10px;')
         return square
-
-    def set_selected_color(self, color = QColor) -> None:
-        self.colorSelected.emit(color)
         
     def getTailleCarre(self):
         """
@@ -112,34 +98,17 @@ class VueDockMenuCarre(QWidget):
         """
         self.nb_carre_x.clear()
         self.nb_carre_y.clear()
-        self.nom_rayon.clear()
-        self.couleur_rayon.setStyleSheet('')
         # Supprimer tous les widgets de rayons
         while self.rayons_layout.count():
             child = self.rayons_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
 
-    def rayonAjoutee(self, nom, couleur): 
-        """
-        Permet d'ajouter un rayon, avec son nom et sa couleur
-        """
-        self.rayCreated.emit(nom, couleur)
-
-
-    def supprimer_rayon(self, rayon_widget):
-        """
-        Permet de supprimer un rayon
-        """
-        self.rayons_layout.removeWidget(rayon_widget)
-        rayon_widget.deleteLater()
-
     def toggle_grid(self):
         if self.bouton_fonction.text() == 'Activer ?':
             self.bouton_fonction.setText('Desactiver?')
         else:
             self.bouton_fonction.setText('Activer ?')
-
     
 
 if __name__ == "__main__":

@@ -1,6 +1,4 @@
-from PyQt6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem, QLabel, QColorDialog, QLineEdit, QPushButton
-)
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem, QLabel, QColorDialog, QLineEdit, QPushButton
 from PyQt6.QtGui import QColor, QIcon, QPalette
 from PyQt6.QtCore import Qt, pyqtSignal
 import sys
@@ -8,14 +6,14 @@ import sys
 class TableWidget(QWidget):
     def __init__(self):
         super().__init__()
+        
         self.initUI()
 
     # Signaux
-    rayonAjoute = pyqtSignal(str, QColor)
     nomRayonChangee = pyqtSignal(str)
-    rayonRetire = pyqtSignal()
-    couleurRayonChangee = pyqtSignal(QColor)
-    rayonSelectionee = pyqtSignal(QColor)
+    rayonRetire = pyqtSignal(str, QColor)
+    couleurRayonChangee = pyqtSignal(str, QColor, QColor)
+    rayonSelectionee = pyqtSignal(str, QColor)
     
     def initUI(self):
         self.layout = QVBoxLayout()
@@ -52,7 +50,7 @@ class TableWidget(QWidget):
         self.setLayout(self.layout)
         self.setWindowTitle('Tableau avec Actions')
         
-        self.table.cellClicked.connect(self.get_color)
+        self.table.cellClicked.connect(self.get_rayon)
 
     def add_row_from_input(self):
         name = self.name_edit.text()
@@ -86,31 +84,34 @@ class TableWidget(QWidget):
         remove_label.leaveEvent = lambda event: self.hover_leave(remove_label)
         self.table.setCellWidget(row_position, 2, remove_label)
         
-        # Envoie du signal
-        self.rayonAjoute.emit(name, self.table.item(row_position, 1).background().color())
-
-
+        self.rayonSelectionee.emit(self.table.item(row_position, 0).text(), self.table.item(row_position, 1).background().color())
 
     def remove_row(self, row):
+        # Envoie du signal
+        self.rayonRetire.emit(self.table.item(row, 0).text(), self.table.item(row, 1).background().color())
+        
         self.table.removeRow(row)
         
         # Réaffecter les indices des lignes dans la première colonne
         for i in range(self.table.rowCount()):
             remove_label = self.table.cellWidget(i, 2)
             remove_label.mousePressEvent = lambda event, row=i: self.remove_row(row)
-        
-        self.rayonRetire.emit()
 
-
-    def change_color(self, item):
+    def change_color(self, item: QTableWidgetItem):
         column = item.column()
         if column == 1:  # Vérifier si la colonne est la colonne de couleur
             color_item = self.table.item(item.row(), column)
-            color = QColorDialog.getColor(color_item.background().color())
+            current_color = color_item.background().color()
+            color = QColorDialog.getColor(current_color)
             if color.isValid():
+                lastColor = current_color
                 color_item.setBackground(color)
-        
-                self.couleurRayonChangee.emit(color_item.background().color())
+
+                self.couleurRayonChangee.emit(
+                    self.table.item(item.row(), 0).text(), 
+                    lastColor, 
+                    color_item.background().color()
+                )
 
     def hover_enter(self, label):
         label.setStyleSheet("background-color: green;")
@@ -127,9 +128,8 @@ class TableWidget(QWidget):
             data.append((name, color))
         return data
     
-    def get_color(self, row : int, column : int) -> QColor:
-        print(self.table.item(row, 1).background().color())
-        return self.table.item(row, 1).background().color()
+    def get_rayon(self, row : int) -> QColor: 
+        self.rayonSelectionee.emit(self.table.item(row, 0).text(), self.table.item(row, 1).background().color())
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)

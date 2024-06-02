@@ -5,17 +5,18 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 import vueDockMenuOutil
 import vueDockMenuCarre
-import imageDeplacement
+from imageDeplacement import ImageDeplacement
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from Classes import *
 
 class MainWindow(QMainWindow):
+    
+    planCree = pyqtSignal(int, int, str, str, str, str, list)
+    
     def __init__(self):
         super().__init__()
-
-
 
         #--------------------------------------------------------------------------------
         #                           Barre de menus
@@ -46,7 +47,7 @@ class MainWindow(QMainWindow):
         self.action_menu_graphe = QAction('Menu Graphe', self)
         menu_affichage.addAction(self.action_menu_graphe)
 
-        self.plan_label = imageDeplacement.ImageDeplacement()
+        self.plan_label = ImageDeplacement()
 
         #--------------------------------------------------------------------------------
         #                           Connexions des actions
@@ -73,8 +74,6 @@ class MainWindow(QMainWindow):
 
         self.layout_right = QVBoxLayout()
         self.layout_right.addWidget(self.scroll_area)
-
-        self.modele = Plan()
 
         #--------------------------------------------------------------------------------
         #                           Layout principal
@@ -107,9 +106,16 @@ class MainWindow(QMainWindow):
         self.vueOutil.get_load_plan_button().clicked.connect(self.load_plan)
         
         self.vueCarre.carre_button.clicked.connect(self.create_grid)
-        self.vueCarre.rayCreated.connect(self.addRayon)
         
-        self.vueCarre.colorSelected.connect(self.update_brush_color)
+        #--------------------------------------------------------------------------------
+        #                           Paramètre menu Graphe
+        #--------------------------------------------------------------------------------
+
+        # TableWidget
+        self.nomRayon = None
+        self.couleurRayon = None
+        # signaux
+        self.vueCarre.tableRayon.rayonSelectionee.connect(self.setRayonActuelle)
 
         #--------------------------------------------------------------------------------
         #                           Paramètres d'affichage
@@ -124,15 +130,12 @@ class MainWindow(QMainWindow):
     #------------------------------------------------------------------------------------
 
     def load_plan(self):
-        # Ouvre une interface pour sélectionner une image
         file_name, _ = QFileDialog.getOpenFileName(self, "Charger un plan", "", "Images (*.png *.xpm *.jpg *.jpeg *.bmp)")
         if file_name:
             pixmap = QPixmap(file_name)
-            # Redimensionne l'image pour s'adapter à la taille du QLabel
             pixmap = pixmap.scaled(self.plan_label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             self.plan_label.setPixmap(pixmap)
             self.plan_label.update_grid()
-
 
     def basculer_menu_outil(self):
         if self.dock1.isVisible():
@@ -145,7 +148,7 @@ class MainWindow(QMainWindow):
             self.dock2.hide()
         else:
             self.dock2.show()
-
+    
     def reset_all(self):
         self.plan_label.clear()
         self.plan_label.clearAll()
@@ -166,16 +169,17 @@ class MainWindow(QMainWindow):
         auteur = self.vueOutil.auteur.text()
         date = self.vueOutil.date.text()
         adresse = self.vueOutil.adresse.text()
-        self.modele = Plan(rows, cols, nom, auteur, date, adresse)
-        self.modele.lienQPlan(rects)
+        self.planCree.emit(rows, cols, nom, auteur, date, adresse, rects)
+        
+    def setRayonActuelle(self, nom: str, couleur: QColor) -> None:
+        self.nomRayon = nom
+        self.couleurRayon = couleur
+        self.plan_label.set_brush_color(couleur)
     
-    def update_brush_color(self, color):
-        self.plan_label.set_brush_color(color)
+    def updateCouleur(self, rects: dict[tuple[int, int], QColor]) -> None:
+        self.plan_label.updateColor(rects)
 
-    def addRayon(self, text, color):
-        ray = Rayon(text, color)
-
-if __name__ == "__main__" :
+if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     fichier_style = open(sys.path[0] + "/qss/style.qss", 'r')
@@ -186,4 +190,3 @@ if __name__ == "__main__" :
     main = MainWindow()
     main.show()
     sys.exit(app.exec())
-        

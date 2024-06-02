@@ -161,6 +161,19 @@ class Plan :
         
         # on renvoie la liste de coordonner
         return chemin
+
+    def del_rayon(self, nom : str, couleur : QColor):
+        for point in self._plan:
+            if point.getRayon() == Rayon(nom, couleur):
+                point.setRayon(Rayon())
+                
+    def set_rayon(self, nom : str, couleur : QColor, new_couleur : QColor):
+        for i in range(len(self._plan)):
+            point : Point = self.get_plan()[i]
+            print(point.getRayon().getNom(), nom, point.getRayon().getCouleur() , couleur)
+            if point.getRayon().getNom() == nom and point.getRayon().getCouleur() == couleur:
+                
+                self.get_plan()[i].setRayon(Rayon(nom, new_couleur))
                 
     def __str__(self) -> str:
         texte = "{\n"
