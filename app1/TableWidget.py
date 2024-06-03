@@ -57,6 +57,15 @@ class TableWidget(QWidget):
 
     def add_row_from_input(self):
         """
+        Utilise le texte entré dans le champ QLineEdit pour ajouter un nouveau rayon.
+        """
+        nom_rayon = self.name_edit.text()
+        if nom_rayon:
+            self.add_row(nom_rayon)
+            self.name_edit.clear()
+
+    def add_row_from_dialog(self):
+        """
         Affiche une boîte de dialogue pour ajouter un nouveau rayon.
         """
         nom_rayon, ok = QInputDialog.getText(self, "Nouveau Rayon", "Nom du Rayon:")

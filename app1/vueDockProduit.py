@@ -87,7 +87,7 @@ class VueDockProduit(QWidget):
                                             "Aucun rayon trouvé. Voulez-vous créer un nouveau rayon ?", 
                                             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
             if response == QMessageBox.StandardButton.Yes:
-                self.table_widget.add_row_from_input()
+                self.table_widget.add_row_from_dialog()
         else:
             # Ajouter une option pour créer un nouveau rayon
             rayons = [self.rayon_combo_box.itemText(i) for i in range(self.rayon_combo_box.count())]
@@ -97,7 +97,7 @@ class VueDockProduit(QWidget):
                                              "Sélectionnez le rayon pour ajouter le produit :", rayons, 0, False)
             if ok:
                 if rayon == "Créer un nouveau rayon":
-                    self.table_widget.add_row_from_input()
+                    self.table_widget.add_row_from_dialog()
                 else:
                     print(f"Produit '{product}' ajouté au rayon '{rayon}'")
 
