@@ -162,6 +162,32 @@ class Plan :
         # on renvoie la liste de coordonner
         return chemin
 
+    def chemin_rapide(self, depart: Point, points_articles: list[Point]) -> list[list[Point]]:
+        chemins= []  # Liste du chemins entre deux articles
+        point_courant = depart
+        points = points_articles.copy()
+
+        while points:
+            plus_proche = None
+            distance_min = 1000000000000 # Initialisation d'une valeur très élever pour être modifier à la première iteration de la boucle
+
+            for point in points: 
+                # Appel de dijkstra pour connaitre la distance entre le point actuel et tous les autres
+                chemin_temp = self.dijkstra(point_courant, point) 
+                distance_temp = len(chemin_temp)
+                if distance_temp < distance_min:
+                    plus_proche = point
+                    distance_min = distance_temp
+                    
+            if plus_proche:
+                chemin = self.dijkstra(point_courant, plus_proche)
+                chemins.append(chemin)  # Ajouter le chemin partiel à la liste
+                point_courant = plus_proche
+                points.remove(plus_proche)
+
+        return chemins
+    
+    
     def del_rayon(self, nom : str, couleur : QColor):
         for point in self._plan:
             if point.getRayon() == Rayon(nom, couleur):
