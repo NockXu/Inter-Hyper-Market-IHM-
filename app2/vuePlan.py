@@ -11,20 +11,12 @@ from Classes import *
 class VuePlan(QWidget):
     def __init__(self):
         super().__init__()
+        
+        
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
-
-        # QLabel pour afficher l'image
-        self.plan_label = QLabel()
-        self.layout.addWidget(self.plan_label)
-
-        pixmap = QPixmap('app2/image/plan1.jpg').scaled(700, 700, Qt.AspectRatioMode.KeepAspectRatio)
-        self.plan_label.setPixmap(pixmap)
-        
-
-                    
-        self.setWindowTitle('Application client')
-        self.showMaximized() 
+        self.label = QLabel('Plan du magasin')
+        self.layout.addWidget(self.label)
 
 
 
