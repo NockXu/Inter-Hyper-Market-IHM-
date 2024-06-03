@@ -77,6 +77,7 @@ class Controleur:
                 rects[(x, y)] = couleur
             else:
                 rects[(x, y)] = QColor("white")
+                rects[(x, y)].setAlpha(0)
             couleur = None
         self.main_window.plan_label.updateColor(rects)
         
@@ -89,6 +90,7 @@ class Controleur:
         self.model.del_rayon(name, color)
         self.main_window.nomRayon = None
         self.main_window.couleurRayon = QColor("white")
+        self.main_window.couleurRayon.setAlpha(0)
         self.main_window.plan_label.set_brush_color(QColor("white"))
         self.updateRayon()
         

@@ -12,6 +12,7 @@ class ImageDeplacement(QLabel):
         self.rows = 0
         self.cols = 0
         self.brush_color = QColor("white")
+        self.brush_color.setAlpha(0)
 
     # Signaux
     getRectsDeclenchee = pyqtSignal(list)
@@ -33,7 +34,9 @@ class ImageDeplacement(QLabel):
             for row in range(self.rows):
                 for col in range(self.cols):
                     rect = QRectF(col * cellule_width, row * cellule_height, cellule_width, cellule_height)
-                    self.rects[(row, col)] = {"rect": rect, "color": QColor("white")}
+                    color = QColor("white")
+                    color.setAlpha(0)
+                    self.rects[(row, col)] = {"rect": rect, "color": color}
 
             self.update()
 
@@ -41,7 +44,12 @@ class ImageDeplacement(QLabel):
         if event.button() == Qt.MouseButton.LeftButton:
             for rect in self.rects.keys():
                 if self.rects[rect]["rect"].contains(event.position()):
-                    self.rects[rect]["color"] = self.brush_color
+                    if self.rects[rect]["color"] == self.brush_color:
+                        color = QColor("white")
+                        color.setAlpha(0)
+                        self.rects[rect]["color"] = color
+                    else:
+                        self.rects[rect]["color"] = self.brush_color
                     self.update()
                     self.rectColoriee.emit(rect)
                     return
@@ -78,7 +86,8 @@ class ImageDeplacement(QLabel):
                 self.rects[point]["color"] = rects[point]
         self.update()
 
-    def set_brush_color(self, color):
+    def set_brush_color(self, color : QColor):
+        color.setAlpha(128)
         self.brush_color = color
         self.update()
 

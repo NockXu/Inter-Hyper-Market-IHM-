@@ -61,30 +61,38 @@ class TableWidget(QWidget):
         
 
     def add_row(self, name):
-        row_position = self.table.rowCount()
-        self.table.insertRow(row_position)
+        rayonValide : bool = True
+        for row in range(self.table.rowCount()):
+            if name == self.table.item(row, 0).text():
+                rayonValide = False
+                
+        if rayonValide:
+            row_position = self.table.rowCount()
+            self.table.insertRow(row_position)
 
-        # Nom
-        name_item = QTableWidgetItem(name)
-        self.table.setItem(row_position, 0, name_item)
+            # Nom
+            name_item = QTableWidgetItem(name)
+            self.table.setItem(row_position, 0, name_item)
 
-        # Couleur
-        color_item = QTableWidgetItem()
-        color_item.setBackground(QColorDialog.getColor())
-        color_item.setFlags(color_item.flags() & ~Qt.ItemFlag.ItemIsEditable)  # Rendre la cellule non éditable
-        self.table.setItem(row_position, 1, color_item)
+            # Couleur
+            color_item = QTableWidgetItem()
+            color = QColorDialog.getColor()
+            color.setAlpha(128)
+            color_item.setBackground(color)
+            color_item.setFlags(color_item.flags() & ~Qt.ItemFlag.ItemIsEditable)  # Rendre la cellule non éditable
+            self.table.setItem(row_position, 1, color_item)
 
-        # Action - Supprimer
-        remove_icon = QIcon("app1/images/sup.svg")
-        remove_label = QLabel()
-        remove_label.setPixmap(remove_icon.pixmap(16, 16))
-        remove_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        remove_label.mousePressEvent = lambda event, row=row_position: self.remove_row(row)
-        remove_label.enterEvent = lambda event: self.hover_enter(remove_label)
-        remove_label.leaveEvent = lambda event: self.hover_leave(remove_label)
-        self.table.setCellWidget(row_position, 2, remove_label)
-        
-        self.rayonSelectionee.emit(self.table.item(row_position, 0).text(), self.table.item(row_position, 1).background().color())
+            # Action - Supprimer
+            remove_icon = QIcon("app1/images/sup.svg")
+            remove_label = QLabel()
+            remove_label.setPixmap(remove_icon.pixmap(16, 16))
+            remove_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            remove_label.mousePressEvent = lambda event, row=row_position: self.remove_row(row)
+            remove_label.enterEvent = lambda event: self.hover_enter(remove_label)
+            remove_label.leaveEvent = lambda event: self.hover_leave(remove_label)
+            self.table.setCellWidget(row_position, 2, remove_label)
+            
+            self.rayonSelectionee.emit(self.table.item(row_position, 0).text(), self.table.item(row_position, 1).background().color())
 
     def remove_row(self, row):
         # Envoie du signal
@@ -105,6 +113,7 @@ class TableWidget(QWidget):
             color = QColorDialog.getColor(current_color)
             if color.isValid():
                 lastColor = current_color
+                color.setAlpha(128)
                 color_item.setBackground(color)
 
                 self.couleurRayonChangee.emit(

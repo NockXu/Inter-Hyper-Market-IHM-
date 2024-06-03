@@ -174,6 +174,7 @@ class MainWindow(QMainWindow):
     def setRayonActuelle(self, nom: str, couleur: QColor) -> None:
         self.nomRayon = nom
         self.couleurRayon = couleur
+        self.couleurRayon.setAlpha(128)
         self.plan_label.set_brush_color(couleur)
     
     def updateCouleur(self, rects: dict[tuple[int, int], QColor]) -> None:
