@@ -102,7 +102,7 @@ class MainWindow(QMainWindow):
         self.dock2.setFixedWidth(300)
 
         self.dock3 = QDockWidget("Produits")
-        self.vueProduit = vueDockProduit.VueDockProduit(self)
+        self.vueProduit = vueDockProduit.VueDockProduit(self.vueCarre.tableRayon)
         self.dock3.setWidget(self.vueProduit)
         self.dock3.setFixedWidth(300)
 
