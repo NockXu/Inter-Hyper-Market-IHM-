@@ -5,6 +5,7 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import *
 import vueDockMenuOutil
 import vueDockMenuCarre
+import vueDockProduit
 from imageDeplacement import ImageDeplacement
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -100,8 +101,14 @@ class MainWindow(QMainWindow):
         self.dock2.setWidget(self.vueCarre)
         self.dock2.setFixedWidth(300)
 
+        self.dock3 = QDockWidget("Produits")
+        self.vueProduit = vueDockProduit.VueDockProduit(self)
+        self.dock3.setWidget(self.vueProduit)
+        self.dock3.setFixedWidth(300)
+
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock1)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock2)
+        self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock3)
 
         self.vueOutil.get_load_plan_button().clicked.connect(self.load_plan)
         

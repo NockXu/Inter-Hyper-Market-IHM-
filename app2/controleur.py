@@ -1,6 +1,7 @@
 import sys, os
 from PyQt6.QtWidgets import QApplication, QFileDialog, QHBoxLayout, QFrame, QLabel, QPushButton
 from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import pyqtSignal
 from vueApplication import VueApplication
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -8,6 +9,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Classes import *
 
 class Controleur:
+    
+    chemin_trouve = pyqtSignal(list)
+    
     def __init__(self):
         self.app = QApplication(sys.argv)
         self.vue_application = VueApplication(self)
@@ -29,7 +33,7 @@ class Controleur:
         if self.vue_application.produitVue.isVisible():
             self.vue_application.produitVue.hide()
             self.vue_application.ajout_plan.setText("Ajouter des produits")
-            self.afficher_chemin()
+            self.trouver_chemin()
             self.vue_application.planVue.show()
         else:
             self.vue_application.produitVue.show()
@@ -37,19 +41,56 @@ class Controleur:
             self.vue_application.ajout_plan.setText("Voir le plan")
             
             
-    def afficher_chemin(self):
-        pass
+    def trouver_chemin(self):
+        depart = (1, 1)
+        points = self.plan.get_plan()
+
+        
+        depart_point = None
+        for point in points:
+            if point.get_coordonnee() == depart:
+                depart_point = point
+                break
+        if not depart_point:
+            print(f"Le point {depart} n'est pas dans le plan")
+            return
+
+        chemins_panier = []
+        point_article = []
+        for nom_produit in self.panier:
+            print(f"Recherche du produit {nom_produit}...")
+            arrivee_point = None
+            for point in points:
+                if isinstance(point.get_fonction(), Etagere):
+                    etagere = point.get_fonction()
+                    if any(produit.get_nom() == nom_produit for produit in etagere.get_produits()):
+                        arrivee_point = point
+                        break
+            
+            if arrivee_point and  arrivee_point not in point_article:
+                print(f"Produit {nom_produit} trouvé à {arrivee_point.get_coordonnee()}. Calcul du chemin...")
+                chemin = self.plan.dijkstra(depart_point, arrivee_point)
+                print(f"Chemin trouvé: {chemin}")
+                chemins_panier.append(chemin)
+                depart_point = arrivee_point
+                point_article.append(arrivee_point)
+            elif arrivee_point in point_article:
+                print(f"Chemin du produit {nom_produit} est déjà trouvé.")
+            else:
+                print(f"Produit {nom_produit} non trouvé dans le plan")
+        
+        print("Chemins trouvés :", chemins_panier)
+        self.chemin_trouve.emit(chemins_panier)
+
+
+
     
     def ajouter_produit_liste(self, nom_produit):
-        # Vérifier si le produit est déjà dans la liste
         if nom_produit in self.panier:
             print("Le produit", nom_produit, "est déjà dans le panier.")
             return
 
-        # Ajouter le produit au panier
         self.panier.append(nom_produit)
-
-        # Si le produit n'est pas déjà dans la liste, l'ajouter
         layout = QHBoxLayout()
         
         label = QLabel(nom_produit)
@@ -71,9 +112,9 @@ class Controleur:
             self.vue_application.liste_layout.insertWidget(self.vue_application.liste_layout.count() - 1, ligne_separation)
         
         self.vue_application.liste_layout.insertLayout(self.vue_application.liste_layout.count() - 1, layout)
-
         
         print("produit ajouté : " + nom_produit)
+
 
 
     def retirer_produit_liste(self, layout, ligne_separation):
@@ -117,7 +158,7 @@ class Controleur:
         fileName, _ = QFileDialog.getOpenFileName(self.vue_application, "Ouvrir le fichier", "", "JSON Files (*.json);;All Files (*)")
         if fileName:
             self.vider_liste()
-            self.plan.lire_JSON(fileName)  # Lire le fichier JSON et remplir le plan
+            self.plan.lire_JSON(fileName)
             self.vue_application.produitVue.charger_produits(self.plan.get_plan())
             self.vue_application.produitVue.filtre1.setCurrentIndex(0)
 

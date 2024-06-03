@@ -1,0 +1,446 @@
+Légumes;Ail
+Légumes;Artichaut
+Légumes;Asperges
+Légumes;Aubergine
+Légumes;Avocat
+Légumes;Betterave
+Légumes;Blette
+Légumes;Brocolis
+Légumes;Carotte
+Légumes;Céleri
+Légumes;Champignons
+Légumes;Champignons chinois
+Légumes;Chou
+Légumes;Chou de Bruxelles
+Légumes;Choucroute
+Légumes;Chou-fleur
+Légumes;Chou-rouge
+Légumes;Ciboulette
+Légumes;Citrouille
+Légumes;Coeur de palmier
+Légumes;Concombre
+Légumes;Courge
+Légumes;Courgette
+Légumes;Cresson
+Légumes;Échalote
+Légumes;Endive
+Légumes;Épinards
+Légumes;Fenouil
+Légumes;Flageolets
+Légumes;Germe de soja
+Légumes;Gingembre
+Légumes;Haricot
+Légumes;Lentilles
+Légumes;Macédoine
+Légumes;Mâche
+Légumes;Maïs
+Légumes;Menthe
+Légumes;Navet
+Légumes;Oignons
+Légumes;Palmier (coeur)
+Légumes;Persil
+Légumes;Petits pois
+Légumes;Poireau
+Légumes;Pois gourmand
+Légumes;Pois mangetout
+Légumes;Poivron
+Légumes;Pomme de terre
+Légumes;Potimarron
+Légumes;Pousses de bambou
+Légumes;Radis
+Légumes;Radis noir
+Légumes;Salade laitue
+Légumes;Salade composée
+Légumes;Salsifis
+Légumes;Tomate
+Légumes;Topinambour
+
+Poissons;Bigorneaux
+Poissons;Cabillaud
+Poissons;Colin
+Poissons;Coques
+Poissons;Coquille St-Jacques
+Poissons;Crabe
+Poissons;Crevettes
+Poissons;Écrevisses
+Poissons;Encornet
+Poissons;Gambas
+Poissons;Hareng fumé
+Poissons;Homard
+Poissons;Huîtres
+Poissons;Langoustine
+Poissons;Maquereaux
+Poissons;Moules
+Poissons;Poissons eau douce
+Poissons;Poissons mer
+Poissons;Poissons panés
+Poissons;Poulpe
+Poissons;Sardines
+Poissons;Saumon
+Poissons;Saumon fumé
+Poissons;Soupe de poissons
+Poissons;Surimi
+
+Viandes;Agneau
+Viandes;Aiguillette de boeuf
+Viandes;Aiguillette de poulet
+Viandes;Andouille
+Viandes;Andouillette
+Viandes;Bacon
+Viandes;Bavette (boeuf)
+Viandes;Bifteck de boeuf
+Viandes;Boeuf (entrecôte)
+Viandes;Burgers
+Viandes;Caille
+Viandes;Canard
+Viandes;Cervelas
+Viandes;Chair à saucisse
+Viandes;Chipolatas
+Viandes;Chorizo
+Viandes;Cordon bleu
+Viandes;Côte de boeuf
+Viandes;Côtelettes d'agneau
+Viandes;Côtes de porc
+Viandes;Côtes de veau
+Viandes;Croc's jambon
+Viandes;Cuisses poulet rôti
+Viandes;Dinde
+Viandes;Échine de porc
+Viandes;Escalope de veau
+Viandes;Faux-filet (boeuf)
+Viandes;Filet de poulet
+Viandes;Filet mignon
+Viandes;Foie
+Viandes;Foie de volaille
+Viandes;Foie gras
+Viandes;Gésiers de canard
+Viandes;Grenouille (cuisses)
+Viandes;Hamburger
+Viandes;Hot-dog
+Viandes;Jambon cru
+Viandes;Jambon cuit
+Viandes;Jambon de volaille
+Viandes;Jambon fumé
+Viandes;Jambonneau
+Viandes;Jarret
+Viandes;Langue
+Viandes;Lapin
+Viandes;Lard
+Viandes;Lard fumé
+Viandes;Lardons
+Viandes;Magret de canard
+Viandes;Merguez
+Viandes;Mortadelle
+Viandes;Mousse de foie
+Viandes;Mouton
+Viandes;Museau de porc
+Viandes;Nuggets
+Viandes;Pâté de campagne
+Viandes;Pâté de foie
+Viandes;Pâté de tête
+Viandes;Paupiettes de veau
+Viandes;Petit salé
+Viandes;Pigeon
+Viandes;Pintade
+Viandes;Poitrine de porc
+Viandes;Poulet
+Viandes;Rillettes
+Viandes;Rosbeef
+Viandes;Rôti de porc
+Viandes;Rôti de veau
+Viandes;Rôti fumé
+Viandes;Rumsteck
+Viandes;Salami
+Viandes;Saucisse de Toulouse
+Viandes;Saucisses
+Viandes;Saucisson à l'ail
+Viandes;Saucisson sec
+Viandes;Steak haché
+Viandes;Tripes
+Viandes;Veau
+Viandes;Viande des grisons
+Viandes;Wings poulet
+
+Épicerie;Blé dur
+Épicerie;Bouillon cube
+Épicerie;Boulgour
+Épicerie;Cannelle
+Épicerie;Chapelure
+Épicerie;Coriandre
+Épicerie;Cornichons
+Épicerie;Croûton
+Épicerie;Curry
+Épicerie;Farine
+Épicerie;Graine de sésame
+Épicerie;Graine de tournesol
+Épicerie;Haricots
+Épicerie;Herbes de Provence
+Épicerie;Huile
+Épicerie;Huile d'olive
+Épicerie;Ketchup
+Épicerie;Lentilles
+Épicerie;Levure
+Épicerie;Maïzena
+Épicerie;Mayonnaise
+Épicerie;Millet
+Épicerie;Moutarde
+Épicerie;Olives
+Épicerie;Orge
+Épicerie;Origan
+Épicerie;Oyster sauce
+Épicerie;Paprika
+Épicerie;Pâtes
+Épicerie;Pâtes chinoise
+Épicerie;Pois cassés
+Épicerie;Pois chiches
+Épicerie;Poivre
+Épicerie;Polenta
+Épicerie;Purée
+Épicerie;Quinoa
+Épicerie;Riz
+Épicerie;Sarrasin
+Épicerie;Sauce de soja
+Épicerie;Sauce nuoc mam
+Épicerie;Sauces fondue
+Épicerie;Sel
+Épicerie;Semoule
+Épicerie;Tapioca
+Épicerie;Vinaigre
+
+Épicerie sucrée;Abricots secs
+Épicerie sucrée;Amandes
+Épicerie sucrée;Beurre de cacahuète
+Épicerie sucrée;Cassonade
+Épicerie sucrée;Citron confits
+Épicerie sucrée;Dattes
+Épicerie sucrée;Figues sèches
+Épicerie sucrée;Gingembre confit
+Épicerie sucrée;Noisettes
+Épicerie sucrée;Noix coco râpée
+Épicerie sucrée;Noix de cajou
+Épicerie sucrée;Orange confite
+Épicerie sucrée;Pignons
+Épicerie sucrée;Pruneaux
+Épicerie sucrée;Raisins secs
+Épicerie sucrée;Sucre vanillé
+
+Petit déjeuner;Barres chocolatées
+Petit déjeuner;Biscottes
+Petit déjeuner;Biscuite
+Petit déjeuner;Brioche
+Petit déjeuner;Cacao
+Petit déjeuner;Café en grains
+Petit déjeuner;Café moulu
+Petit déjeuner;Café soluble
+Petit déjeuner;Céréales
+Petit déjeuner;Chicorée
+Petit déjeuner;Confiture
+Petit déjeuner;Crêpes
+Petit déjeuner;Croissants
+Petit déjeuner;Dosettes de café
+Petit déjeuner;Gaufres
+Petit déjeuner;Madeleines
+Petit déjeuner;Muffins
+Petit déjeuner;Miel
+Petit déjeuner;Pain au chocolat
+Petit déjeuner;Pain d'épice
+Petit déjeuner;Pancakes
+Petit déjeuner;Pâte à tartiner
+Petit déjeuner;Quatre quart
+Petit déjeuner;Thé
+Petit déjeuner;Tisane
+
+Fruits;Abricots
+Fruits;Ananas
+Fruits;Bananes
+Fruits;Brugnon
+Fruits;Cassis
+Fruits;Cerises
+Fruits;Citrons
+Fruits;Clémentine
+Fruits;Figue
+Fruits;Fraises
+Fruits;Framboise
+Fruits;Fruit de la passion
+Fruits;Grenade
+Fruits;Groseille
+Fruits;Kaki
+Fruits;Kiwis
+Fruits;Litchi
+Fruits;Mandarines
+Fruits;Mangue
+Fruits;Melons
+Fruits;Mirabelle
+Fruits;Mûre
+Fruits;Myrtille
+Fruits;Nectarine
+Fruits;Oranges
+Fruits;Pamplemousses
+Fruits;Pastèque
+Fruits;Pêches
+Fruits;Poires
+Fruits;Pommes
+Fruits;Prunes
+Fruits;Raisin
+Fruits;Rhubarbe
+
+Rayon frais;Croque monsieur
+Rayon frais;Crudités
+Rayon frais;Feuilles de brick
+Rayon frais;Foie gras
+Rayon frais;Galettes
+Rayon frais;Pâtes à tarte
+Rayon frais;Pâtes fraîches
+Rayon frais;Piémontaise
+Rayon frais;Pizzas
+Rayon frais;Quenelles
+Rayon frais;Quiches
+Rayon frais;Ravioles
+Rayon frais;Taboulé
+
+Crèmerie;Beurre
+Crèmerie;Boisson lactée
+Crèmerie;Crème dessert
+Crèmerie;Crème fraîche
+Crèmerie;Feta
+Crèmerie;Fromage blanc
+Crèmerie;Fromages
+Crèmerie;Lait
+Crèmerie;Margarine
+Crèmerie;Mascarpone
+Crèmerie;Mozzarella
+Crèmerie;Œufs
+Crèmerie;Petit suisse
+Crèmerie;Petits pots bébé
+Crèmerie;Riz au lait
+Crèmerie;Yaourts
+
+Conserves;Anchois
+Conserves;Bolognaise
+Conserves;Compote
+Conserves;Flageolets
+Conserves;Fruits au sirop
+Conserves;Gaspacho
+Conserves;Haricots vert
+Conserves;Maïs
+Conserves;Pâté
+Conserves;Petits pois
+Conserves;Sardine
+Conserves;Sauce tomate
+Conserves;Soupes
+Conserves;Thon
+
+Apéritifs;Biscuits salés
+Apéritifs;Blinis mini
+Apéritifs;Bretzel
+Apéritifs;Cacahuètes
+Apéritifs;Chips
+Apéritifs;Fruits secs
+Apéritifs;Guacamole
+Apéritifs;Mini-feuilletés
+Apéritifs;Œufs de poisson
+Apéritifs;Olives
+Apéritifs;Pistaches
+Apéritifs;Tarama
+Apéritifs;Tuiles salées
+Apéritifs;Tzatziki
+
+Boissons;Alcools fort
+Boissons;Bière
+Boissons;Eau gazeuse
+Boissons;Eau minérale
+Boissons;Jus de fruits
+Boissons;Sirop
+Boissons;Soda
+Boissons;Vin
+
+Articles Maison;Allume barbecue
+Articles Maison;Allumettes
+Articles Maison;Anticalcaire
+Articles Maison;Assouplissant
+Articles Maison;Bougies
+Articles Maison;Cirage
+Articles Maison;Cure dents
+Articles Maison;Désodorisant
+Articles Maison;Détachant
+Articles Maison;Eau de javel
+Articles Maison;Éponges
+Articles Maison;Essuie lunette
+Articles Maison;Essuie tout
+Articles Maison;Film plastique
+Articles Maison;Filtre à café
+Articles Maison;Gants de ménage
+Articles Maison;Insecticide
+Articles Maison;Lessive
+Articles Maison;Mouchoirs
+Articles Maison;Nettoyant Four
+Articles Maison;Nettoyant SDB
+Articles Maison;Nettoyant WC
+Articles Maison;Papier alu
+Articles Maison;Papier sulfurisé
+Articles Maison;Piles
+Articles Maison;Produit sol
+Articles Maison;Produit vaisselle
+Articles Maison;Produit vitre
+Articles Maison;Produits dégraissant
+Articles Maison;Sachets glaçon
+Articles Maison;Sacs aspirateur
+Articles Maison;Sacs congélation
+Articles Maison;Sacs poubelles
+Articles Maison;Savon
+Articles Maison;Sel machine
+Articles Maison;Serviettes papier
+
+Hygiène;Après rasage
+Hygiène;Brosse à dents
+Hygiène;Cire épilation
+Hygiène;Coton à démaquiller
+Hygiène;Coton tiges
+Hygiène;Couches bébé
+Hygiène;Crème main
+Hygiène;Démaquillant
+Hygiène;Dentifrice
+Hygiène;Déodorant
+Hygiène;Fil dentaire
+Hygiène;Gel douche
+Hygiène;Gel spray
+Hygiène;Gel tube
+Hygiène;Mousse à raser
+Hygiène;Ouate
+Hygiène;Pansements
+Hygiène;Papier toilette
+Hygiène;Produit lentilles
+Hygiène;Protection intime
+Hygiène;Rasoirs
+Hygiène;Savon main
+Hygiène;Shampooing
+
+Bureau;Bloc note
+Bureau;Calculatrice
+Bureau;Chemises carton
+Bureau;Ciseau à papier
+Bureau;Colle
+Bureau;Crayons à papier
+Bureau;Crayons de couleur
+Bureau;Encre Imprimante
+Bureau;Enveloppes
+Bureau;Étiquettes
+Bureau;Ficelle
+Bureau;Gomme
+Bureau;Papier à lettre
+Bureau;Papier cadeau
+Bureau;Papier imprimante
+Bureau;Scotch
+Bureau;Souris de correction
+Bureau;Stylo bille
+Bureau;Surligneur
+Bureau;Taille-crayon
+Bureau;Timbres
+Bureau;Trombones
+
+Animaux;Boites
+Animaux;Croquettes
+Animaux;Foins
+Animaux;Graines
+Animaux;Litière
+Animaux;Pâtées
