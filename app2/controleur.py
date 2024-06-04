@@ -42,23 +42,18 @@ class Controleur:
             
             
     def trouver_chemin(self):
-        depart = (1, 1)
+        depart = (1, 1)  # Départ du point (1, 1)
         points = self.plan.get_plan()
 
-        
+        # Trouver le point de départ
         depart_point = None
         for point in points:
             if point.get_coordonnee() == depart:
                 depart_point = point
                 break
-        if not depart_point:
-            print(f"Le point {depart} n'est pas dans le plan")
-            return
-
-        chemins_panier = []
         point_article = []
+
         for nom_produit in self.panier:
-            print(f"Recherche du produit {nom_produit}...")
             arrivee_point = None
             for point in points:
                 if isinstance(point.get_fonction(), Etagere):
@@ -67,21 +62,12 @@ class Controleur:
                         arrivee_point = point
                         break
             
-            if arrivee_point and  arrivee_point not in point_article:
-                print(f"Produit {nom_produit} trouvé à {arrivee_point.get_coordonnee()}. Calcul du chemin...")
-                chemin = self.plan.dijkstra(depart_point, arrivee_point)
-                print(f"Chemin trouvé: {chemin}")
-                chemins_panier.append(chemin)
-                depart_point = arrivee_point
+            if arrivee_point and arrivee_point not in point_article:
                 point_article.append(arrivee_point)
-            elif arrivee_point in point_article:
-                print(f"Chemin du produit {nom_produit} est déjà trouvé.")
-            else:
-                print(f"Produit {nom_produit} non trouvé dans le plan")
         
-        print("Chemins trouvés :", chemins_panier)
-        self.chemin_trouve.emit(chemins_panier)
-
+        chemin = self.plan.chemin_rapide(depart_point,point_article)
+        self.vue_application.planVue.afficher_chemin(chemin)
+        print(chemin)
 
 
     
@@ -156,15 +142,19 @@ class Controleur:
 
     def ouvrir_fichier(self):
         fileName, _ = QFileDialog.getOpenFileName(self.vue_application, "Ouvrir le fichier", "", "JSON Files (*.json);;All Files (*)")
+        print(fileName)
         if fileName:
             self.vider_liste()
             self.plan.lire_JSON(fileName)
             self.vue_application.produitVue.charger_produits(self.plan.get_plan())
             self.vue_application.produitVue.filtre1.setCurrentIndex(0)
+            self.vue_application.planVue.supprimer_plan()
+            self.vue_application.planVue.afficher_plan( self.vue_application.size(fileName))
 
     def reset_application(self):
         self.vue_application.produitVue.reset_vue() # Supprime les produits afficher sur la page
         self.vider_liste()
+        self.vue_application.planVue.supprimer_plan()
         self.vue_application.produitVue.reset_vue() # Supprime la totalité des produits 
 
 

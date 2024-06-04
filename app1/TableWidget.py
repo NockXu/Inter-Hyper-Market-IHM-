@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem, QLabel, QColorDialog, QLineEdit, QPushButton
-from PyQt6.QtGui import QColor, QIcon, QPalette
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem, QLabel, QColorDialog, QLineEdit, QPushButton, QInputDialog
 from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QColor, QIcon, QPalette
 import sys
 
 class TableWidget(QWidget):
@@ -8,6 +8,9 @@ class TableWidget(QWidget):
         super().__init__()
         
         self.initUI()
+
+    # Signal pour indiquer qu'un rayon a été ajouté
+    rayonAjoute = pyqtSignal(str, QColor)
 
     # Signaux
     nomRayonChangee = pyqtSignal(str)
@@ -53,11 +56,21 @@ class TableWidget(QWidget):
         self.table.cellClicked.connect(self.get_rayon)
 
     def add_row_from_input(self):
-        name = self.name_edit.text()
-        if name:
-            self.add_row(name)
-            self.nomRayonChangee.emit(name)
+        """
+        Utilise le texte entré dans le champ QLineEdit pour ajouter un nouveau rayon.
+        """
+        nom_rayon = self.name_edit.text()
+        if nom_rayon:
+            self.add_row(nom_rayon)
             self.name_edit.clear()
+
+    def add_row_from_dialog(self):
+        """
+        Affiche une boîte de dialogue pour ajouter un nouveau rayon.
+        """
+        nom_rayon, ok = QInputDialog.getText(self, "Nouveau Rayon", "Nom du Rayon:")
+        if ok and nom_rayon:
+            self.add_row(nom_rayon)
         
 
     def add_row(self, name):
@@ -91,6 +104,9 @@ class TableWidget(QWidget):
             remove_label.enterEvent = lambda event: self.hover_enter(remove_label)
             remove_label.leaveEvent = lambda event: self.hover_leave(remove_label)
             self.table.setCellWidget(row_position, 2, remove_label)
+
+            self.rayonAjoute.emit(name, color)
+            self.rayonSelectionee.emit(name, color)
             
             self.rayonSelectionee.emit(self.table.item(row_position, 0).text(), self.table.item(row_position, 1).background().color())
 
