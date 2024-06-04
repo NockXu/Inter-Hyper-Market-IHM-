@@ -110,7 +110,7 @@ class MainWindow(QMainWindow):
         menu_affichage.addAction(self.dock2.toggleViewAction())
         menu_affichage.addAction(self.dock3.toggleViewAction())
 
-        self.vueOutil.get_load_plan_button().clicked.connect(self.load_plan)
+        self.vueOutil.image.imageSelectionnee.connect(self.load_plan)
         
         self.vueCarre.carre_button.clicked.connect(self.create_grid)
         
@@ -148,8 +148,7 @@ class MainWindow(QMainWindow):
     #                           Méthodes de classe
     #------------------------------------------------------------------------------------
 
-    def load_plan(self):
-        file_name, _ = QFileDialog.getOpenFileName(self, "Charger un plan", "", "Images (*.png *.xpm *.jpg *.jpeg *.bmp)")
+    def load_plan(self, file_name : str):
         if file_name:
             pixmap = QPixmap(file_name)
             pixmap = pixmap.scaled(self.plan_label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
@@ -179,6 +178,8 @@ class MainWindow(QMainWindow):
         self.planCree.emit(rows, cols, nom, auteur, date, adresse, rects)
         
     def setRayonActuelle(self, nom: str, couleur: QColor) -> None:
+        if self.vueCarre.fonction.mode_fonction:
+            self.vueCarre.fonction.bouton_fonction.click()
         self.nomRayon = nom
         self.couleurRayon = couleur
         self.couleurRayon.setAlpha(128)
@@ -187,7 +188,7 @@ class MainWindow(QMainWindow):
     def updateCouleur(self, rects: dict[tuple[int, int], QColor]) -> None:
         self.plan_label.updateColor(rects)
         
-    def setFonctionActuelle(self, name :str, color : QColor) -> None:
+    def setFonctionActuelle(self, name :str = None, color : QColor = None) -> None:
         if self.vueCarre.fonction.chemin_active:
             self.nomFonction = name
             self.couleurFonction = color

@@ -20,7 +20,7 @@ class FonctionRect(QWidget):
         self.chemin_active = False
         self.entree_active = False
         self.etagere_active = False
-        self.mode_fonction = False
+        self.mode_fonction = True
 
         self.bouton_chemin = Bouton('red')
         self.bouton_entree = Bouton('green')
@@ -72,14 +72,6 @@ class FonctionRect(QWidget):
     def toggle_mode(self):
         self.mode_fonction = not self.mode_fonction
         if self.mode_fonction:
-            self.bouton_fonction.setText('Activer mode fonction')
-            self.bouton_chemin.hide()
-            self.bouton_entree.hide()
-            self.bouton_etagere.hide()
-            self.bouton_chemin_label.hide()
-            self.bouton_entree_label.hide()
-            self.bouton_etagere_label.hide()
-        else:
             self.bouton_fonction.setText('Désactiver mode fonction')
             self.bouton_chemin.show()
             self.bouton_entree.show()
@@ -87,6 +79,14 @@ class FonctionRect(QWidget):
             self.bouton_chemin_label.show()
             self.bouton_entree_label.show()
             self.bouton_etagere_label.show()
+        else:
+            self.bouton_fonction.setText('Activer mode fonction')
+            self.bouton_chemin.hide()
+            self.bouton_entree.hide()
+            self.bouton_etagere.hide()
+            self.bouton_chemin_label.hide()
+            self.bouton_entree_label.hide()
+            self.bouton_etagere_label.hide()
         self.modeChangee.emit()
 
 # Exemple d'utilisation
