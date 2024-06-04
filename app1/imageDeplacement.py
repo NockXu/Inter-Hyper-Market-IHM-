@@ -13,10 +13,26 @@ class ImageDeplacement(QLabel):
         self.cols = 0
         self.brush_color = QColor("white")
         self.brush_color.setAlpha(0)
+        
+        # Pour les fonctions
+        self.est_fonction = True
+        self.fonction_actuelle : str = None
+        
+        self.chemin = QColor('red')
+        self.chemin.setAlpha(128)
+        
+        self.entree = QColor('green')
+        self.entree.setAlpha(128)
+        
+        self.etagere = QColor('blue')
+        self.etagere.setAlpha(128)
 
     # Signaux
     getRectsDeclenchee = pyqtSignal(list)
     rectColoriee = pyqtSignal(tuple)
+    rectFoncAttribuee = pyqtSignal(tuple)
+    rectFoncSupprimee = pyqtSignal(tuple)
+    
 
     def set_grid(self, rows, cols):
         self.rows = rows
@@ -36,22 +52,58 @@ class ImageDeplacement(QLabel):
                     rect = QRectF(col * cellule_width, row * cellule_height, cellule_width, cellule_height)
                     color = QColor("white")
                     color.setAlpha(0)
-                    self.rects[(row, col)] = {"rect": rect, "color": color}
+                    self.rects[(row, col)] = {"rect": rect, "color": color, "fonction" : None}
 
             self.update()
 
+    def getColorFonc(self, name : str) -> QColor:
+        if name == "chemin":
+            color = self.chemin
+        elif name == "entree":
+            color = self.entree
+        elif name == "etagere":
+            color = self.etagere
+        else:
+            color = QColor("white")
+            color.setAlpha(0)
+        return color
+    
+    def setChemin(self, color : QColor) -> None:
+        color.setAlpha(128)
+        self.chemin = color
+        
+    def setEntree(self, color : QColor) -> None:
+        color.setAlpha(128)
+        self.entree = color
+        
+    def setEtagere(self, color : QColor) -> None:
+        color.setAlpha(128)
+        self.etagere = color
+    
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             for rect in self.rects.keys():
                 if self.rects[rect]["rect"].contains(event.position()):
-                    if self.rects[rect]["color"] == self.brush_color:
-                        color = QColor("white")
-                        color.setAlpha(0)
-                        self.rects[rect]["color"] = color
+                    # Cas d'attribution de couleur de fonction
+                    if self.est_fonction:
+                        if self.rects[rect]["fonction"]:
+                            color = QColor("white")
+                            color.setAlpha(0)
+                            self.rects[rect]["fonction"] = color
+                            self.rectFoncSupprimee.emit(rect)
+                        else:
+                            self.rects[rect]["fonction"] = self.fonction_actuelle
+                            self.rectFoncAttribuee.emit(rect)
+                    # Cas d'attribution de couleur de rayon
                     else:
-                        self.rects[rect]["color"] = self.brush_color
+                        if self.rects[rect]["color"] == self.brush_color:
+                            color = QColor("white")
+                            color.setAlpha(0)
+                            self.rects[rect]["color"] = color
+                        else:
+                            self.rects[rect]["color"] = self.brush_color
+                            self.rectColoriee.emit(rect)
                     self.update()
-                    self.rectColoriee.emit(rect)
                     return
 
     def paintEvent(self, event):
@@ -65,7 +117,10 @@ class ImageDeplacement(QLabel):
         painter.setPen(pen)
 
         for rect in self.rects.keys():
-            painter.fillRect(self.rects[rect]["rect"], self.rects[rect]["color"])
+            if self.est_fonction:  
+                painter.fillRect(self.rects[rect]["rect"], self.getColorFonc(self.rects[rect]["fonction"]))
+            else:
+                painter.fillRect(self.rects[rect]["rect"], self.rects[rect]["color"])
             painter.drawRect(self.rects[rect]["rect"])
 
     def get_rects(self):
@@ -90,6 +145,20 @@ class ImageDeplacement(QLabel):
         color.setAlpha(128)
         self.brush_color = color
         self.update()
+    
+    def switch_est_fonction(self) -> None:
+        self.est_fonction = not self.est_fonction
+        self.update()
+    
+    def set_fonction_actuelle(self, chemin : bool, entree : bool, etagere : bool) -> None:
+        if chemin:
+            self.fonction_actuelle = 'chemin'
+        elif entree:
+            self.fonction_actuelle = 'entree'
+        elif etagere:
+            self.fonction_actuelle = 'etagere'
+        else:
+            self.fonction_actuelle = None
 
 # Exemple d'utilisation
 if __name__ == "__main__":

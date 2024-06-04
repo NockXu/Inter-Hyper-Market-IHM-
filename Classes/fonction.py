@@ -1,12 +1,14 @@
 import os, sys
+from PyQt6.QtGui import QColor
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Classes.accessibilite import Accessibilite
 
 class Fonction:
-    def __init__(self, nom : str = "None"):
+    def __init__(self, nom : str = "None", couleur : QColor = None):
         self._acces : Accessibilite = Accessibilite()
         self._nom : str = nom # il n'y a pas de setter car le nom n'est pas choisis par l'utilisateur
+        self._couleur : QColor = couleur
     
     # Méthodes getters
     
