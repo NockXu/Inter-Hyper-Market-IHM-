@@ -14,7 +14,9 @@ from Classes import *
 
 class MainWindow(QMainWindow):
     
+    # Signaux
     planCree = pyqtSignal(int, int, str, str, str, str, list)
+    rectFoncAttribuee = pyqtSignal(tuple, str, QColor)
     
     def __init__(self):
         super().__init__()
@@ -116,6 +118,18 @@ class MainWindow(QMainWindow):
         #                           Paramètre menu Graphe
         #--------------------------------------------------------------------------------
 
+        # fonctionRect
+        self.nomFonction = None
+        self.couleurFonction = None
+        # Signaux
+        self.vueCarre.fonction.fonctionSelectionnee.connect(self.setFonctionActuelle)
+        self.vueCarre.fonction.bouton_chemin.couleurChangee.connect(self.plan_label.setChemin)
+        self.vueCarre.fonction.bouton_entree.couleurChangee.connect(self.plan_label.setEntree)
+        self.vueCarre.fonction.bouton_etagere.couleurChangee.connect(self.plan_label.setEtagere)
+        self.vueCarre.fonction.boutonCliquee.connect(self.plan_label.set_fonction_actuelle)
+        self.vueCarre.fonction.modeChangee.connect(self.plan_label.switch_est_fonction)
+        self.plan_label.rectFoncAttribuee.connect(self.getRectFonc)
+    
         # TableWidget
         self.nomRayon = None
         self.couleurRayon = None
@@ -172,6 +186,28 @@ class MainWindow(QMainWindow):
     
     def updateCouleur(self, rects: dict[tuple[int, int], QColor]) -> None:
         self.plan_label.updateColor(rects)
+        
+    def setFonctionActuelle(self, name :str, color : QColor) -> None:
+        if self.vueCarre.fonction.chemin_active:
+            self.nomFonction = name
+            self.couleurFonction = color
+        
+        elif self.vueCarre.fonction.entree_active:
+            self.nomFonction = name
+            self.couleurFonction = color
+            
+        elif self.vueCarre.fonction.etagere_active:
+            self.nomFonction = name
+            self.couleurFonction = color
+        
+        else:
+            self.nomFonction = None
+            self.couleurFonction = None
+    
+    def getRectFonc(self, rect : tuple) -> None:
+        if self.nomFonction and self.couleurFonction:
+            self.rectFoncAttribuee.emit(rect, self.nomFonction, self.couleurFonction)
+            
 
 if __name__ == "__main__":
 

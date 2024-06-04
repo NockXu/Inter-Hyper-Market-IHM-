@@ -12,7 +12,7 @@ from Classes.rayon import Rayon
 # Classe qui permet de créer des objet Point qui possède deux attributs x et y
 # Cette classe contient aussi des méthodes qui permette de simplifier son interaction avec les autres points du plan
 class Point:
-    def __init__(self, x : int, y : int, voisins : list = None, fonction: Fonction = Chemin(), qRectF : QRectF = None, rayon : Rayon = None) -> None :
+    def __init__(self, x : int, y : int, voisins : list = None, fonction: Fonction = Fonction(), qRectF : QRectF = None, rayon : Rayon = None) -> None :
         self._x : int = x
         self._y : int = y
         self._voisins : list = voisins

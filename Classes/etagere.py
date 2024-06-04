@@ -6,7 +6,7 @@ from Classes.fonction import Fonction
 
 class Etagere(Fonction):
     def __init__(self, liste_produit : list[Produit] = []) -> None:
-        super().__init__("étagère")
+        super().__init__("etagere")
         self._produits: list[Produit] = liste_produit
     
     def vider(self) -> None:

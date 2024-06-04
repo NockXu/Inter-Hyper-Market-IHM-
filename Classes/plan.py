@@ -259,7 +259,7 @@ class Plan :
             }
             # on ajoute à la fonction ses infos spécialisées
             
-            if fonction["spécialitée"] == "étagère":
+            if fonction["spécialitée"] == "etagere":
                 # on crée la nouvelle clé
                 fonction["produits"] = []
                 
@@ -280,7 +280,7 @@ class Plan :
                         }
                     )
                 
-            elif fonction["spécialitée"] == "entrée":
+            elif fonction["spécialitée"] == "entree":
                 # on récupere les info de l'entree
                 entree: Entree = point.get_fonction()
                 

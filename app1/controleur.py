@@ -23,6 +23,8 @@ class Controleur:
         self.main_window.action_supprimer.triggered.connect(self.supprimer_projet)
         self.main_window.action_reset.triggered.connect(self.reset_all)
         self.main_window.planCree.connect(self.setModele)
+        self.main_window.rectFoncAttribuee.connect(self.setFonc)
+        self.main_window.plan_label.rectFoncSupprimee.connect(self.delFonc)
         
         # Signaux de TableWidget
         self.main_window.vueCarre.tableRayon.rayonRetire.connect(self.delRayon)
@@ -99,13 +101,29 @@ class Controleur:
         self.main_window.plan_label.set_brush_color(QColor("white"))
         self.updateRayon()
         
-    def rectColorier(self, xy) -> None:
+    def rectColorier(self, rect) -> None:
         point : Point
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
-            if x == xy[0] and y == xy[1]:
+            if x == rect[0] and y == rect[1]:
                 point.setRayon(Rayon(self.main_window.nomRayon, self.main_window.couleurRayon))
+                
+    def setFonc(self, rect : tuple, name : str, color : QColor) -> None:
+        point : Point
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            if x == rect[0] and y == rect[1]:
+                point.set_fonction(Fonction(name, color))
+                
+    def delFonc(self, rect : tuple) -> None:
+        point : Point
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            if x == rect[0] and y == rect[1]:
+                point.set_fonction(Fonction())
 
     def get_rayons_data(self):
         data = []

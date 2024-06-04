@@ -66,6 +66,7 @@ class Controleur:
                 point_article.append(arrivee_point)
         
         chemin = self.plan.chemin_rapide(depart_point,point_article)
+        self.vue_application.planVue.afficher_chemin(chemin)
         print(chemin)
 
 
@@ -141,15 +142,19 @@ class Controleur:
 
     def ouvrir_fichier(self):
         fileName, _ = QFileDialog.getOpenFileName(self.vue_application, "Ouvrir le fichier", "", "JSON Files (*.json);;All Files (*)")
+        print(fileName)
         if fileName:
             self.vider_liste()
             self.plan.lire_JSON(fileName)
             self.vue_application.produitVue.charger_produits(self.plan.get_plan())
             self.vue_application.produitVue.filtre1.setCurrentIndex(0)
+            self.vue_application.planVue.supprimer_plan()
+            self.vue_application.planVue.afficher_plan( self.vue_application.size(fileName))
 
     def reset_application(self):
         self.vue_application.produitVue.reset_vue() # Supprime les produits afficher sur la page
         self.vider_liste()
+        self.vue_application.planVue.supprimer_plan()
         self.vue_application.produitVue.reset_vue() # Supprime la totalité des produits 
 
 

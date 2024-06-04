@@ -6,7 +6,7 @@ from Classes.chemin import Chemin
 
 class Entree(Chemin):
     def __init__(self, nom : str = None) -> None:
-        super().__init__("entrée")
+        super().__init__("entree")
         self._nomEntree = nom
     
     def getNomEntree(self) -> str:

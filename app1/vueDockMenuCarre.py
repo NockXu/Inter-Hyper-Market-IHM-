@@ -5,6 +5,7 @@ from PyQt6.QtGui import QIcon, QColor
 from valeurAdjuster import ValeurAdjuster
 from frame import LineFrame
 from TableWidget import TableWidget
+from fonctionRect import FonctionRect
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -34,39 +35,16 @@ class VueDockMenuCarre(QWidget):
         self.layout_carre.addSpacing(5)
         self.layout_carre.addWidget(self.carreFonc)
         self.layout_carre.addSpacing(5)
-
-
-        # Initialisation des composants de layout_fonction
-        self.bouton_fonction = QPushButton('Activer ?')
-        self.couleur_chemin = self.carre_couleur('red')
-        self.couleur_entree = self.carre_couleur('green')
-        self.couleur_etagere = self.carre_couleur('blue')
-        self.couleur_chemin_label = QLabel('chemin')
-        self.couleur_entree_label = QLabel('entrée')
-        self.couleur_etagere_label = QLabel('étagère')
-
-        # Layout pour les fonctionnalités
-        self.layout_fonction = QVBoxLayout()
-        self.layout_form = QFormLayout()
-
-        self.layout_fonction.addWidget(self.bouton_fonction)
-
-        self.layout_form.addRow(self.couleur_chemin, self.couleur_chemin_label)
-        self.layout_form.addRow(self.couleur_entree, self.couleur_entree_label)
-        self.layout_form.addRow(self.couleur_etagere, self.couleur_etagere_label)
-        self.layout_form.setVerticalSpacing(20)
-        self.layout_form.setHorizontalSpacing(50)
         
         self.tableRayon = TableWidget()
-
-        self.layout_fonction = QVBoxLayout()
-        self.layout_fonction.addWidget(self.bouton_fonction)
-        self.layout_fonction.addLayout(self.layout_form)
+        
+        # Ajout des fonctions des rectangles
+        self.fonction = FonctionRect()
 
         # Layout principal
         self.layout_dock = QVBoxLayout()
         self.layout_dock.addLayout(self.layout_carre)
-        self.layout_dock.addLayout(self.layout_fonction)
+        self.layout_dock.addWidget(self.fonction)
         self.layout_dock.addSpacing(5)
         self.layout_dock.addWidget(self.foncRay)
         self.layout_dock.addSpacing(5)
@@ -74,8 +52,6 @@ class VueDockMenuCarre(QWidget):
 
         self.setLayout(self.layout_dock)
         self.selected_color = QColor('white')
-
-        self.bouton_fonction.clicked.connect(self.toggle_grid)
 
     def carre_couleur(self, color):
         """
