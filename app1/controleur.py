@@ -1,4 +1,5 @@
 # controller.py
+import json
 import sys
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
@@ -21,8 +22,6 @@ class Controleur:
         self.main_window.action_enregistrer.triggered.connect(self.enregistrer_projet)
         self.main_window.action_supprimer.triggered.connect(self.supprimer_projet)
         self.main_window.action_reset.triggered.connect(self.reset_all)
-        self.main_window.action_barre.triggered.connect(self.basculer_menu_outil)
-        self.main_window.action_menu_graphe.triggered.connect(self.basculer_menu_graphe)
         self.main_window.planCree.connect(self.setModele)
         
         # Signaux de TableWidget
@@ -44,8 +43,14 @@ class Controleur:
         pass
 
     def enregistrer_projet(self):
-        # Implémentez la logique pour enregistrer le projet
-        pass
+        # Récupérez les données des rayons depuis le modèle
+        data = self.get_rayons_data()
+
+        # Sauvegardez les données dans un fichier JSON
+        file_path, _ = QFileDialog.getSaveFileName(self.main_window, "Enregistrer le fichier", "", "JSON Files (*.json)")
+        if file_path:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=4)
 
     def supprimer_projet(self):
         # Implémentez la logique pour supprimer le projet
@@ -101,6 +106,41 @@ class Controleur:
             y = point.get_y()
             if x == xy[0] and y == xy[1]:
                 point.setRayon(Rayon(self.main_window.nomRayon, self.main_window.couleurRayon))
+
+    def get_rayons_data(self):
+        data = []
+        
+        # Add "info_plan" section
+        info_plan = {
+            "info_plan": {
+                "nom": self.model._nom,
+                "auteur": self.model._auteur,
+                "adresse": self.model._adresse,
+                "date": self.model._date
+            }
+        }
+        data.append(info_plan)
+
+        # Add rayons data
+        for point in self.model.get_plan():
+            rayon = {
+                "x": point.get_x(),
+                "y": point.get_y(),
+                "voisins": [], 
+                "fonction": {
+                    "spécialitée": "étagère",
+                    "acces": [True, True, True, True],
+                    "produits": []
+                },
+                "rectangle": "None",
+                "rayon": {
+                    "nom": point.getRayon().getNom(),
+                    "couleur" : point.getRayon().getCouleur()
+                }
+            }
+            data.append(rayon)
+        
+        return data
 
 
 # Programme principal : test du controleur ------------------------------------

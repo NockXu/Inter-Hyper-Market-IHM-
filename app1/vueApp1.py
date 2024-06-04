@@ -43,10 +43,6 @@ class MainWindow(QMainWindow):
 
         # Menu Affichage
         menu_affichage = self.barre_menu.addMenu('Affichage')
-        self.action_barre = QAction('Menu Outil', self)
-        menu_affichage.addAction(self.action_barre)
-        self.action_menu_graphe = QAction('Menu Graphe', self)
-        menu_affichage.addAction(self.action_menu_graphe)
 
         self.plan_label = ImageDeplacement()
 
@@ -54,9 +50,7 @@ class MainWindow(QMainWindow):
         #                           Connexions des actions
         #--------------------------------------------------------------------------------
 
-        self.action_barre.triggered.connect(self.basculer_menu_outil)
         self.action_reset.triggered.connect(self.reset_all)
-        self.action_menu_graphe.triggered.connect(self.basculer_menu_graphe)
         
         #--------------------------------------------------------------------------------
         #                           Slots controleur
@@ -110,6 +104,10 @@ class MainWindow(QMainWindow):
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock2)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock3)
 
+        menu_affichage.addAction(self.dock1.toggleViewAction())
+        menu_affichage.addAction(self.dock2.toggleViewAction())
+        menu_affichage.addAction(self.dock3.toggleViewAction())
+
         self.vueOutil.get_load_plan_button().clicked.connect(self.load_plan)
         
         self.vueCarre.carre_button.clicked.connect(self.create_grid)
@@ -143,18 +141,6 @@ class MainWindow(QMainWindow):
             pixmap = pixmap.scaled(self.plan_label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             self.plan_label.setPixmap(pixmap)
             self.plan_label.update_grid()
-
-    def basculer_menu_outil(self):
-        if self.dock1.isVisible():
-            self.dock1.hide()
-        else:
-            self.dock1.show()
-
-    def basculer_menu_graphe(self):
-        if self.dock2.isVisible():
-            self.dock2.hide()
-        else:
-            self.dock2.show()
     
     def reset_all(self):
         self.plan_label.clear()

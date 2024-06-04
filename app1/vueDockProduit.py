@@ -21,6 +21,7 @@ class VueDockProduit(QWidget):
         self.category_combo_box = QComboBox()
         self.product_list_widget = QListWidget()
         self.rayon_combo_box = QComboBox()
+        self.search_line_edit = QLineEdit()
 
         # Ajouter les catégories à la liste déroulante
         self.category_combo_box.addItems(self.categories.keys())
@@ -28,6 +29,8 @@ class VueDockProduit(QWidget):
         # Ajouter les widgets à la mise en page
         self.layout.addWidget(QLabel("Catégories"))
         self.layout.addWidget(self.category_combo_box)
+        self.layout.addWidget(QLabel("Recherche de Produit"))
+        self.layout.addWidget(self.search_line_edit)
         self.layout.addWidget(QLabel("Produits"))
         self.layout.addWidget(self.product_list_widget)
         self.layout.addWidget(QLabel("Rayons"))
@@ -37,6 +40,7 @@ class VueDockProduit(QWidget):
         
         # Connecter les signaux
         self.category_combo_box.currentIndexChanged.connect(self.afficher_produits)
+        self.search_line_edit.textChanged.connect(self.rechercher_produit)
         self.product_list_widget.itemDoubleClicked.connect(self.ajouter_produit_au_rayon)
         
         # Connecter les signaux de table_widget pour mettre à jour les rayons
@@ -79,7 +83,6 @@ class VueDockProduit(QWidget):
         Propose d'ajouter le produit sélectionné à un rayon.
         """
         product = item.text()
-        category = self.category_combo_box.currentText()
 
         # Vérifier si des rayons existent déjà
         if self.rayon_combo_box.count() == 0:
@@ -123,6 +126,30 @@ class VueDockProduit(QWidget):
         rayons = self.table_widget.get_data()
         for rayon in rayons:
             self.rayon_combo_box.addItem(rayon[0])
+
+    def rechercher_produit(self):
+        """
+        Filtre et affiche les produits qui correspondent au texte de recherche saisi.
+        """
+        # Efface la liste actuelle des produits affichés
+        self.product_list_widget.clear()
+
+        category = self.category_combo_box.currentText()
+        products = self.categories.get(category, [])
+
+        # Récupère le texte de recherche et le convertit en minuscules pour une comparaison insensible à la casse
+        search_text = self.search_line_edit.text().lower()
+        
+        # Initialise une liste pour stocker les produits filtrés
+        filtered_products = []
+        
+        # Parcourt tous les produits et ajoute ceux qui contiennent le texte de recherche à la liste filtrée
+        for product in products:
+            if search_text in product.lower():
+                filtered_products.append(product)
+        
+        # Affiche les produits filtrés dans le widget de la liste des produits
+        self.product_list_widget.addItems(filtered_products)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

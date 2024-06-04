@@ -98,11 +98,7 @@ class VueDockMenuCarre(QWidget):
         """
         self.nb_carre_x.clear()
         self.nb_carre_y.clear()
-        # Supprimer tous les widgets de rayons
-        while self.rayons_layout.count():
-            child = self.rayons_layout.takeAt(0)
-            if child.widget():
-                child.widget().deleteLater()
+
 
     def toggle_grid(self):
         if self.bouton_fonction.text() == 'Activer ?':
