@@ -135,7 +135,6 @@ class Controleur:
                 "rectangle": "None",
                 "rayon": {
                     "nom": point.getRayon().getNom(),
-                    "couleur" : point.getRayon().getCouleur()
                 }
             }
             data.append(rayon)
