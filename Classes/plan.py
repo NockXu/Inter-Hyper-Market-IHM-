@@ -12,6 +12,7 @@ from Classes.chemin import Chemin
 from Classes.produit import Produit
 from Classes.rayon import Rayon
 from Classes.dijkstra import dijkstra
+from Classes.fonction import Fonction
 
 # Cette classe servirat de base à la création du plan des magasins
 class Plan :
@@ -421,7 +422,7 @@ class Plan :
                 fonction_data = point_data['fonction']
                 specialite = fonction_data['spécialitée']
 
-                if specialite == "étagère":
+                if specialite == "etagere":
                     produits = [
                         Produit(
                             p['nom'],
@@ -432,10 +433,12 @@ class Plan :
                         ) for p in fonction_data['produits']
                     ]
                     fonction = Etagere(produits)
-                elif specialite == "entrée":
+                elif specialite == "entree":
                     fonction = Entree(fonction_data['nomEntree'])
-                else:
+                elif specialite == "chemin":
                     fonction = Chemin()
+                else:
+                    fonction = Fonction()
 
                 # Création du point sans les voisins pour l'instant
                 point = Point(x, y, fonction=fonction, qRectF=rectangle, rayon=rayon)

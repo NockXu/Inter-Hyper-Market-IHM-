@@ -84,11 +84,11 @@ class ImageDeplacement(QLabel):
         if event.button() == Qt.MouseButton.LeftButton:
             for rect in self.rects.keys():
                 if self.rects[rect]["rect"].contains(event.position()):
+                    color = QColor("white")
+                    color.setAlpha(0)
                     # Cas d'attribution de couleur de fonction
                     if self.est_fonction:
-                        if self.rects[rect]["fonction"]:
-                            color = QColor("white")
-                            color.setAlpha(0)
+                        if self.rects[rect]["fonction"] == self.fonction_actuelle:
                             self.rects[rect]["fonction"] = color
                             self.rectFoncSupprimee.emit(rect)
                         else:
@@ -97,8 +97,6 @@ class ImageDeplacement(QLabel):
                     # Cas d'attribution de couleur de rayon
                     else:
                         if self.rects[rect]["color"] == self.brush_color:
-                            color = QColor("white")
-                            color.setAlpha(0)
                             self.rects[rect]["color"] = color
                         else:
                             self.rects[rect]["color"] = self.brush_color

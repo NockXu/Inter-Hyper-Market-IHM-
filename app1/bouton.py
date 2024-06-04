@@ -18,7 +18,7 @@ class Bouton(QPushButton):
         if color.isValid():
             self.setStyleSheet(f"background-color: {color.name()}; border: 1px solid black;")
             self.couleur = QColor(color)
-            self.couleurChangee.emit(QColor)
+            self.couleurChangee.emit(color)
             
     def get_color(self):
         return self.couleur

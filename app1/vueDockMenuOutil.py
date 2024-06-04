@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
+from imageSelector import *
 
 class VueDockMenuOutil(QWidget):
     def __init__(self, parent=None):
@@ -23,6 +24,9 @@ class VueDockMenuOutil(QWidget):
 
         self.adresse_label = QLabel('Adresse du magasin :')
         self.adresse = QLineEdit()
+        
+        self.image_label = QLabel("Selection de l'image :")
+        self.image = ImageSelector()
 
         self.layout_dock.addWidget(self.load_plan_button)
         self.layout_dock.addWidget(self.nom_projet_label)
@@ -35,12 +39,10 @@ class VueDockMenuOutil(QWidget):
         self.layout_dock.addWidget(self.date)
         self.layout_dock.addWidget(self.adresse_label)
         self.layout_dock.addWidget(self.adresse)
+        self.layout_dock.addWidget(self.image_label)
+        self.layout_dock.addWidget(self.image)
 
-        self.layout_dock.addStretch(1)
         self.setLayout(self.layout_dock)
-        
-    def get_load_plan_button(self):
-        return self.load_plan_button
     
     def reset(self):
         self.nom_projet.clear()
@@ -48,3 +50,4 @@ class VueDockMenuOutil(QWidget):
         self.auteur.clear()
         self.date.setDate(QDate.currentDate())
         self.adresse.clear()
+        self.image.clear()
