@@ -52,6 +52,11 @@ class ImageSelector(QWidget):
             self.imageSelectionnee.emit(filePath)
         else:
             self.showError("Le fichier spécifié n'est pas une image PNG valide.")
+            
+    def setImage(self, image : str):
+        if image:
+            self.lineEdit.setText(image)
+            self.imageSelectionnee.emit(image)
     
     def showError(self, message):
         # Afficher une boîte de dialogue d'erreur

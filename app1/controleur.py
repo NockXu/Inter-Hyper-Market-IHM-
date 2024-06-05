@@ -33,6 +33,13 @@ class Controleur:
         
         # Signaux de imageDeplacement
         self.main_window.plan_label.rectColoriee.connect(self.rectColorier)
+        
+        self.main_window.imageAjouter.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.nomMagasinChanger.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.nomProjetChanger.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.addresseChanger.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.dateChanger.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.auteurChanger.connect(self.main_window.set_plan)
 
         self.main_window.show()
 
@@ -55,43 +62,31 @@ class Controleur:
             self.main_window.vueOutil.date.setDate(date)
             # le nom du projet + image
             self.main_window.vueOutil.nom_projet.setText(self.model.get_fichier())
-            self.main_window.vueOutil.image.lineEdit.setText(self.model.get_fichier()+"_image.png")
+            self.main_window.vueOutil.image.lineEdit.setText(self.model.get_image())
             # longeur et largeur
             self.main_window.vueCarre.nb_carre_x.set_valeur(self.model.get_h())
             self.main_window.vueCarre.nb_carre_y.set_valeur(self.model.get_l())
-            self.main_window.create_grid()
+            
+            if self.model.get_image():
+                self.main_window.vueOutil.image.setImage(self.model.get_image())
             
             infos = self.model.getInfos()
-            for info in infos:
-                print(infos[info])
-                self.main_window.vueCarre.tableRayon.add_row(infos[info]["name"], infos[info]["color"])
+            self.main_window.vueCarre.tableRayon.set_data(infos)
+            
+            # la méthode suprime les données du modèle
+            self.main_window.create_grid()
+            # on le recrée
+            self.model.lire_JSON(file_path)
             self.updateFonc()
             self.main_window.vueCarre.fonction.toggle_mode()
             self.updateRayon()
-            
-        
 
     def enregistrer_projet(self):
         # Récupérez les données des rayons depuis le modèle
-        data = self.get_rayons_data()
+        self.model.ecrire_JSON(self.model.get_fichier())
 
-        # Sauvegardez les données dans un fichier JSON
-        file_path, _ = QFileDialog.getSaveFileName(self.main_window, "Enregistrer le fichier", "", "JSON Files (*.json)")
-        if file_path:
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(data, f, ensure_ascii=False, indent=4)
-
-    def basculer_menu_outil(self):
-        # Afficher ou masquer le menu outil
-        pass
-
-    def basculer_menu_graphe(self):
-        # Afficher ou masquer le menu graphe
-        pass
-
-    def setModele(self, rows : int, cols : int, nom : str, auteur : str, date : str, adresse : str, rects : list[QRectF]) -> None:
-        self.model = Plan(rows, cols, nom, auteur, date, adresse)
-        self.model.lienQPlan(rects)
+    def setModele(self, rows : int, cols : int, nom : str, auteur : str, date : str, adresse : str, image : str) -> None:
+        self.model = Plan(rows, cols, nom, auteur, date, adresse, image)
     
     def updateRayon(self) -> None:
         rects : dict[tuple[int, int], QColor] = {}

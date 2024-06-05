@@ -16,8 +16,9 @@ from Classes import *
 class MainWindow(QMainWindow):
     
     # Signaux
-    planCree = pyqtSignal(int, int, str, str, str, str, list)
+    planCree = pyqtSignal(int, int, str, str, str, str, str)
     rectFoncAttribuee = pyqtSignal(tuple, str, QColor)
+    imageAjouter = pyqtSignal(str)
     
     def __init__(self):
         super().__init__()
@@ -160,6 +161,7 @@ class MainWindow(QMainWindow):
             pixmap = pixmap.scaled(self.plan_label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             self.plan_label.setPixmap(pixmap)
             self.plan_label.update_grid()
+            self.imageAjouter.emit(file_name)
     
     def reset_all(self):
         self.plan_label.clear()
@@ -181,7 +183,8 @@ class MainWindow(QMainWindow):
         auteur = self.vueOutil.auteur.text()
         date = self.vueOutil.date.text()
         adresse = self.vueOutil.adresse.text()
-        self.planCree.emit(rows, cols, nom, auteur, date, adresse, rects)
+        image = self.vueOutil.image.lineEdit.text()
+        self.planCree.emit(rows, cols, nom, auteur, date, adresse, image)
         
     def setRayonActuelle(self, nom: str, couleur: QColor) -> None:
         if self.vueCarre.fonction.mode_fonction:

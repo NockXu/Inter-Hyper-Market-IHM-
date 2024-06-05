@@ -16,16 +16,17 @@ from Classes.fonction import Fonction
 
 # Cette classe servirat de base à la création du plan des magasins
 class Plan :
-    def __init__(self, h : int = 9, l : int = 9, nom  : str = "MonMagasin", auteur : str = "", date : str = "17/11/2005", adresse : str = "None of your business") -> None:
+    def __init__(self, h : int = 9, l : int = 9, nom  : str = "MonMagasin", auteur : str = "", date : str = "17/11/2005", adresse : str = "None of your business", image : str = None) -> None:
         # on définit un liste contenant un dictionnaire contenant toutes les coordonnées des point du plan ses voisins et sa fonction dans le magasin (None par défaut)
         self._plan : list[Point] = []
-        self._fichier : str = nom + "_Info"
+        self._fichier : str = nom + ".json"
         self._nom : str = nom
         self._auteur : str = auteur
         self._date : str = date
         self._adresse : str = adresse
         self._h : int = h
         self._l : int = l
+        self._image : str = image
         
         # ajout des points dans la liste des points
         for x in range(h):
@@ -42,6 +43,9 @@ class Plan :
     def set_voisinage(self) -> None:
         for point in self._plan:
             point.set_voisins(self._plan)
+            
+    def set_image(self, image : str) -> None:
+        self._image = image
     
     def set_plan(self, plan : list) -> None:
         self._plan = plan
@@ -51,7 +55,6 @@ class Plan :
     
     def set_nom(self, nom : str) -> None:
         self._nom = nom
-        self._fichier = nom + "_Info"
     
     def set_auteur(self, auteur : str) -> None:
         self._auteur = auteur
@@ -71,6 +74,9 @@ class Plan :
     
     def get_h(self) -> int:
         return self._h
+    
+    def get_image(self) -> None:
+        return self._image
     
     def get_planSimple(self) -> dict:
         dico : dict = {}
@@ -265,7 +271,8 @@ class Plan :
             "adresse" : self._adresse,
             "date" : self._date,
             "h" : self._h,
-            "l" : self._l
+            "l" : self._l,
+            "image" : self._image
         }}
         points.append(info_plan)
         
@@ -316,30 +323,6 @@ class Plan :
                         }
                     )
                 
-            elif fonction["spécialitée"] == "entree":
-                # on récupere les info de l'entree
-                entree: Entree = point.get_fonction()
-                
-                # on l'ajoute
-                fonction["nomEntree"] = entree.getNomEntree()
-            
-            # on récupère les données du rectangle
-            rect = point.getQRectF()
-            if rect is not None:
-                width = rect.width()
-                height = rect.height()
-                left = rect.left()
-                top = rect.top()
-                
-                rectangle = {
-                            "top" : top,
-                            "left" : left,
-                            "width" : width,
-                            "height" : height
-                            }
-            else:
-                rectangle = "None"
-                
             # on récupere le rayon
             ray = point.getRayon()
             
@@ -367,7 +350,6 @@ class Plan :
                         "y" : point.get_y(),
                         "voisins" : voisins,
                         "fonction" : fonction,
-                        "rectangle" : rectangle,
                         "rayon" : rayon
                 }
             
@@ -377,7 +359,6 @@ class Plan :
             data = {}
             voisins = []
             fonction = {}
-            rectangle = {}
             rayon = {}
             
         # Récupérer le chemin du répertoire contenant votre script Python
@@ -428,19 +409,11 @@ class Plan :
                 self._date = point_data['info_plan']['date']
                 self._h = point_data['info_plan']['h']
                 self._l = point_data['info_plan']['l']
+                self._image = point_data['info_plan']['image']
             
             else:
                 x = point_data['x']
                 y = point_data['y']
-                
-                # Création du rectangle du point
-                rectangle = point_data['rectangle']
-                if rectangle != "None":
-                    left = rectangle['left']
-                    top = rectangle['right']
-                    width = rectangle['width']
-                    height = rectangle['height']
-                    rectangle = QRectF(left, top, width, height)
                     
                 # Création du rayon du point
                 if 'rayon' in point_data:
@@ -478,7 +451,7 @@ class Plan :
                     fonction = Fonction()
 
                 # Création du point sans les voisins pour l'instant
-                point = Point(x, y, fonction=fonction, qRectF=rectangle, rayon=rayon)
+                point = Point(x, y, fonction=fonction, rayon=rayon)
                 points_dict[(x, y)] = point
                 self._plan.append(point)
 

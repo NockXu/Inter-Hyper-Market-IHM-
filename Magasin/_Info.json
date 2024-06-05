@@ -1,0 +1,493 @@
+[
+    {
+        "info_plan": {
+            "nom": "",
+            "auteur": "",
+            "adresse": "",
+            "date": "05/06/2024",
+            "h": 4,
+            "l": 4,
+            "image": null
+        }
+    },
+    {
+        "x": 0,
+        "y": 0,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 1
+            },
+            {
+                "x": 1,
+                "y": 0
+            }
+        ],
+        "fonction": {
+            "spécialitée": "None",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 0,
+        "y": 1,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 2
+            },
+            {
+                "x": 1,
+                "y": 1
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 0,
+        "y": 2,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 1
+            },
+            {
+                "x": 0,
+                "y": 3
+            },
+            {
+                "x": 1,
+                "y": 2
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 0,
+        "y": 3,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 2
+            },
+            {
+                "x": 1,
+                "y": 3
+            }
+        ],
+        "fonction": {
+            "spécialitée": "None",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 1,
+        "y": 0,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 1,
+                "y": 1
+            },
+            {
+                "x": 2,
+                "y": 0
+            }
+        ],
+        "fonction": {
+            "spécialitée": "None",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 1,
+        "y": 1,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 1
+            },
+            {
+                "x": 1,
+                "y": 0
+            },
+            {
+                "x": 1,
+                "y": 2
+            },
+            {
+                "x": 2,
+                "y": 1
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 1,
+        "y": 2,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 2
+            },
+            {
+                "x": 1,
+                "y": 1
+            },
+            {
+                "x": 1,
+                "y": 3
+            },
+            {
+                "x": 2,
+                "y": 2
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 1,
+        "y": 3,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 3
+            },
+            {
+                "x": 1,
+                "y": 2
+            },
+            {
+                "x": 2,
+                "y": 3
+            }
+        ],
+        "fonction": {
+            "spécialitée": "None",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 2,
+        "y": 0,
+        "voisins": [
+            {
+                "x": 1,
+                "y": 0
+            },
+            {
+                "x": 2,
+                "y": 1
+            },
+            {
+                "x": 3,
+                "y": 0
+            }
+        ],
+        "fonction": {
+            "spécialitée": "None",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 2,
+        "y": 1,
+        "voisins": [
+            {
+                "x": 1,
+                "y": 1
+            },
+            {
+                "x": 2,
+                "y": 0
+            },
+            {
+                "x": 2,
+                "y": 2
+            },
+            {
+                "x": 3,
+                "y": 1
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 2,
+        "y": 2,
+        "voisins": [
+            {
+                "x": 1,
+                "y": 2
+            },
+            {
+                "x": 2,
+                "y": 1
+            },
+            {
+                "x": 2,
+                "y": 3
+            },
+            {
+                "x": 3,
+                "y": 2
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 2,
+        "y": 3,
+        "voisins": [
+            {
+                "x": 1,
+                "y": 3
+            },
+            {
+                "x": 2,
+                "y": 2
+            },
+            {
+                "x": 3,
+                "y": 3
+            }
+        ],
+        "fonction": {
+            "spécialitée": "None",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 3,
+        "y": 0,
+        "voisins": [
+            {
+                "x": 2,
+                "y": 0
+            },
+            {
+                "x": 3,
+                "y": 1
+            }
+        ],
+        "fonction": {
+            "spécialitée": "None",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 3,
+        "y": 1,
+        "voisins": [
+            {
+                "x": 2,
+                "y": 1
+            },
+            {
+                "x": 3,
+                "y": 0
+            },
+            {
+                "x": 3,
+                "y": 2
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 3,
+        "y": 2,
+        "voisins": [
+            {
+                "x": 2,
+                "y": 2
+            },
+            {
+                "x": 3,
+                "y": 1
+            },
+            {
+                "x": 3,
+                "y": 3
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 3,
+        "y": 3,
+        "voisins": [
+            {
+                "x": 2,
+                "y": 3
+            },
+            {
+                "x": 3,
+                "y": 2
+            }
+        ],
+        "fonction": {
+            "spécialitée": "None",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    }
+]

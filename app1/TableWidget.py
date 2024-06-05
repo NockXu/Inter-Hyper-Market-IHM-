@@ -109,8 +109,6 @@ class TableWidget(QWidget):
 
             self.rayonAjoute.emit(name, color)
             self.rayonSelectionee.emit(name, color)
-            
-            self.rayonSelectionee.emit(self.table.item(row_position, 0).text(), self.table.item(row_position, 1).background().color())
 
     def remove_row(self, row):
         # Envoie du signal
@@ -159,8 +157,13 @@ class TableWidget(QWidget):
         self.rayonSelectionee.emit(self.table.item(row, 0).text(), self.table.item(row, 1).background().color())
     
     def set_data(self, dico : dict) -> None:
-        for rayon in dico:
-            self.add_row(rayon["name"], rayon["color"])
+        for point in dico:
+            data_actuelle = self.get_data()
+            name = dico[point]["name"]
+            color = dico[point]["color"]
+            if (name, color) != (None, None):
+                if (name, color) not in data_actuelle:
+                    self.add_row(name, color)
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)
