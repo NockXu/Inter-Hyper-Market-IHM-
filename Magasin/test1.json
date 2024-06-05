@@ -4,7 +4,9 @@
             "nom": "MonMagasin",
             "auteur": "",
             "adresse": "None of your business",
-            "date": "17/11/2005"
+            "date": "17/11/2005",
+            "h": 3,
+            "l": 3
         }
     },
     {
@@ -21,7 +23,7 @@
             }
         ],
         "fonction": {
-            "spécialitée": "étagère",
+            "spécialitée": "etagere",
             "acces": [
                 true,
                 true,
@@ -61,7 +63,7 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "None",
             "acces": [
                 true,
                 true,
@@ -88,7 +90,7 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "None",
             "acces": [
                 true,
                 true,
@@ -119,7 +121,7 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "None",
             "acces": [
                 true,
                 true,
@@ -154,7 +156,7 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "None",
             "acces": [
                 true,
                 true,
@@ -185,7 +187,7 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "None",
             "acces": [
                 true,
                 true,
@@ -212,7 +214,7 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "None",
             "acces": [
                 true,
                 true,
@@ -243,7 +245,7 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "None",
             "acces": [
                 true,
                 true,
@@ -274,7 +276,7 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "None",
             "acces": [
                 true,
                 true,

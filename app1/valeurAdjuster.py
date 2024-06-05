@@ -69,6 +69,12 @@ class ValeurAdjuster(QWidget):
 
     def updateValeur(self):
         self.valeurEntrer.setText(str(self.valeur))
+        
+    def set_valeur(self, valeur : int) -> None:
+        self.valeur = valeur
+        if self.valeur > self.max:
+            self.valeur = self.max
+        self.updateValeur()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

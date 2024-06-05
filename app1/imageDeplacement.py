@@ -138,7 +138,13 @@ class ImageDeplacement(QLabel):
             if point in self.rects:
                 self.rects[point]["color"] = rects[point]
         self.update()
-
+        
+    def updateFonc(self, rects : dict[tuple[int, int], str]):
+        for point in rects.keys():
+            if point in self.rects:
+                self.rects[point]["fonction"] = rects[point]
+        self.update()
+        
     def set_brush_color(self, color : QColor):
         color.setAlpha(128)
         self.brush_color = color

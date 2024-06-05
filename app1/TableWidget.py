@@ -73,7 +73,7 @@ class TableWidget(QWidget):
             self.add_row(nom_rayon)
         
 
-    def add_row(self, name):
+    def add_row(self, name, color = None):
         rayonValide : bool = True
         for row in range(self.table.rowCount()):
             if name == self.table.item(row, 0).text():
@@ -89,8 +89,9 @@ class TableWidget(QWidget):
 
             # Couleur
             color_item = QTableWidgetItem()
-            color = QColorDialog.getColor()
-            color.setAlpha(128)
+            if not color:
+                color = QColorDialog.getColor()
+                color.setAlpha(128)
             color_item.setBackground(color)
             color_item.setFlags(color_item.flags() & ~Qt.ItemFlag.ItemIsEditable)  # Rendre la cellule non éditable
             self.table.setItem(row_position, 1, color_item)
@@ -156,6 +157,10 @@ class TableWidget(QWidget):
     def get_rayon(self, row : int) -> QColor: 
         self.rayonSelectionee.emit(self.table.item(row, 0).text(), self.table.item(row, 1).background().color())
     
+    def set_data(self, dico : dict) -> None:
+        for rayon in dico:
+            self.add_row(rayon["name"], rayon["color"])
+            
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     widget = TableWidget()

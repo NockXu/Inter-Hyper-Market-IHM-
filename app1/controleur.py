@@ -20,8 +20,8 @@ class Controleur:
         self.main_window.action_nouveau.triggered.connect(self.nouveau_projet)
         self.main_window.action_ouvrir.triggered.connect(self.ouvrir_projet)
         self.main_window.action_enregistrer.triggered.connect(self.enregistrer_projet)
-        self.main_window.action_supprimer.triggered.connect(self.supprimer_projet)
-        self.main_window.action_reset.triggered.connect(self.reset_all)
+        
+        
         self.main_window.planCree.connect(self.setModele)
         self.main_window.rectFoncAttribuee.connect(self.setFonc)
         self.main_window.plan_label.rectFoncSupprimee.connect(self.delFonc)
@@ -37,12 +37,39 @@ class Controleur:
         self.main_window.show()
 
     def nouveau_projet(self):
-        # Implémentez la logique pour créer un nouveau projet
-        pass
+        self.main_window.reset_all()
+        self.model = Plan()
 
     def ouvrir_projet(self):
-        # Implémentez la logique pour ouvrir un projet existant
-        pass
+        file_path, _ = QFileDialog.getOpenFileName(self.main_window, "Ouvrir le fichier", "", "JSON Files (*.json)")
+        if file_path:
+            self.model.lire_JSON(file_path)
+            # le nom
+            self.main_window.vueOutil.nom_magasin.setText(self.model.get_nom())
+            # l'auteur
+            self.main_window.vueOutil.auteur.setText(self.model.get_auteur())
+            # l'addresse
+            self.main_window.vueOutil.adresse.setText(self.model.get_adresse())
+            # la date
+            date = QDate().fromString(self.model.get_date(), "dd/MM/yyyy")
+            self.main_window.vueOutil.date.setDate(date)
+            # le nom du projet + image
+            self.main_window.vueOutil.nom_projet.setText(self.model.get_fichier())
+            self.main_window.vueOutil.image.lineEdit.setText(self.model.get_fichier()+"_image.png")
+            # longeur et largeur
+            self.main_window.vueCarre.nb_carre_x.set_valeur(self.model.get_h())
+            self.main_window.vueCarre.nb_carre_y.set_valeur(self.model.get_l())
+            self.main_window.create_grid()
+            
+            infos = self.model.getInfos()
+            for info in infos:
+                print(infos[info])
+                self.main_window.vueCarre.tableRayon.add_row(infos[info]["name"], infos[info]["color"])
+            self.updateFonc()
+            self.main_window.vueCarre.fonction.toggle_mode()
+            self.updateRayon()
+            
+        
 
     def enregistrer_projet(self):
         # Récupérez les données des rayons depuis le modèle
@@ -53,14 +80,6 @@ class Controleur:
         if file_path:
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
-
-    def supprimer_projet(self):
-        # Implémentez la logique pour supprimer le projet
-        pass
-
-    def reset_all(self):
-        # Réinitialiser tous les paramètres
-        pass
 
     def basculer_menu_outil(self):
         # Afficher ou masquer le menu outil
@@ -87,6 +106,20 @@ class Controleur:
                 rects[(x, y)].setAlpha(0)
             couleur = None
         self.main_window.plan_label.updateColor(rects)
+        
+    def updateFonc(self) -> None:
+        point : Point
+        rects : dict[tuple[int, int], QColor] = {}
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            nom = point.get_fonction().getNom()
+            if nom:
+                rects[(x, y)] = nom
+            else:
+                rects[(x, y)] = None
+            nom = None
+        self.main_window.plan_label.updateFonc(rects)
         
     def setCouleurRayon(self, name : str, color : QColor, newColor : QColor) -> None:
         

@@ -24,6 +24,8 @@ class Plan :
         self._auteur : str = auteur
         self._date : str = date
         self._adresse : str = adresse
+        self._h : int = h
+        self._l : int = l
         
         # ajout des points dans la liste des points
         for x in range(h):
@@ -64,6 +66,12 @@ class Plan :
     def get_plan(self) -> list:
         return self._plan
     
+    def get_l(self) -> int:
+        return self._l
+    
+    def get_h(self) -> int:
+        return self._h
+    
     def get_planSimple(self) -> dict:
         dico : dict = {}
         
@@ -86,7 +94,32 @@ class Plan :
     
     def get_adresse(self) -> str:
         return self._adresse
+    
+    def getInfos(self) -> dict:
+        dico = {}
+        for point in self._plan:
+            x = point.get_x()
+            y = point.get_y()
+            rayon = point.getRayon()
+            fonc = point.get_fonction()
             
+            # Initialiser l'entrée si elle n'existe pas encore
+            if (x, y) not in dico:
+                dico[(x, y)] = {}
+            
+            # Ajouter les informations sur le rayon
+            if rayon.getNom():
+                dico[(x, y)].update({"color": rayon.getCouleur(), "name": rayon.getNom()})
+            else:
+                dico[(x, y)].update({"color": None, "name": None})
+            
+            # Ajouter les informations sur la fonction
+            if fonc.getNom():
+                dico[(x, y)].update({"fonction": fonc.getNom()})
+            else:
+                dico[(x, y)].update({"fonction": None})
+        return dico
+    
     # méthode qui permet d'ajouter un point dans le plan
     def ajoutPoint(self, x: int, y: int) -> None:
         # on crée le point
@@ -230,7 +263,9 @@ class Plan :
             "nom" : self._nom,
             "auteur" : self._auteur,
             "adresse" : self._adresse,
-            "date" : self._date
+            "date" : self._date,
+            "h" : self._h,
+            "l" : self._l
         }}
         points.append(info_plan)
         
@@ -391,6 +426,8 @@ class Plan :
                 self._auteur = point_data['info_plan']['auteur']
                 self._adresse = point_data['info_plan']['adresse']
                 self._date = point_data['info_plan']['date']
+                self._h = point_data['info_plan']['h']
+                self._l = point_data['info_plan']['l']
             
             else:
                 x = point_data['x']

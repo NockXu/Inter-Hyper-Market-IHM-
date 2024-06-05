@@ -35,8 +35,6 @@ class MainWindow(QMainWindow):
         menu_fichier.addAction(self.action_ouvrir)
         self.action_enregistrer = QAction('Enregistrer', self)
         menu_fichier.addAction(self.action_enregistrer)
-        self.action_supprimer = QAction('Supprimer', self)
-        menu_fichier.addAction(self.action_supprimer)
 
         # Menu Edition
         menu_edition = self.barre_menu.addMenu('Edition')
