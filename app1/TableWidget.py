@@ -17,6 +17,7 @@ class TableWidget(QWidget):
     rayonRetire = pyqtSignal(str, QColor)
     couleurRayonChangee = pyqtSignal(str, QColor, QColor)
     rayonSelectionee = pyqtSignal(str, QColor)
+    produitAjoute = pyqtSignal(str, str)
     
     def initUI(self):
         self.layout = QVBoxLayout()
@@ -68,7 +69,7 @@ class TableWidget(QWidget):
         """
         Affiche une boîte de dialogue pour ajouter un nouveau rayon.
         """
-        nom_rayon, ok = QInputDialog.getText(self, "Nouveau Rayon", "Nom du Rayon:")
+        nom_rayon, ok = QInputDialog.getText(self, "Nouvelle etagere", "Nom du Rayon:")
         if ok and nom_rayon:
             self.add_row(nom_rayon)
         

@@ -6,6 +6,7 @@ from PyQt6.QtGui import *
 import vueDockMenuOutil
 import vueDockMenuCarre
 import vueDockProduit
+import vueDockEtagere
 from imageDeplacement import ImageDeplacement
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -100,13 +101,20 @@ class MainWindow(QMainWindow):
         self.dock3.setWidget(self.vueProduit)
         self.dock3.setFixedWidth(300)
 
+        self.dock4 = QDockWidget("Menu Etagere")
+        self.vueEtagere = vueDockEtagere.VueEtagere()
+        self.dock4.setWidget(self.vueEtagere)
+        self.dock4.setFixedWidth(300)
+
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock1)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock2)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock3)
+        self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock4)
 
         menu_affichage.addAction(self.dock1.toggleViewAction())
         menu_affichage.addAction(self.dock2.toggleViewAction())
         menu_affichage.addAction(self.dock3.toggleViewAction())
+        menu_affichage.addAction(self.dock4.toggleViewAction())
 
         self.vueOutil.image.imageSelectionnee.connect(self.load_plan)
         
