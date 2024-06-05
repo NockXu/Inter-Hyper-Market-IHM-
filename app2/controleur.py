@@ -42,8 +42,8 @@ class Controleur:
             
             
     def trouver_chemin(self):
-        depart = (1, 1)  # Départ du point (1, 1)
         points = self.plan.get_plan()
+        depart = (1, 1)
 
         # Trouver le point de départ
         depart_point = None
@@ -149,7 +149,7 @@ class Controleur:
             self.vue_application.produitVue.charger_produits(self.plan.get_plan())
             self.vue_application.produitVue.filtre1.setCurrentIndex(0)
             self.vue_application.planVue.supprimer_plan()
-            self.vue_application.planVue.afficher_plan( self.vue_application.size(fileName))
+            self.vue_application.planVue.afficher_plan()
 
     def reset_application(self):
         self.vue_application.produitVue.reset_vue() # Supprime les produits afficher sur la page
