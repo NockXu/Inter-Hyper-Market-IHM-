@@ -80,29 +80,30 @@ class VueDockProduit(QWidget):
 
     def ajouter_produit_au_rayon(self, item):
         """
-        Propose d'ajouter le produit sélectionné à un rayon.
+        Propose d'ajouter le produit sélectionné à une étagère.
         """
         product = item.text()
 
-        # Vérifier si des rayons existent déjà
+        # Vérifier si des étagères existent déjà
         if self.rayon_combo_box.count() == 0:
-            response = QMessageBox.question(self, "Aucun rayon trouvé", 
-                                            "Aucun rayon trouvé. Voulez-vous créer un nouveau rayon ?", 
+            response = QMessageBox.question(self, "Aucune étagère trouvée", 
+                                            "Aucune étagère trouvée. Voulez-vous créer une nouvelle étagère ?", 
                                             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
             if response == QMessageBox.StandardButton.Yes:
                 self.table_widget.add_row_from_dialog()
         else:
-            # Ajouter une option pour créer un nouveau rayon
-            rayons = [self.rayon_combo_box.itemText(i) for i in range(self.rayon_combo_box.count())]
-            rayons.append("Créer un nouveau rayon")
+            # Afficher une boîte de dialogue pour sélectionner une étagère
+            etageres = [self.rayon_combo_box.itemText(i) for i in range(self.rayon_combo_box.count())]
 
-            rayon, ok = QInputDialog.getItem(self, "Choisir un rayon", 
-                                             "Sélectionnez le rayon pour ajouter le produit :", rayons, 0, False)
+            etagere, ok = QInputDialog.getItem(self, "Choisir une étagère", 
+                                            "Sélectionnez l'étagère pour ajouter le produit :", etageres, 0, False)
             if ok:
-                if rayon == "Créer un nouveau rayon":
+                if etagere == "Créer une nouvelle étagère":
                     self.table_widget.add_row_from_dialog()
                 else:
-                    print(f"Produit '{product}' ajouté au rayon '{rayon}'")
+                    print(f"Produit '{product}' ajouté à l'étagère '{etagere}'")
+                    # Émettre le signal pour ajouter le produit à l'étagère sélectionnée
+                    self.table_widget.produitAjoute.emit(product, etagere)
 
     def mettre_a_jour_liste_rayons(self, nom_rayon, couleur_rayon):
         """

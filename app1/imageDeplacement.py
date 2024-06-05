@@ -32,6 +32,8 @@ class ImageDeplacement(QLabel):
     rectColoriee = pyqtSignal(tuple)
     rectFoncAttribuee = pyqtSignal(tuple)
     rectFoncSupprimee = pyqtSignal(tuple)
+    etagereAjoutee = pyqtSignal(tuple)
+    etagereSupprimee = pyqtSignal(tuple)
     
 
     def set_grid(self, rows, cols):
@@ -79,6 +81,12 @@ class ImageDeplacement(QLabel):
     def setEtagere(self, color : QColor) -> None:
         color.setAlpha(128)
         self.etagere = color
+
+    def ajouter_etagere(self, position):
+        """
+        Ajoute une étagère à la position spécifiée.
+        """
+        self.etagereAjoutee.emit(position)
     
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -91,9 +99,11 @@ class ImageDeplacement(QLabel):
                         if self.rects[rect]["fonction"] == self.fonction_actuelle:
                             self.rects[rect]["fonction"] = color
                             self.rectFoncSupprimee.emit(rect)
+                            self.etagereSupprimee.emit(rect)
                         else:
                             self.rects[rect]["fonction"] = self.fonction_actuelle
                             self.rectFoncAttribuee.emit(rect)
+                            self.ajouter_etagere(rect)
                     # Cas d'attribution de couleur de rayon
                     else:
                         if self.rects[rect]["color"] == self.brush_color:
