@@ -44,14 +44,18 @@ class Controleur:
             
     def trouver_chemin(self):
         points = self.plan.get_plan()
-        depart = (1, 1)
-
-        # Trouver le point de départ
         depart_point = None
+
+        # Trouver le point de départ avec la spécialité "entree"
         for point in points:
-            if point.get_coordonnee() == depart:
+            if isinstance(point.get_fonction(), Entree):
                 depart_point = point
                 break
+
+        if not depart_point:
+            print("Point d'entrée introuvable.")
+            return
+
         point_article = []
 
         for nom_produit in self.panier:
@@ -66,9 +70,10 @@ class Controleur:
             if arrivee_point and arrivee_point not in point_article:
                 point_article.append(arrivee_point)
         
-        chemin = self.plan.chemin_rapide(depart_point,point_article)
+        chemin = self.plan.chemin_rapide(depart_point, point_article)
         self.vue_application.planVue.afficher_chemin(chemin, self.plan.get_l(), self.plan.get_h())
         print(chemin)
+
 
 
     
@@ -150,7 +155,7 @@ class Controleur:
             self.vue_application.produitVue.charger_produits(self.plan.get_plan())
             self.vue_application.produitVue.filtre1.setCurrentIndex(0)
             self.vue_application.planVue.supprimer_plan()
-            self.vue_application.planVue.afficher_plan()
+            self.vue_application.planVue.afficher_plan(self.plan.get_image())
 
     def reset_application(self):
         self.vue_application.produitVue.reset_vue() # Supprime les produits afficher sur la page
