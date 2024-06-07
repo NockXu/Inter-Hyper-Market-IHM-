@@ -38,6 +38,7 @@ class Controleur:
         else:
             self.vue_application.produitVue.show()
             self.vue_application.planVue.hide()
+            self.vue_application.planVue.supprimer_chemin()
             self.vue_application.ajout_plan.setText("Voir le plan")
             
             
@@ -66,7 +67,7 @@ class Controleur:
                 point_article.append(arrivee_point)
         
         chemin = self.plan.chemin_rapide(depart_point,point_article)
-        self.vue_application.planVue.afficher_chemin(chemin)
+        self.vue_application.planVue.afficher_chemin(chemin, self.plan.get_l(), self.plan.get_h())
         print(chemin)
 
 
@@ -155,7 +156,8 @@ class Controleur:
         self.vue_application.produitVue.reset_vue() # Supprime les produits afficher sur la page
         self.vider_liste()
         self.vue_application.planVue.supprimer_plan()
-        self.vue_application.produitVue.reset_vue() # Supprime la totalité des produits 
+        self.vue_application.produitVue.reset_vue()
+        self.vue_application.planVue.supprimer_chemin()
 
 
 if __name__ == "__main__":
