@@ -16,7 +16,7 @@ class VuePlan(QWidget):
         self.longueur = self.height()
 
     def afficher_plan(self, image):
-        self.image = QPixmap("images" + image)
+        self.image = QPixmap("app2/image/" + image)
         self.update()
 
     def supprimer_plan(self):
