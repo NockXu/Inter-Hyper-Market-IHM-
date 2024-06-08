@@ -434,10 +434,10 @@ class Plan :
                 rayon = None
 
                 # Création du rayon du point
-                if 'rayon' in point_data:
+                if 'rayon' in point_data and point_data['rayon'] is not None:
                     rayon_data = point_data['rayon']
-                    nom_rayon = rayon_data.get('nom')
-                    
+                    nom_rayon = rayon_data['nom'] if 'nom' in rayon_data else None
+
                     couleur_rayon = None
                     if 'couleur' in rayon_data:
                         couleur = rayon_data['couleur']
@@ -447,7 +447,7 @@ class Plan :
                             int(couleur['bleu']),
                             int(couleur['alpha'])
                         )
-                    
+
                     rayon = Rayon(nom_rayon, couleur_rayon)
                 
                 # Création de la fonction du point
