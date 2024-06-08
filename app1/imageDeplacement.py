@@ -163,6 +163,8 @@ class ImageDeplacement(QLabel):
         for point in rects.keys():
             if point in self.rects:
                 self.rects[point]["fonction"] = rects[point]
+                if self.rects[point]["fonction"] == "etagere":
+                    self.etagereAjoutee.emit(point)
         self.update()
         
     def set_brush_color(self, color : QColor):
