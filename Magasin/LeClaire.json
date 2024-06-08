@@ -24,21 +24,12 @@
             }
         ],
         "fonction": {
-            "spécialitée": "etagere",
+            "spécialitée": "None",
             "acces": [
                 true,
                 true,
                 true,
                 true
-            ],
-            "produits": [
-                {
-                    "nom": "Asperges",
-                    "prix": 0.0,
-                    "description": "",
-                    "icone": "",
-                    "type": ""
-                }
             ]
         },
         "rayon": {
@@ -378,31 +369,36 @@
                 true,
                 true
             ],
-            "produits": [{
-                "nom": "truc",
-                "prix": 100,
-                "description": "un truc",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "objet"
-            },{
-                "nom": "jouet",
-                "prix": 23,
-                "description": "voiture électrique",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "jeux"
-            },{
-                "nom": "magasine",
-                "prix": 0.5,
-                "description": "magasine de mode",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "livre"
-            },{
-                "nom": "Steaks",
-                "prix": 5,
-                "description": "parfait pour un steak frite",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "viande"
-            }]
+            "produits": [
+                {
+                    "nom": "truc",
+                    "prix": 100,
+                    "description": "un truc",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "objet"
+                },
+                {
+                    "nom": "jouet",
+                    "prix": 23,
+                    "description": "voiture électrique",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "jeux"
+                },
+                {
+                    "nom": "magasine",
+                    "prix": 0.5,
+                    "description": "magasine de mode",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "livre"
+                },
+                {
+                    "nom": "Steaks",
+                    "prix": 5,
+                    "description": "parfait pour un steak frite",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "viande"
+                }
+            ]
         },
         "rayon": {
             "nom": "gh",
@@ -483,31 +479,36 @@
                 true,
                 true
             ],
-            "produits": [{
-                "nom": "Tomates",
-                "prix": 1,
-                "description": "Cultivé sous le magnifique soleil d'Espagne",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "legume"
-            },{
-                "nom": "Piles éléctrique AAA",
-                "prix": 10,
-                "description": "Lot de 9 piles AAA",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "électronique"
-            },{
-                "nom": "Ceinture",
-                "prix": 10,
-                "description": "Tout de cuire",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "vétement"
-            },{
-                "nom": "mouchoires",
-                "prix": 5,
-                "description": "Boite de 500 mouchoirs",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "Hygiène"
-            }]
+            "produits": [
+                {
+                    "nom": "Tomates",
+                    "prix": 1,
+                    "description": "Cultivé sous le magnifique soleil d'Espagne",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "legume"
+                },
+                {
+                    "nom": "Piles éléctrique AAA",
+                    "prix": 10,
+                    "description": "Lot de 9 piles AAA",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "électronique"
+                },
+                {
+                    "nom": "Ceinture",
+                    "prix": 10,
+                    "description": "Tout de cuire",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "vétement"
+                },
+                {
+                    "nom": "mouchoires",
+                    "prix": 5,
+                    "description": "Boite de 500 mouchoirs",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Hygiène"
+                }
+            ]
         },
         "rayon": {
             "nom": null
@@ -572,25 +573,29 @@
                 true,
                 true
             ],
-            "produits": [{
-                "nom": "concombre",
-                "prix": 7,
-                "description": "cucumber",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "Legume"
-            },{
-                "nom": "pêche",
-                "prix": 6,
-                "description": "pour garder la pêche",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "Fruit"
-            },{
-                "nom": "chat",
-                "prix": 104,
-                "description": "UN CHAT",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "Animal"
-            }]
+            "produits": [
+                {
+                    "nom": "concombre",
+                    "prix": 7,
+                    "description": "cucumber",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Legume"
+                },
+                {
+                    "nom": "pêche",
+                    "prix": 6,
+                    "description": "pour garder la pêche",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Fruit"
+                },
+                {
+                    "nom": "chat",
+                    "prix": 104,
+                    "description": "UN CHAT",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Animal"
+                }
+            ]
         },
         "rayon": {
             "nom": null
@@ -621,25 +626,29 @@
                 true,
                 true
             ],
-            "produits": [{
-                "nom": "sablière",
-                "prix": 14,
-                "description": "Lot de 9 piles AAA",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "Décoration"
-            },{
-                "nom": "clementine",
-                "prix": 3,
-                "description": "pour plus de vitamine",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "Fruit"
-            },{
-                "nom": "voiturette",
-                "prix": 105,
-                "description": "parfait pour une balade en famille",
-                "icone": "le/chemin/vers/l'icone.png",
-                "type": "jeux"
-            }]
+            "produits": [
+                {
+                    "nom": "sablière",
+                    "prix": 14,
+                    "description": "Lot de 9 piles AAA",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Décoration"
+                },
+                {
+                    "nom": "clementine",
+                    "prix": 3,
+                    "description": "pour plus de vitamine",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Fruit"
+                },
+                {
+                    "nom": "voiturette",
+                    "prix": 105,
+                    "description": "parfait pour une balade en famille",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "jeux"
+                }
+            ]
         },
         "rayon": {
             "nom": null

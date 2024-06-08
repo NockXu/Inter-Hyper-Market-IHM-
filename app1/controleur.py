@@ -49,6 +49,8 @@ class Controleur:
         self.main_window.vueProduit.produitAjoute.connect(self.creer_produit)
         self.main_window.vueEtagere.produitAjouteAvecEtagere.connect(self.ajouter_produit_etagere)
 
+        self.main_window.vueEtagere.etagereSupprimee.connect(self.suprimer_etagere_model)
+
         self.main_window.show()
 
     def nouveau_projet(self):
@@ -102,8 +104,6 @@ class Controleur:
             self.updateRayon()
             self.main_window.vueCarre.fonction.toggle_mode()
             self.updateEtagere()
-            
-            
 
     def enregistrer_projet(self):
         # Récupérez les données des rayons depuis le modèle
@@ -132,6 +132,15 @@ class Controleur:
                     etagere : Etagere = point.get_fonction()
                     etagere.ajouter(produitm)
         print(produitm, etagere)
+
+    def suprimer_etagere_model(self, nom_etagere : str):
+        nom_etagere = self.main_window.vueEtagere.nom_etagere_vers_tuple(nom_etagere)
+        point : Point
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            if nom_etagere[0] == x and nom_etagere[1] == y:
+                point.set_fonction(Fonction())
 
     def set_etagere(self, rect: tuple, etagere) -> None:
         point : Point

@@ -182,6 +182,7 @@ class MainWindow(QMainWindow):
         self.plan_label.update()
         self.vueCarre.reset()
         self.vueOutil.reset()
+        self.vueEtagere.reset()
 
     def create_grid(self):
         rows = int(self.vueCarre.nb_carre_x.valeur)

@@ -107,6 +107,11 @@ class VueEtagere(QWidget):
                 self.table_etageres.setItem(row_position, 0, item_nom)
         print("Étagères après mise à jour:", self.etageres)
 
+    def reset(self):
+        self.table_etageres.setRowCount(0)
+        self.table_produits.setRowCount(0)
+        self.etageres.clear()
+
 # Exemple d'utilisation
 if __name__ == "__main__":
     app = QApplication(sys.argv)
