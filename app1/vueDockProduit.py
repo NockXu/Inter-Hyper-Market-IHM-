@@ -5,59 +5,40 @@ import sys
 from TableWidget import TableWidget
 
 class VueDockProduit(QWidget):
-
-    def __init__(self, table_widget, parent=None):
+    def __init__(self, parent):
         super().__init__(parent)
         
-        # Enregistrer la référence au TableWidget
-        self.table_widget = table_widget
-        
-        # Charger les produits depuis un fichier texte
         self.categories = self.charger_produits("app1/produits.txt")
 
-        # Configuration de la mise en page
         self.layout = QVBoxLayout()
-        
-        # Création des widgets
+
         self.category_combo_box = QComboBox()
         self.product_list_widget = QListWidget()
-        self.rayon_combo_box = QComboBox()
+        self.etagere_combo_box = QComboBox()
         self.search_line_edit = QLineEdit()
 
-        # Ajouter les catégories à la liste déroulante
         self.category_combo_box.addItems(self.categories.keys())
-        
-        # Ajouter les widgets à la mise en page
+
         self.layout.addWidget(QLabel("Catégories"))
         self.layout.addWidget(self.category_combo_box)
         self.layout.addWidget(QLabel("Recherche de Produit"))
         self.layout.addWidget(self.search_line_edit)
         self.layout.addWidget(QLabel("Produits"))
         self.layout.addWidget(self.product_list_widget)
-        self.layout.addWidget(QLabel("Rayons"))
-        self.layout.addWidget(self.rayon_combo_box)
-        
+        self.layout.addWidget(QLabel("Etageres"))
+        self.layout.addWidget(self.etagere_combo_box)
+
         self.setLayout(self.layout)
-        
-        # Connecter les signaux
+
         self.category_combo_box.currentIndexChanged.connect(self.afficher_produits)
         self.search_line_edit.textChanged.connect(self.rechercher_produit)
-        self.product_list_widget.itemDoubleClicked.connect(self.ajouter_produit_au_rayon)
-        
-        # Connecter les signaux de table_widget pour mettre à jour les rayons
-        self.table_widget.rayonAjoute.connect(self.mettre_a_jour_liste_rayons)
-        self.table_widget.rayonRetire.connect(self.enlever_rayon)
-        
-        # Afficher les produits de la première catégorie par défaut
+        self.product_list_widget.itemDoubleClicked.connect(self.ajouter_produit_au_etagere)
+
         self.afficher_produits()
-        
-        # Initialiser la liste des rayons
-        self.mettre_a_jour_tous_les_rayons()
+    
+    produitAjoute = pyqtSignal(str, str)
 
     def charger_produits(self, file_path):
-        """
-        Charge les produits depuis un fichier texte et les organise par catégories.
-        """
         categories = {}
         with open(file_path, "r") as file:
             for line in file:
@@ -71,76 +52,43 @@ class VueDockProduit(QWidget):
         return categories
 
     def afficher_produits(self):
-        """
-        Affiche les produits de la catégorie sélectionnée.
-        """
         self.product_list_widget.clear()
         category = self.category_combo_box.currentText()
         products = self.categories.get(category, [])
         self.product_list_widget.addItems(products)
 
-    def ajouter_produit_au_rayon(self, item):
-        """
-        Propose d'ajouter le produit sélectionné à une étagère.
-        """
+    def ajouter_produit_au_etagere(self, item):
         product = item.text()
-
-        # Vérifier si des étagères existent déjà
-        if self.rayon_combo_box.count() == 0:
-            QMessageBox.warning(self, "Aucune étagère trouvée", 
-                                "Aucune étagère trouvée. Veuillez créer une nouvelle étagère d'abord.")
+        if self.etagere_combo_box.count() == 0:
+            QMessageBox.warning(self, "Aucune étagère trouvée", "Aucune étagère trouvée. Veuillez créer une nouvelle étagère d'abord.")
         else:
-            # Afficher une boîte de dialogue pour sélectionner une étagère
-            etageres = [self.rayon_combo_box.itemText(i) for i in range(self.rayon_combo_box.count())]
-
-            etagere, ok = QInputDialog.getItem(self, "Choisir une étagère", 
-                                               "Sélectionnez l'étagère pour ajouter le produit :", etageres, 0, False)
+            etageres = [self.etagere_combo_box.itemText(i) for i in range(self.etagere_combo_box.count())]
+            etagere, ok = QInputDialog.getItem(self, "Choisir une étagère", "Sélectionnez l'étagère pour ajouter le produit :", etageres, 0, False)
             if ok:
-                print(f"Produit '{product}' ajouté à l'étagère '{etagere}'")
-                # Émettre le signal pour ajouter le produit à l'étagère sélectionnée
-                self.table_widget.produitAjoute.emit(product, etagere)
+                self.produitAjoute.emit(product, etagere)
 
-    def mettre_a_jour_liste_rayons(self, nom_rayon, couleur_rayon):
-        """
-        Met à jour la liste des rayons dans le QComboBox.
-        """
-        self.rayon_combo_box.addItem(nom_rayon)
+    def mettre_a_jour_liste_rayons(self, nom_etagere: tuple):
+        if isinstance(nom_etagere, tuple):
+            nom_etagere = " ".join(map(str, nom_etagere))  # Concatène les éléments du tuple en une seule chaîne
+        if nom_etagere not in [self.etagere_combo_box.itemText(i) for i in range(self.etagere_combo_box.count())]:
+            self.etagere_combo_box.addItem(nom_etagere)
 
-    def enlever_rayon(self, nom_rayon, couleur_rayon):
-        """
-        Retire un rayon de la liste des rayons dans le QComboBox.
-        """
-        index = self.rayon_combo_box.findText(nom_rayon)
+    def supprimer_etagere_selectionnee(self, index):
         if index != -1:
-            self.rayon_combo_box.removeItem(index)
-    
-    def mettre_a_jour_tous_les_rayons(self):
-        """
-        Met à jour la liste des rayons en utilisant les données actuelles de table_widget.
-        """
-        self.rayon_combo_box.clear()
-        rayons = self.table_widget.get_data()
-        for rayon in rayons:
-            self.rayon_combo_box.addItem(rayon[0])
+            self.etagere_combo_box.removeItem(index)
+
+    def retirer_etagere(self, nom_etagere):
+        # Supprimer l'étagère du QComboBox
+        index = self.etagere_combo_box.findText(nom_etagere)
+        if index != -1:
+            self.etagere_combo_box.removeItem(index)
 
     def rechercher_produit(self):
-        """
-        Filtre et affiche les produits qui correspondent au texte de recherche saisi.
-        """
-        # Efface la liste actuelle des produits affichés
         self.product_list_widget.clear()
-
         category = self.category_combo_box.currentText()
         products = self.categories.get(category, [])
-
         search_text = self.search_line_edit.text().lower()
-
-        filtered_products = []
-        
-        # Parcourt tous les produits et ajoute ceux qui contiennent le texte de recherche à la liste filtrée
-        for product in products:
-            if search_text in product.lower():
-                filtered_products.append(product)
+        filtered_products = [product for product in products if search_text in product.lower()]
         self.product_list_widget.addItems(filtered_products)
 
 if __name__ == "__main__":

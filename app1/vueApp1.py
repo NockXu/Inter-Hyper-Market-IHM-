@@ -3,7 +3,6 @@ from typing import List
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
-from TableWidget import TableWidget
 import vueDockMenuOutil
 import vueDockMenuCarre
 import vueDockProduit
@@ -101,8 +100,7 @@ class MainWindow(QMainWindow):
         self.dock2.setMaximumHeight(700)
 
         self.dock3 = QDockWidget("Produits")
-        table_widget = TableWidget()
-        self.vueProduit = vueDockProduit.VueDockProduit(table_widget)
+        self.vueProduit = vueDockProduit.VueDockProduit(self)
         self.dock3.setWidget(self.vueProduit)
         self.dock3.setFixedWidth(300)
 
@@ -143,12 +141,20 @@ class MainWindow(QMainWindow):
         self.plan_label.rectFoncAttribuee.connect(self.getRectFonc)
         self.plan_label.rectColoriee.connect(self.getRectRay)
         self.plan_label.etagereAjoutee.connect(self.vueEtagere.ajouterEtagere)
+        self.plan_label.etagereSupprimee.connect(self.vueEtagere.supprimerEtagere)
         
+        self.vueProduit.produitAjoute.connect(self.vueEtagere.ajouterProduitAEtagere)
+
+        self.vueEtagere.etagereAjoutee.connect(self.mettre_a_jour_etageres)
+        self.vueEtagere.etagereSupprimee.connect(self.mettre_a_jour_etageres)
+
+        self.vueEtagere.etagereSupprimee.connect(self.vueProduit.retirer_etagere)
     
         # TableWidget
         self.nomRayon = None
         self.couleurRayon = None
         # signaux
+        
         self.vueCarre.tableRayon.rayonSelectionee.connect(self.setRayonActuelle)
 
         #--------------------------------------------------------------------------------
@@ -229,6 +235,12 @@ class MainWindow(QMainWindow):
     def getRectRay(self, rect : tuple) -> None:
         if self.nomRayon and self.couleurRayon:
             self.rectRayAttribuee.emit(rect, self.nomRayon, self.couleurRayon)
+
+    def mettre_a_jour_etageres(self, etagere_nom: str) -> None:
+        self.vueProduit.mettre_a_jour_liste_rayons(etagere_nom)
+
+    def supprimer_etageres(self, etagere_nom: str) -> None:
+        self.vueProduit.supprimer_etagere_selectionnee(etagere_nom)
             
 
 if __name__ == "__main__":
