@@ -1,7 +1,7 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout
+from PyQt6.QtWidgets import QApplication, QWidget
 from PyQt6.QtCore import Qt, QRectF
-from PyQt6.QtGui import QPainter, QPixmap, QColor, QPen
+from PyQt6.QtGui import QPainter, QPixmap, QColor, QPen, QFont
 
 class VuePlan(QWidget):
     def __init__(self):
@@ -33,7 +33,7 @@ class VuePlan(QWidget):
 
     def supprimer_plan(self):
         self.image = None
-        self.update
+        self.update()
         
     def supprimer_chemin(self):
         self.rects.clear()
@@ -54,7 +54,6 @@ class VuePlan(QWidget):
             cell_width = self.largeur / self.cols
             cell_height = self.longueur / self.rows
             
-
             for row in range(self.rows):
                 for col in range(self.cols):
                     rect = QRectF(col * cell_width, row * cell_height, cell_width, cell_height)
@@ -79,12 +78,21 @@ class VuePlan(QWidget):
         # Dessiner les chemins
         for chemin in self.chemins:
             pen.setColor(QColor("red"))
-            pen.setWidth(20)
+            pen.setWidth(30)
             painter.setPen(pen)
             for i in range(len(chemin) - 1):
                 start_point = self.rects[chemin[i]].center()
                 end_point = self.rects[chemin[i + 1]].center()
                 painter.drawLine(start_point, end_point)
+            
+            # Ajouter le texte "entrée" au premier point du chemin
+            if chemin:
+                entree_point = self.rects[chemin[0]].center()
+                painter.setPen(QPen(QColor("black")))
+                font = QFont()
+                font.setBold(True)
+                painter.setFont(font)
+                painter.drawText(entree_point, "Entrée")
 
     def afficher_chemin(self, chemins, rows, cols):
         self.rows = rows
