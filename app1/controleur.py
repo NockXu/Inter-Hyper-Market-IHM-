@@ -15,6 +15,7 @@ class Controleur:
     def __init__(self):
         self.main_window = MainWindow()
         self.model = Plan() 
+        self.etageres = {}
 
         # Connexion des signaux
         self.main_window.action_nouveau.triggered.connect(self.nouveau_projet)
@@ -45,6 +46,9 @@ class Controleur:
         self.main_window.plan_label.etagereAjoutee.connect(self.afficher_etageres)
 
         self.main_window.vueEtagere.etagereSelectionnee.connect(self.get_produits_etagere)
+
+        self.main_window.vueProduit.produitAjoute.connect(self.creer_produit)
+        self.main_window.vueEtagere.produitAjouteAvecEtagere.connect(self.ajouter_produit_etagere)
 
         self.main_window.show()
 
@@ -105,6 +109,40 @@ class Controleur:
 
     def setModele(self, rows : int, cols : int, nom : str, auteur : str, date : str, adresse : str, image : str) -> None:
         self.model = Plan(rows, cols, nom, auteur, date, adresse, image)
+
+    def creer_produit(self, nom_produit, categorie):
+        produit = Produit(nom_produit, 0.0, "", "", categorie)
+        print("Produit créé :", produit)
+
+    def creer_etagere(self, list_produits):
+        etagere = Etagere(list_produits)
+        print("L'etagere contient : ", etagere)
+
+    def ajouter_produit_etagere(self, produit, etagere):
+        if etagere not in self.etageres:
+            self.etageres[etagere] = []
+        self.etageres[etagere].append(produit)
+        print("L'étagère", etagere, "contient maintenant :", self.etageres[etagere])
+
+    def set_etagere(self, rect: tuple, etagere) -> None:
+        point : Point
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            if rect[0] == x and rect[1] == y:
+                del etagere[0]
+                point.set_fonction(Etagere(etagere))
+
+    def set_produit_etagere(self, rect : tuple, produits):
+        point : Point
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            if rect[0] == x and rect[1] == y:
+                if point.get_fonction().getNom() == 'etagere':
+                    etagere: Etagere = point.get_fonction()
+                    for produit in produits:
+                        etagere.ajouter(produit)
     
     def updateRayon(self) -> None:
         rects : dict[tuple[int, int], QColor] = {}
@@ -205,43 +243,6 @@ class Controleur:
                     for produit in produits:
                         dico[co]['produits'].append({'nom': produit.get_nom()})
         return dico
-        
-                        
-    def get_rayons_data(self):
-        data = []
-        
-        # Add "info_plan" section
-        info_plan = {
-            "info_plan": {
-                "nom": self.model._nom,
-                "auteur": self.model._auteur,
-                "adresse": self.model._adresse,
-                "date": self.model._date
-            }
-        }
-        data.append(info_plan)
-
-        # Add rayons data
-        for point in self.model.get_plan():
-            rayon = {
-                "x": point.get_x(),
-                "y": point.get_y(),
-                "voisins": [], 
-                "fonction": {
-                    "spécialitée": "étagère",
-                    "acces": [True, True, True, True],
-                    "produits": []
-                },
-                "rectangle": "None",
-                "rayon": {
-                    "nom": point.getRayon().getNom(),
-                }
-            }
-            data.append(rayon)
-        
-        return data    
-
-
 
 # Programme principal : test du controleur ------------------------------------
 if __name__ == "__main__" :

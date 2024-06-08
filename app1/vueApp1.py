@@ -92,14 +92,15 @@ class MainWindow(QMainWindow):
         self.vueOutil = vueDockMenuOutil.VueDockMenuOutil(self)
         self.dock1.setWidget(self.vueOutil)
         self.dock1.setFixedWidth(300)
-        
+
         self.dock2 = QDockWidget("Menu Graphe")
         self.vueCarre = vueDockMenuCarre.VueDockMenuCarre(self)
         self.dock2.setWidget(self.vueCarre)
         self.dock2.setFixedWidth(300)
+        self.dock2.setMaximumHeight(700)
 
         self.dock3 = QDockWidget("Produits")
-        self.vueProduit = vueDockProduit.VueDockProduit(self.vueCarre.tableRayon)
+        self.vueProduit = vueDockProduit.VueDockProduit(self)
         self.dock3.setWidget(self.vueProduit)
         self.dock3.setFixedWidth(300)
 
@@ -107,11 +108,12 @@ class MainWindow(QMainWindow):
         self.vueEtagere = vueDockEtagere.VueEtagere()
         self.dock4.setWidget(self.vueEtagere)
         self.dock4.setFixedWidth(300)
+        self.dock4.setMaximumHeight(400)
 
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock1)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock2)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock3)
-        self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock4)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock4)
 
         menu_affichage.addAction(self.dock1.toggleViewAction())
         menu_affichage.addAction(self.dock2.toggleViewAction())
@@ -121,7 +123,7 @@ class MainWindow(QMainWindow):
         self.vueOutil.image.imageSelectionnee.connect(self.load_plan)
 
         self.vueCarre.carre_button.clicked.connect(self.create_grid)
-        
+
         #--------------------------------------------------------------------------------
         #                           Paramètre menu Graphe
         #--------------------------------------------------------------------------------
@@ -138,6 +140,15 @@ class MainWindow(QMainWindow):
         self.vueCarre.fonction.modeChangee.connect(self.plan_label.switch_est_fonction)
         self.plan_label.rectFoncAttribuee.connect(self.getRectFonc)
         self.plan_label.rectColoriee.connect(self.getRectRay)
+        self.plan_label.etagereAjoutee.connect(self.vueEtagere.ajouterEtagere)
+        self.plan_label.etagereSupprimee.connect(self.vueEtagere.supprimerEtagere)
+
+        self.vueProduit.produitAjoute.connect(self.vueEtagere.ajouterProduitAEtagere)
+
+        self.vueEtagere.etagereAjoutee.connect(self.mettre_a_jour_etageres)
+        self.vueEtagere.etagereSupprimee.connect(self.mettre_a_jour_etageres)
+
+        self.vueEtagere.etagereSupprimee.connect(self.vueProduit.retirer_etagere)
     
         # TableWidget
         self.nomRayon = None
@@ -223,6 +234,12 @@ class MainWindow(QMainWindow):
     def getRectRay(self, rect : tuple) -> None:
         if self.nomRayon and self.couleurRayon:
             self.rectRayAttribuee.emit(rect, self.nomRayon, self.couleurRayon)
+
+    def mettre_a_jour_etageres(self, etagere_nom: str) -> None:
+        self.vueProduit.mettre_a_jour_liste_rayons(etagere_nom)
+
+    def supprimer_etageres(self, etagere_nom: str) -> None:
+        self.vueProduit.supprimer_etagere_selectionnee(etagere_nom)
             
 
 if __name__ == "__main__":
