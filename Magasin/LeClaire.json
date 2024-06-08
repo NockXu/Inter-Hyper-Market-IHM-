@@ -31,7 +31,15 @@
                 true,
                 true
             ],
-            "produits": []
+            "produits": [
+                {
+                    "nom": "Asperges",
+                    "prix": 0.0,
+                    "description": "",
+                    "icone": "",
+                    "type": ""
+                }
+            ]
         },
         "rayon": {
             "nom": "gh",

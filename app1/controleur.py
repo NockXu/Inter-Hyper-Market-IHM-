@@ -15,7 +15,6 @@ class Controleur:
     def __init__(self):
         self.main_window = MainWindow()
         self.model = Plan() 
-        self.etageres = {}
 
         # Connexion des signaux
         self.main_window.action_nouveau.triggered.connect(self.nouveau_projet)
@@ -102,6 +101,9 @@ class Controleur:
             self.model.lire_JSON(file_path)
             self.updateRayon()
             self.main_window.vueCarre.fonction.toggle_mode()
+            self.updateEtagere()
+            
+            
 
     def enregistrer_projet(self):
         # Récupérez les données des rayons depuis le modèle
@@ -119,10 +121,17 @@ class Controleur:
         print("L'etagere contient : ", etagere)
 
     def ajouter_produit_etagere(self, produit, etagere):
-        if etagere not in self.etageres:
-            self.etageres[etagere] = []
-        self.etageres[etagere].append(produit)
-        print("L'étagère", etagere, "contient maintenant :", self.etageres[etagere])
+        print(produit, etagere)
+        point : Point
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            if (x, y) == etagere:
+                if produit:
+                    produitm = Produit(produit, 0.0, "", "", "")
+                    etagere : Etagere = point.get_fonction()
+                    etagere.ajouter(produitm)
+        print(produitm, etagere)
 
     def set_etagere(self, rect: tuple, etagere) -> None:
         point : Point
@@ -130,7 +139,6 @@ class Controleur:
             x = point.get_x()
             y = point.get_y()
             if rect[0] == x and rect[1] == y:
-                del etagere[0]
                 point.set_fonction(Etagere(etagere))
 
     def set_produit_etagere(self, rect : tuple, produits):
@@ -143,6 +151,20 @@ class Controleur:
                     etagere: Etagere = point.get_fonction()
                     for produit in produits:
                         etagere.ajouter(produit)
+
+    def updateEtagere(self) -> None:
+        rects: dict[tuple[int, int], list] = {}
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            produits: list = []
+            etagere: Etagere = point.get_fonction()
+            if isinstance(etagere, Etagere):
+                for produit in etagere.get_produits():
+                    if produit.get_nom():
+                        produits.append(produit.get_nom())
+                rects[(x, y)] = produits
+        self.main_window.vueEtagere.set_data(rects) 
     
     def updateRayon(self) -> None:
         rects : dict[tuple[int, int], QColor] = {}
