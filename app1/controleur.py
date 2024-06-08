@@ -106,36 +106,41 @@ class Controleur:
             self.updateEtagere()
 
     def enregistrer_projet(self):
-        # Récupérez les données des rayons depuis le modèle
+        """Enregistre le projet en écrivant les données des rayons dans un fichier JSON."""
         self.model.ecrire_JSON(self.model.get_fichier())
 
-    def setModele(self, rows : int, cols : int, nom : str, auteur : str, date : str, adresse : str, image : str) -> None:
+    def setModele(self, rows: int, cols: int, nom: str, auteur: str, date: str, adresse: str, image: str) -> None:
+        """Initialise le modèle avec les informations fournies."""
         self.model = Plan(rows, cols, nom, auteur, date, adresse, image)
 
     def creer_produit(self, nom_produit, categorie):
+        """Crée un nouveau produit avec le nom et la catégorie spécifiés."""
         produit = Produit(nom_produit, 0.0, "", "", categorie)
         print("Produit créé :", produit)
 
     def creer_etagere(self, list_produits):
+        """Crée une nouvelle étagère avec la liste de produits fournie."""
         etagere = Etagere(list_produits)
-        print("L'etagere contient : ", etagere)
+        print("L'étagère contient :", etagere)
 
     def ajouter_produit_etagere(self, produit, etagere):
+        """Ajoute un produit spécifié à l'étagère spécifiée dans le modèle."""
         print(produit, etagere)
-        point : Point
+        point: Point
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
             if (x, y) == etagere:
                 if produit:
                     produitm = Produit(produit, 0.0, "", "", "")
-                    etagere : Etagere = point.get_fonction()
+                    etagere: Etagere = point.get_fonction()
                     etagere.ajouter(produitm)
         print(produitm, etagere)
 
-    def suprimer_etagere_model(self, nom_etagere : str):
+    def suprimer_etagere_model(self, nom_etagere: str):
+        """Supprime l'étagère spécifiée du modèle."""
         nom_etagere = self.main_window.vueEtagere.nom_etagere_vers_tuple(nom_etagere)
-        point : Point
+        point: Point
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
@@ -143,15 +148,17 @@ class Controleur:
                 point.set_fonction(Fonction())
 
     def set_etagere(self, rect: tuple, etagere) -> None:
-        point : Point
+        """Définit une étagère à la position spécifiée dans le modèle."""
+        point: Point
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
             if rect[0] == x and rect[1] == y:
                 point.set_fonction(Etagere(etagere))
 
-    def set_produit_etagere(self, rect : tuple, produits):
-        point : Point
+    def set_produit_etagere(self, rect: tuple, produits):
+        """Ajoute des produits à une étagère à la position spécifiée dans le modèle."""
+        point: Point
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
@@ -162,6 +169,7 @@ class Controleur:
                         etagere.ajouter(produit)
 
     def updateEtagere(self) -> None:
+        """Met à jour les données des étagères dans la vue."""
         rects: dict[tuple[int, int], list] = {}
         for point in self.model.get_plan():
             x = point.get_x()
@@ -173,10 +181,11 @@ class Controleur:
                     if produit.get_nom():
                         produits.append(produit.get_nom())
                 rects[(x, y)] = produits
-        self.main_window.vueEtagere.set_data(rects) 
-    
+        self.main_window.vueEtagere.set_data(rects)
+
     def updateRayon(self) -> None:
-        rects : dict[tuple[int, int], QColor] = {}
+        """Met à jour les couleurs des rayons dans la vue."""
+        rects: dict[tuple[int, int], QColor] = {}
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
@@ -187,12 +196,13 @@ class Controleur:
                 rects[(x, y)] = QColor("white")
                 rects[(x, y)].setAlpha(0)
             couleur = None
-        
+
         self.main_window.plan_label.updateColor(rects)
-        
+
     def updateFonc(self) -> None:
-        point : Point
-        rects : dict[tuple[int, int], QColor] = {}
+        """Met à jour les fonctions des points dans la vue."""
+        point: Point
+        rects: dict[tuple[int, int], str] = {}
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
@@ -202,32 +212,35 @@ class Controleur:
             else:
                 rects[(x, y)] = None
             nom = None
-            
+
         self.main_window.plan_label.updateFonc(rects)
-        
-    def setCouleurRayon(self, name : str, color : QColor, newColor : QColor) -> None:
-        
+
+    def setCouleurRayon(self, name: str, color: QColor, newColor: QColor) -> None:
+        """Définit une nouvelle couleur pour un rayon spécifié."""
         self.model.set_rayon(name, color, newColor)
-        self.updateRayon()    
-    
-    def delRayon(self, name : str, color : QColor):
+        self.updateRayon()
+
+    def delRayon(self, name: str, color: QColor):
+        """Supprime un rayon spécifié du modèle."""
         self.model.del_rayon(name, color)
         self.main_window.nomRayon = None
         self.main_window.couleurRayon = QColor("white")
         self.main_window.couleurRayon.setAlpha(0)
         self.main_window.plan_label.set_brush_color(QColor("white"))
         self.updateRayon()
-        
+
     def rectColorier(self, rect) -> None:
-        point : Point
+        """Colore un rectangle spécifié dans le modèle."""
+        point: Point
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
             if x == rect[0] and y == rect[1]:
                 point.setRayon(Rayon(self.main_window.nomRayon, self.main_window.couleurRayon))
-                
-    def setFonc(self, rect : tuple, name : str, color : QColor) -> None:
-        point : Point
+
+    def setFonc(self, rect: tuple, name: str, color: QColor) -> None:
+        """Définit une fonction pour un point à la position spécifiée dans le modèle."""
+        point: Point
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
@@ -238,9 +251,10 @@ class Controleur:
                     point.set_fonction(Chemin())
                 elif name == 'entree':
                     point.set_fonction(Entree())
-    
-    def setRay(self, rect : tuple, name : str, color : QColor) -> None:
-        point : Point
+
+    def setRay(self, rect: tuple, name: str, color: QColor) -> None:
+        """Définit un rayon pour un point à la position spécifiée dans le modèle."""
+        point: Point
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
@@ -248,9 +262,10 @@ class Controleur:
                 if name:
                     if color:
                         point.setRayon(Rayon(name, color))
-            
-    def delFonc(self, rect : tuple) -> None:
-        point : Point
+
+    def delFonc(self, rect: tuple) -> None:
+        """Supprime la fonction d'un point à la position spécifiée dans le modèle."""
+        point: Point
         for point in self.model.get_plan():
             x = point.get_x()
             y = point.get_y()
@@ -258,9 +273,11 @@ class Controleur:
                 point.set_fonction(Fonction())
 
     def afficher_etageres(self, coords):
+        """Affiche les coordonnées des étagères spécifiées."""
         print("Coordonnées des étagères :", coords)
 
     def get_produits_etagere(self) -> dict[tuple[int, int], dict]:
+        """Récupère les produits de chaque étagère dans le modèle."""
         dico = {}
         for point in self.model.get_plan():
             x = point.get_x()
@@ -268,7 +285,7 @@ class Controleur:
             etagere = point.get_fonction()
             if isinstance(etagere, Etagere):
                 co = (x, y)
-                dico[co] = {'nom': 'Etagere_{x}_{y}', 'produits': []}
+                dico[co] = {'nom': f'Etagere_{x}_{y}', 'produits': []}
                 produits = etagere.get_produits()
                 if produits:
                     for produit in produits:
