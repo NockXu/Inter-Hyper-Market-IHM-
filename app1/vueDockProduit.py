@@ -5,6 +5,7 @@ import sys
 from TableWidget import TableWidget
 
 class VueDockProduit(QWidget):
+
     def __init__(self, table_widget, parent=None):
         super().__init__(parent)
         
@@ -86,24 +87,18 @@ class VueDockProduit(QWidget):
 
         # Vérifier si des étagères existent déjà
         if self.rayon_combo_box.count() == 0:
-            response = QMessageBox.question(self, "Aucune étagère trouvée", 
-                                            "Aucune étagère trouvée. Voulez-vous créer une nouvelle étagère ?", 
-                                            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-            if response == QMessageBox.StandardButton.Yes:
-                self.table_widget.add_row_from_dialog()
+            QMessageBox.warning(self, "Aucune étagère trouvée", 
+                                "Aucune étagère trouvée. Veuillez créer une nouvelle étagère d'abord.")
         else:
             # Afficher une boîte de dialogue pour sélectionner une étagère
             etageres = [self.rayon_combo_box.itemText(i) for i in range(self.rayon_combo_box.count())]
 
             etagere, ok = QInputDialog.getItem(self, "Choisir une étagère", 
-                                            "Sélectionnez l'étagère pour ajouter le produit :", etageres, 0, False)
+                                               "Sélectionnez l'étagère pour ajouter le produit :", etageres, 0, False)
             if ok:
-                if etagere == "Créer une nouvelle étagère":
-                    self.table_widget.add_row_from_dialog()
-                else:
-                    print(f"Produit '{product}' ajouté à l'étagère '{etagere}'")
-                    # Émettre le signal pour ajouter le produit à l'étagère sélectionnée
-                    self.table_widget.produitAjoute.emit(product, etagere)
+                print(f"Produit '{product}' ajouté à l'étagère '{etagere}'")
+                # Émettre le signal pour ajouter le produit à l'étagère sélectionnée
+                self.table_widget.produitAjoute.emit(product, etagere)
 
     def mettre_a_jour_liste_rayons(self, nom_rayon, couleur_rayon):
         """
@@ -138,18 +133,14 @@ class VueDockProduit(QWidget):
         category = self.category_combo_box.currentText()
         products = self.categories.get(category, [])
 
-        # Récupère le texte de recherche et le convertit en minuscules pour une comparaison insensible à la casse
         search_text = self.search_line_edit.text().lower()
-        
-        # Initialise une liste pour stocker les produits filtrés
+
         filtered_products = []
         
         # Parcourt tous les produits et ajoute ceux qui contiennent le texte de recherche à la liste filtrée
         for product in products:
             if search_text in product.lower():
                 filtered_products.append(product)
-        
-        # Affiche les produits filtrés dans le widget de la liste des produits
         self.product_list_widget.addItems(filtered_products)
 
 if __name__ == "__main__":

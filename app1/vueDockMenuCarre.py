@@ -79,13 +79,6 @@ class VueDockMenuCarre(QWidget):
             self.fonction.toggle_mode()
 
 
-    def toggle_grid(self):
-        if self.bouton_fonction.text() == 'Activer ?':
-            self.bouton_fonction.setText('Desactiver?')
-        else:
-            self.bouton_fonction.setText('Activer ?')
-    
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     mainWin = VueDockMenuCarre()

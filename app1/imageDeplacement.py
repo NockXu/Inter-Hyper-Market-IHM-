@@ -82,12 +82,11 @@ class ImageDeplacement(QLabel):
         color.setAlpha(128)
         self.etagere = color
 
-    def ajouter_etagere(self, position):
-        """
-        Ajoute une étagère à la position spécifiée.
-        """
-        self.etagereAjoutee.emit(position)
-    
+    def ajouter_produit(self, coordonnees, produit):
+        if coordonnees in self.rects:
+            self.rects[coordonnees]["produits"].append(produit)
+            self.update()
+
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             for rect in self.rects.keys():
@@ -99,11 +98,9 @@ class ImageDeplacement(QLabel):
                         if self.rects[rect]["fonction"] == self.fonction_actuelle:
                             self.rects[rect]["fonction"] = color
                             self.rectFoncSupprimee.emit(rect)
-                            self.etagereSupprimee.emit(rect)
                         else:
                             self.rects[rect]["fonction"] = self.fonction_actuelle
                             self.rectFoncAttribuee.emit(rect)
-                            self.ajouter_etagere(rect)
                     # Cas d'attribution de couleur de rayon
                     else:
                         if self.rects[rect]["color"] == self.brush_color:
@@ -111,6 +108,11 @@ class ImageDeplacement(QLabel):
                         else:
                             self.rects[rect]["color"] = self.brush_color
                             self.rectColoriee.emit(rect)
+                    if self.fonction_actuelle == 'etagere':
+                        # Nom de l'étagère
+                        nom_etagere = f"Etagere_{rect[0] + 1}_{rect[1] + 1}"
+                        # Ajouter l'étagère avec ses coordonnées
+                        self.etagereAjoutee.emit((nom_etagere, rect[0], rect[1]))
                     self.update()
                     return
 
@@ -133,6 +135,14 @@ class ImageDeplacement(QLabel):
 
     def get_rects(self):
         self.getRectsDeclenchee.emit(self.rects)
+
+    def get_etageres(self) -> list[tuple[int, int]]:
+        """Retourne les coordonnées des étagères dans la grille."""
+        etageres = []
+        for rect, info in self.rects.items():
+            if info["fonction"] == "etagere":
+                etageres.append(rect)
+        return etageres
 
     def updateRect(self, index, new_rect):
         self.rects[index] = new_rect

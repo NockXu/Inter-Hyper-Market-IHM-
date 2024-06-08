@@ -1,0 +1,443 @@
+[
+    {
+        "info_plan": {
+            "nom": "MonMagasin",
+            "auteur": "",
+            "adresse": "None of your business",
+            "date": "17/11/2005",
+            "h": 3,
+            "l": 3,
+            "image": "plan1.jpg"
+        }
+    },
+    {
+        "x": 0,
+        "y": 0,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 1
+            },
+            {
+                "x": 1,
+                "y": 0
+            }
+        ],
+        "fonction": {
+            "spécialitée": "etagere",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "produits": [
+                {
+                    "nom": "truc",
+                    "prix": 100,
+                    "description": "un truc",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "objet"
+                },{
+                    "nom": "jouet",
+                    "prix": 23,
+                    "description": "voiture électrique",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "jeux"
+                },{
+                    "nom": "magasine",
+                    "prix": 0.5,
+                    "description": "magasine de mode",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "livre"
+                },{
+                    "nom": "Steaks",
+                    "prix": 5,
+                    "description": "parfait pour un steak frite",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "viande"
+                },{
+                    "nom": "Tomates",
+                    "prix": 1,
+                    "description": "Cultivé sous le magnifique soleil d'Espagne",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "legume"
+                },{
+                    "nom": "Piles éléctrique AAA",
+                    "prix": 10,
+                    "description": "Lot de 9 piles AAA",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "électronique"
+                },{
+                    "nom": "Ceinture",
+                    "prix": 10,
+                    "description": "Tout de cuire",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "vétement"
+                },{
+                    "nom": "mouchoires",
+                    "prix": 5,
+                    "description": "Boite de 500 mouchoirs",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Hygiène"
+                },{
+                    "nom": "Lunette de soleil",
+                    "prix": 10,
+                    "description": "Lunette de soleil même la nuit",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Accessoirs"
+                },{
+                    "nom": "Pailles en bambou",
+                    "prix": 12,
+                    "description": "Lot de 20 pailles en bambou",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Article de cuisine"
+                },{
+                    "nom": "Fourchettes",
+                    "prix": 10,
+                    "description": "Lot de 9 fourchettes",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "électronique"
+                },{
+                    "nom": "leton",
+                    "prix": 10,
+                    "description": "Metal je crois",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Matière première"
+                },{
+                    "nom": "vélo",
+                    "prix": 160,
+                    "description": "",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Vehicul"
+                },{
+                    "nom": "concombre",
+                    "prix": 7,
+                    "description": "cucumber",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Legume"
+                },{
+                    "nom": "pêche",
+                    "prix": 6,
+                    "description": "pour garder la pêche",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Fruit"
+                },{
+                    "nom": "chat",
+                    "prix": 104,
+                    "description": "UN CHAT",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Animal"
+                },{
+                    "nom": "telephone",
+                    "prix": 350,
+                    "description": "qualité almande",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "électronique"
+                },{
+                    "nom": "oiseau",
+                    "prix": 70,
+                    "description": "PTDR il s'est perdu",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Animal"
+                },{
+                    "nom": "cable",
+                    "prix": 12,
+                    "description": "Bah c'est un cable",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "électronique"
+                },{
+                    "nom": "sablière",
+                    "prix": 14,
+                    "description": "Lot de 9 piles AAA",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Décoration"
+                },{
+                    "nom": "clementine",
+                    "prix": 3,
+                    "description": "pour plus de vitamine",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Fruit"
+                },{
+                    "nom": "voiturette",
+                    "prix": 105,
+                    "description": "parfait pour une balade en famille",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "jeux"
+                }
+            ]
+        },
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 0,
+        "y": 1,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 2
+            },
+            {
+                "x": 1,
+                "y": 1
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 0,
+        "y": 2,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 1
+            },
+            {
+                "x": 1,
+                "y": 2
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 1,
+        "y": 0,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 1,
+                "y": 1
+            },
+            {
+                "x": 2,
+                "y": 0
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 1,
+        "y": 1,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 1
+            },
+            {
+                "x": 1,
+                "y": 0
+            },
+            {
+                "x": 1,
+                "y": 2
+            },
+            {
+                "x": 2,
+                "y": 1
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 1,
+        "y": 2,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 2
+            },
+            {
+                "x": 1,
+                "y": 1
+            },
+            {
+                "x": 2,
+                "y": 2
+            }
+        ],
+        "fonction": {
+            "spécialitée": "etagere",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "produits" : [
+                {
+                    "nom": "pierre",
+                    "prix": 15,
+                    "description": "KAYOU",
+                    "icone": "le/chemin/vers/l'icone.png",
+                    "type": "Article de jardin"
+                }]
+        },
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 2,
+        "y": 0,
+        "voisins": [
+            {
+                "x": 1,
+                "y": 0
+            },
+            {
+                "x": 2,
+                "y": 1
+            }
+        ],
+        "fonction": {
+            "spécialitée": "etagere",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "produits" : [
+                {
+                "nom": "Table",
+                "prix": 2,
+                "description": "Miam miam cougette",
+                "icone": "le/chemin/vers/l'icone.png",
+                "type": "Legume"
+            }]
+        },
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 2,
+        "y": 1,
+        "voisins": [
+            {
+                "x": 1,
+                "y": 1
+            },
+            {
+                "x": 2,
+                "y": 0
+            },
+            {
+                "x": 2,
+                "y": 2
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 2,
+        "y": 2,
+        "voisins": [
+            {
+                "x": 1,
+                "y": 2
+            },
+            {
+                "x": 2,
+                "y": 1
+            },
+            {
+                "x": 3,
+                "y": 2
+            }
+        ],
+        "fonction": {
+            "spécialitée": "etagere",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "produits" : [
+                {
+                "nom": "courgette",
+                "prix": 2,
+                "description": "Miam miam cougette",
+                "icone": "le/chemin/vers/l'icone.png",
+                "type": "Legume"
+            }]
+        },
+        "rectangle": "None",
+        "rayon": {
+            "nom": null
+        }
+    }
+]
