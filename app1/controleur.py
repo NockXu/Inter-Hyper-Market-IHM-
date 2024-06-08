@@ -15,7 +15,6 @@ class Controleur:
     def __init__(self):
         self.main_window = MainWindow()
         self.model = Plan() 
-        self.etageres = {}
 
         # Connexion des signaux
         self.main_window.action_nouveau.triggered.connect(self.nouveau_projet)
@@ -33,10 +32,19 @@ class Controleur:
         self.main_window.vueCarre.tableRayon.couleurRayonChangee.connect(self.setCouleurRayon)
         
         # Signaux de imageDeplacement
-        self.main_window.plan_label.rectColoriee.connect(self.rectColorier)
+        self.main_window.rectRayAttribuee.connect(self.setRay)
+        
+        self.main_window.imageAjouter.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.nomMagasinChanger.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.nomProjetChanger.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.addresseChanger.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.dateChanger.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.auteurChanger.connect(self.main_window.set_plan)
+        self.main_window.vueOutil.loadPressed.connect(self.ouvrir_projet)
 
-        self.main_window.vueProduit.produitAjoute.connect(self.creer_produit)
-        self.main_window.vueEtagere.produitAjouteAvecEtagere.connect(self.ajouter_produit_etagere)
+        self.main_window.plan_label.etagereAjoutee.connect(self.afficher_etageres)
+
+        self.main_window.vueEtagere.etagereSelectionnee.connect(self.get_produits_etagere)
 
         self.main_window.show()
 
@@ -47,82 +55,56 @@ class Controleur:
     def ouvrir_projet(self):
         file_path, _ = QFileDialog.getOpenFileName(self.main_window, "Ouvrir le fichier", "", "JSON Files (*.json)")
         if file_path:
+            self.main_window.reset_all()
             self.model.lire_JSON(file_path)
             # le nom
+            self.model.lire_JSON(file_path)
             self.main_window.vueOutil.nom_magasin.setText(self.model.get_nom())
             # l'auteur
+            self.model.lire_JSON(file_path)
             self.main_window.vueOutil.auteur.setText(self.model.get_auteur())
             # l'addresse
+            self.model.lire_JSON(file_path) 
             self.main_window.vueOutil.adresse.setText(self.model.get_adresse())
             # la date
+            self.model.lire_JSON(file_path)
             date = QDate().fromString(self.model.get_date(), "dd/MM/yyyy")
             self.main_window.vueOutil.date.setDate(date)
+            
+            self.model.lire_JSON(file_path)
             # le nom du projet + image
             self.main_window.vueOutil.nom_projet.setText(self.model.get_fichier())
-            self.main_window.vueOutil.image.lineEdit.setText(self.model.get_fichier()+"_image.png")
+            self.main_window.vueOutil.image.lineEdit.setText(self.model.get_image())
+            
+            self.model.lire_JSON(file_path)
             # longeur et largeur
             self.main_window.vueCarre.nb_carre_x.set_valeur(self.model.get_h())
             self.main_window.vueCarre.nb_carre_y.set_valeur(self.model.get_l())
-            self.main_window.create_grid()
             
+            if self.model.get_image():
+                self.main_window.vueOutil.image.setImage(self.model.get_image())
+            
+            self.model.lire_JSON(file_path)
             infos = self.model.getInfos()
-            for info in infos:
-                print(infos[info])
-                self.main_window.vueCarre.tableRayon.add_row(infos[info]["name"], infos[info]["color"])
+            self.main_window.vueCarre.tableRayon.set_data(infos)
+            
+            # la méthode suprime les données du modèle
+            
+            self.main_window.create_grid()
+            # on le recrée
+            self.model.lire_JSON(file_path)
             self.updateFonc()
             self.main_window.vueCarre.fonction.toggle_mode()
+            self.model.lire_JSON(file_path)
             self.updateRayon()
-            
-        
+            self.main_window.vueCarre.fonction.toggle_mode()
 
     def enregistrer_projet(self):
         # Récupérez les données des rayons depuis le modèle
-        data = self.get_rayons_data()
+        self.model.ecrire_JSON(self.model.get_fichier())
 
-        # Sauvegardez les données dans un fichier JSON
-        file_path, _ = QFileDialog.getSaveFileName(self.main_window, "Enregistrer le fichier", "", "JSON Files (*.json)")
-        if file_path:
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(data, f, ensure_ascii=False, indent=4)
-
-    def creer_produit(self, nom_produit, categorie):
-        produit = Produit(nom_produit, 0.0, "", "", categorie)
-        print("Produit créé :", produit)
-
-    def creer_etagere(self, list_produits):
-        etagere = Etagere(list_produits)
-        print("L'etagere contient : ", etagere)
-
-    def ajouter_produit_etagere(self, produit, etagere):
-        if etagere not in self.etageres:
-            self.etageres[etagere] = []  
-        self.etageres[etagere].append(produit)
-        print("L'étagère", etagere, "contient maintenant :", self.etageres[etagere])
-
-    def set_etagere(self, rect: tuple, etagere) -> None:
-        point : Point
-        for point in self.model.get_plan():
-            x = point.get_x()
-            y = point.get_y()
-            if rect[0] == x and rect[1] == y:
-                del etagere[0]
-                point.set_fonction(Etagere(etagere))
-
-    def set_produit_etagere(self, rect : tuple, produits):
-        point : Point
-        for point in self.model.get_plan():
-            x = point.get_x()
-            y = point.get_y()
-            if rect[0] == x and rect[1] == y:
-                if point.get_fonction().getNom() == 'etagere':
-                    etagere: Etagere = point.get_fonction()
-                    for produit in produits:
-                        etagere.ajouter(produit)
-
-
-    def setModele(self, rows : int, cols : int, nom : str, auteur : str, date : str, adresse : str, rects : list[QRectF]) -> None:
-        self.model = Plan(rows, cols, nom, auteur, date, adresse)
-        self.model.lienQPlan(rects)
+    def setModele(self, rows : int, cols : int, nom : str, auteur : str, date : str, adresse : str, image : str) -> None:
+        self.model = Plan(rows, cols, nom, auteur, date, adresse, image)
     
     def updateRayon(self) -> None:
         rects : dict[tuple[int, int], QColor] = {}
@@ -136,6 +118,7 @@ class Controleur:
                 rects[(x, y)] = QColor("white")
                 rects[(x, y)].setAlpha(0)
             couleur = None
+        
         self.main_window.plan_label.updateColor(rects)
         
     def updateFonc(self) -> None:
@@ -150,6 +133,7 @@ class Controleur:
             else:
                 rects[(x, y)] = None
             nom = None
+            
         self.main_window.plan_label.updateFonc(rects)
         
     def setCouleurRayon(self, name : str, color : QColor, newColor : QColor) -> None:
@@ -179,8 +163,23 @@ class Controleur:
             x = point.get_x()
             y = point.get_y()
             if x == rect[0] and y == rect[1]:
-                point.set_fonction(Fonction(name, color))
-                
+                if name == 'etagere':
+                    point.set_fonction(Etagere())
+                elif name == 'chemin':
+                    point.set_fonction(Chemin())
+                elif name == 'entree':
+                    point.set_fonction(Entree())
+    
+    def setRay(self, rect : tuple, name : str, color : QColor) -> None:
+        point : Point
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            if x == rect[0] and y == rect[1]:
+                if name:
+                    if color:
+                        point.setRayon(Rayon(name, color))
+            
     def delFonc(self, rect : tuple) -> None:
         point : Point
         for point in self.model.get_plan():
@@ -188,6 +187,60 @@ class Controleur:
             y = point.get_y()
             if x == rect[0] and y == rect[1]:
                 point.set_fonction(Fonction())
+
+    def afficher_etageres(self, coords):
+        print("Coordonnées des étagères :", coords)
+
+    def get_produits_etagere(self) -> dict[tuple[int, int], dict]:
+        dico = {}
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            etagere = point.get_fonction()
+            if isinstance(etagere, Etagere):
+                co = (x, y)
+                dico[co] = {'nom': 'Etagere_{x}_{y}', 'produits': []}
+                produits = etagere.get_produits()
+                if produits:
+                    for produit in produits:
+                        dico[co]['produits'].append({'nom': produit.get_nom()})
+        return dico
+        
+                        
+    def get_rayons_data(self):
+        data = []
+        
+        # Add "info_plan" section
+        info_plan = {
+            "info_plan": {
+                "nom": self.model._nom,
+                "auteur": self.model._auteur,
+                "adresse": self.model._adresse,
+                "date": self.model._date
+            }
+        }
+        data.append(info_plan)
+
+        # Add rayons data
+        for point in self.model.get_plan():
+            rayon = {
+                "x": point.get_x(),
+                "y": point.get_y(),
+                "voisins": [], 
+                "fonction": {
+                    "spécialitée": "étagère",
+                    "acces": [True, True, True, True],
+                    "produits": []
+                },
+                "rectangle": "None",
+                "rayon": {
+                    "nom": point.getRayon().getNom(),
+                }
+            }
+            data.append(rayon)
+        
+        return data    
+
 
 
 # Programme principal : test du controleur ------------------------------------
