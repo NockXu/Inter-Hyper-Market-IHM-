@@ -109,7 +109,10 @@ class ImageDeplacement(QLabel):
                             self.rects[rect]["color"] = self.brush_color
                             self.rectColoriee.emit(rect)
                     if self.fonction_actuelle == 'etagere':
-                        self.etagereAjoutee.emit((rect[0], rect[1]))
+                        # Nom de l'étagère
+                        nom_etagere = f"Etagere_{rect[0] + 1}_{rect[1] + 1}"
+                        # Ajouter l'étagère avec ses coordonnées
+                        self.etagereAjoutee.emit((nom_etagere, rect[0], rect[1]))
                     self.update()
                     return
 
