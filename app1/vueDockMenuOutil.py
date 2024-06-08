@@ -9,12 +9,14 @@ class VueDockMenuOutil(QWidget):
     auteurChanger = pyqtSignal(str)
     dateChanger = pyqtSignal(QDate)
     addresseChanger = pyqtSignal(str)
+    loadPressed = pyqtSignal()
     
     def __init__(self, parent=None):
         super().__init__(parent)
         self.layout_dock = QVBoxLayout()
 
         self.load_plan_button = QPushButton('Charger un plan')
+        self.load_plan_button.clicked.connect(self.load)
 
         self.nom_projet_label = QLabel("Nom de projet :")
         self.nom_projet = QLineEdit()
@@ -78,3 +80,6 @@ class VueDockMenuOutil(QWidget):
     
     def on_adresse_changed(self, text):
         self.addresseChanger.emit(text)
+        
+    def load(self):
+        self.loadPressed.emit()

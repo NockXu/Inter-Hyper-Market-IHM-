@@ -16,9 +16,9 @@ class Point:
         self._x : int = x
         self._y : int = y
         self._voisins : list = voisins
-        self._fonction : Fonction = fonction
+        self.fonction : Fonction = fonction
         self._qRectF : QRectF = qRectF
-        self._rayon : Rayon = Rayon()
+        self._rayon : Rayon = rayon
     
     # Méthodes getters
     def get_x(self) -> int:
@@ -34,19 +34,19 @@ class Point:
         return self._voisins
     
     def get_fonction(self) -> Fonction:
-        return self._fonction
+        return self.fonction
     
     def getHaut(self) -> bool:
-        return self._fonction.getHaut()
+        return self.fonction.getHaut()
     
     def getBas(self) -> bool:
-        return self._fonction.getBas()
+        return self.fonction.getBas()
     
     def getGauche(self) -> bool:
-        return self._fonction.getGauche()
+        return self.fonction.getGauche()
     
     def getDroite(self) -> bool:
-        return self._fonction.getDroite()
+        return self.fonction.getDroite()
 
     def getQRectF(self) -> QRectF:
         return self._qRectF
@@ -62,7 +62,7 @@ class Point:
         self._y = y
     
     def set_fonction(self, fonction : Fonction) -> None :
-        self._fonction = fonction
+        self.fonction = fonction
         
     def setQRectF(self, qRectF : QRectF) -> None:
         self._qRectF = qRectF
@@ -93,20 +93,20 @@ class Point:
             self._voisins = [voisin]
 
     def setHaut(self, H : bool = True) -> None :
-        return self._fonction.setHaut(H)
+        return self.fonction.setHaut(H)
     
     def setBas(self, B : bool = True) -> None :
-        return self._fonction.setBas(B)
+        return self.fonction.setBas(B)
     
     def setGauche(self, G : bool = True) -> None :
-        return self._fonction.setGauche(G)
+        return self.fonction.setGauche(G)
     
     def setDroite(self, D : bool = True) -> None :
-        return self._fonction.setDroite(D)
+        return self.fonction.setDroite(D)
 
     # Méthode spéciale __str__()
     def __str__(self) -> str :
-        return f"({self._x}, {self._y}) : [voisins : {self._voisins}, fonction : {self._fonction}, rayon : "+"{"+f" {self._rayon}"+"}]"
+        return f"({self._x}, {self._y}) : [voisins : {self._voisins}, fonction : {self.fonction}, rayon : "+"{"+f" {self._rayon}"+"}]"
 
     # Méthode spéciale __eq__()
     def __eq__(self, other) -> bool :

@@ -18,6 +18,7 @@ class MainWindow(QMainWindow):
     # Signaux
     planCree = pyqtSignal(int, int, str, str, str, str, str)
     rectFoncAttribuee = pyqtSignal(tuple, str, QColor)
+    rectRayAttribuee = pyqtSignal(tuple, str, QColor)
     imageAjouter = pyqtSignal(str)
     
     def __init__(self):
@@ -118,7 +119,7 @@ class MainWindow(QMainWindow):
         menu_affichage.addAction(self.dock4.toggleViewAction())
 
         self.vueOutil.image.imageSelectionnee.connect(self.load_plan)
-        
+
         self.vueCarre.carre_button.clicked.connect(self.create_grid)
         
         #--------------------------------------------------------------------------------
@@ -136,6 +137,7 @@ class MainWindow(QMainWindow):
         self.vueCarre.fonction.boutonCliquee.connect(self.plan_label.set_fonction_actuelle)
         self.vueCarre.fonction.modeChangee.connect(self.plan_label.switch_est_fonction)
         self.plan_label.rectFoncAttribuee.connect(self.getRectFonc)
+        self.plan_label.rectColoriee.connect(self.getRectRay)
     
         # TableWidget
         self.nomRayon = None
@@ -217,6 +219,10 @@ class MainWindow(QMainWindow):
     def getRectFonc(self, rect : tuple) -> None:
         if self.nomFonction and self.couleurFonction:
             self.rectFoncAttribuee.emit(rect, self.nomFonction, self.couleurFonction)
+            
+    def getRectRay(self, rect : tuple) -> None:
+        if self.nomRayon and self.couleurRayon:
+            self.rectRayAttribuee.emit(rect, self.nomRayon, self.couleurRayon)
             
 
 if __name__ == "__main__":

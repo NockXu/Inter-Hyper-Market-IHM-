@@ -164,6 +164,12 @@ class TableWidget(QWidget):
             if (name, color) != (None, None):
                 if (name, color) not in data_actuelle:
                     self.add_row(name, color)
+                    
+    def clear(self):
+        """
+        Supprime toutes les entrées de la table.
+        """
+        self.table.setRowCount(0)
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)

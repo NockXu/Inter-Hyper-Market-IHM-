@@ -19,7 +19,7 @@ class Plan :
     def __init__(self, h : int = 9, l : int = 9, nom  : str = "MonMagasin", auteur : str = "", date : str = "17/11/2005", adresse : str = "None of your business", image : str = None) -> None:
         # on définit un liste contenant un dictionnaire contenant toutes les coordonnées des point du plan ses voisins et sa fonction dans le magasin (None par défaut)
         self._plan : list[Point] = []
-        self._fichier : str = nom + ".json"
+        self._fichier : str = nom
         self._nom : str = nom
         self._auteur : str = auteur
         self._date : str = date
@@ -64,6 +64,12 @@ class Plan :
     
     def set_adresse(self, adresse : str) -> None:
         self._adresse = adresse
+        
+    def set_h(self, h : int) -> None:
+        self._h = h
+        
+    def set_l(self, l : int) -> None:
+        self._l = l
     
     # Méthodes getters    
     def get_plan(self) -> list:
@@ -263,7 +269,7 @@ class Plan :
         points: list = []
 
         # Création/Ouverture du fichier JSON
-        file = open(nomFichier, 'w')
+        file = open(nomFichier + '.json', 'w')
         
         info_plan = {"info_plan" : {
             "nom" : self._nom,
@@ -307,7 +313,7 @@ class Plan :
                 fonction["produits"] = []
                 
                 # on récupere les info de l'etagere
-                etagere: Etagere = point.get_fonction()
+                etagere : Etagere = point.get_fonction()
                 
                 # pour chaque produit dans la liste de produits de l'étagère
                 for produit in etagere.get_produits():
@@ -337,12 +343,14 @@ class Plan :
                 
                 if coul is not None:
                     couleur = {
-                        "rouge": coul.redF(),
-                        "vert": coul.greenF(),
-                        "bleu": coul.blueF(),
-                        "alpha": coul.alphaF()
+                        "rouge": coul.red(),
+                        "vert": coul.green(),
+                        "bleu": coul.blue(),
+                        "alpha": coul.alpha()
                     }
-                    rayon["couleur"] = couleur      
+                    rayon["couleur"] = couleur
+            else: 
+                rayon = None   
                 
             # on met le tout dans un dictionnaire qui regroupe toutes les infos du point
             data = {
@@ -374,11 +382,11 @@ class Plan :
         chemin = os.path.join(chemin, nomFichier)
 
         # Écriture des données dans le fichier JSON
-        with open(chemin, 'w', encoding='utf-8') as file:
+        with open(chemin + '.json', 'w', encoding='utf-8') as file:
             json.dump(points, file, indent=4, ensure_ascii=False)
             
     def lire_JSON(self, nomFichier: str) -> None:
-        # Récupérer le chemin du répertoire contenant votre script Python
+        # Chemin du répertoire actuel (où se trouve ce script)
         chemin = os.path.dirname(__file__)
 
         # Remonter d'un dossier pour obtenir le chemin du dossier parent
@@ -388,12 +396,22 @@ class Plan :
         chemin = os.path.join(chemin, "Magasin")
 
         # Ajouter le nom du fichier
-        chemin = os.path.join(chemin, nomFichier)
+        chemin_fichier = os.path.join(chemin, nomFichier)
 
         # Lecture des données à partir du fichier JSON
-        with open(chemin, 'r', encoding='utf-8') as file:
-            info = json.load(file)
-            
+        try:
+            with open(chemin_fichier, 'r', encoding='utf-8') as file:
+                info = json.load(file)
+        except json.JSONDecodeError as e:
+            print(f"Erreur lors de la lecture du fichier JSON: {e}")
+            return
+        except FileNotFoundError:
+            print("Le fichier n'a pas été trouvé.")
+            return
+        except Exception as e:
+            print(f"Une erreur s'est produite: {e}")
+            return
+
         # On supprime le plan
         self._plan = []
 
@@ -404,29 +422,33 @@ class Plan :
         for point_data in info:
             if 'info_plan' in point_data:
                 self.set_nom(point_data['info_plan']['nom'])
-                self._auteur = point_data['info_plan']['auteur']
-                self._adresse = point_data['info_plan']['adresse']
-                self._date = point_data['info_plan']['date']
-                self._h = point_data['info_plan']['h']
-                self._l = point_data['info_plan']['l']
-                self._image = point_data['info_plan']['image']
-            
+                self.set_auteur(point_data['info_plan']['auteur'])
+                self.set_adresse(point_data['info_plan']['adresse'])
+                self.set_date(point_data['info_plan']['date'])
+                self.set_h(point_data['info_plan']['h'])
+                self.set_l(point_data['info_plan']['l'])
+                self.set_image(point_data['info_plan']['image'])
             else:
                 x = point_data['x']
                 y = point_data['y']
-                    
+                rayon = None
+
                 # Création du rayon du point
                 if 'rayon' in point_data:
+                    rayon_data = point_data['rayon']
+                    nom_rayon = rayon_data.get('nom')
                     
-                    rayon = point_data['rayon']
-                    nom_rayon = rayon['nom']
+                    couleur_rayon = None
+                    if 'couleur' in rayon_data:
+                        couleur = rayon_data['couleur']
+                        couleur_rayon = QColor(
+                            int(couleur['rouge']),
+                            int(couleur['vert']),
+                            int(couleur['bleu']),
+                            int(couleur['alpha'])
+                        )
                     
-                    if 'couleur' in rayon:
-                        
-                        couleur_rayon = QColor(rayon['couleur']['rouge'],rayon['couleur']['vert'],rayon['couleur']['bleu'],rayon['couleur']['alpha'])
-                        rayon = Rayon(nom_rayon, couleur_rayon)
-                        
-                    rayon = Rayon(nom_rayon)
+                    rayon = Rayon(nom_rayon, couleur_rayon)
                 
                 # Création de la fonction du point
                 fonction_data = point_data['fonction']
@@ -444,7 +466,7 @@ class Plan :
                     ]
                     fonction = Etagere(produits)
                 elif specialite == "entree":
-                    fonction = Entree(fonction_data['nomEntree'])
+                    fonction = Entree()
                 elif specialite == "chemin":
                     fonction = Chemin()
                 else:
@@ -468,10 +490,6 @@ class Plan :
                     if voisin:
                         voisins.append(voisin)
                 point.set_voisins(voisins)
-        
-        
-        
-
 if __name__ == "__main__":
     test = Plan(3, 3)
 

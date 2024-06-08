@@ -1,13 +1,13 @@
 [
     {
         "info_plan": {
-            "nom": "",
-            "auteur": "",
-            "adresse": "",
-            "date": "05/06/2024",
-            "h": 4,
-            "l": 4,
-            "image": null
+            "nom": "LeClaire",
+            "auteur": "Moi",
+            "adresse": "je sais pas",
+            "date": "08/06/2024",
+            "h": 5,
+            "l": 5,
+            "image": "C:/Users/jeans/OneDrive/Bureau/Workspace/SAE/IHM/Magasin/images/sus.png"
         }
     },
     {
@@ -24,16 +24,23 @@
             }
         ],
         "fonction": {
-            "spécialitée": "None",
+            "spécialitée": "etagere",
             "acces": [
                 true,
                 true,
                 true,
                 true
-            ]
+            ],
+            "produits": []
         },
         "rayon": {
-            "nom": null
+            "nom": "gh",
+            "couleur": {
+                "rouge": 85,
+                "vert": 255,
+                "bleu": 0,
+                "alpha": 128
+            }
         }
     },
     {
@@ -54,16 +61,23 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "etagere",
             "acces": [
                 true,
                 true,
                 true,
                 true
-            ]
+            ],
+            "produits": []
         },
         "rayon": {
-            "nom": null
+            "nom": "gh",
+            "couleur": {
+                "rouge": 85,
+                "vert": 255,
+                "bleu": 0,
+                "alpha": 128
+            }
         }
     },
     {
@@ -84,7 +98,7 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "None",
             "acces": [
                 true,
                 true,
@@ -105,18 +119,50 @@
                 "y": 2
             },
             {
+                "x": 0,
+                "y": 4
+            },
+            {
                 "x": 1,
                 "y": 3
             }
         ],
         "fonction": {
-            "spécialitée": "None",
+            "spécialitée": "etagere",
             "acces": [
                 true,
                 true,
                 true,
                 true
-            ]
+            ],
+            "produits": []
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 0,
+        "y": 4,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 3
+            },
+            {
+                "x": 1,
+                "y": 4
+            }
+        ],
+        "fonction": {
+            "spécialitée": "etagere",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "produits": []
         },
         "rayon": {
             "nom": null
@@ -140,16 +186,23 @@
             }
         ],
         "fonction": {
-            "spécialitée": "None",
+            "spécialitée": "etagere",
             "acces": [
                 true,
                 true,
                 true,
                 true
-            ]
+            ],
+            "produits": []
         },
         "rayon": {
-            "nom": null
+            "nom": "gh",
+            "couleur": {
+                "rouge": 85,
+                "vert": 255,
+                "bleu": 0,
+                "alpha": 128
+            }
         }
     },
     {
@@ -183,7 +236,13 @@
             ]
         },
         "rayon": {
-            "nom": null
+            "nom": "gh",
+            "couleur": {
+                "rouge": 85,
+                "vert": 255,
+                "bleu": 0,
+                "alpha": 128
+            }
         }
     },
     {
@@ -208,13 +267,14 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "etagere",
             "acces": [
                 true,
                 true,
                 true,
                 true
-            ]
+            ],
+            "produits": []
         },
         "rayon": {
             "nom": null
@@ -233,18 +293,53 @@
                 "y": 2
             },
             {
+                "x": 1,
+                "y": 4
+            },
+            {
                 "x": 2,
                 "y": 3
             }
         ],
         "fonction": {
-            "spécialitée": "None",
+            "spécialitée": "chemin",
             "acces": [
                 true,
                 true,
                 true,
                 true
             ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 1,
+        "y": 4,
+        "voisins": [
+            {
+                "x": 0,
+                "y": 4
+            },
+            {
+                "x": 1,
+                "y": 3
+            },
+            {
+                "x": 2,
+                "y": 4
+            }
+        ],
+        "fonction": {
+            "spécialitée": "etagere",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "produits": []
         },
         "rayon": {
             "nom": null
@@ -268,16 +363,23 @@
             }
         ],
         "fonction": {
-            "spécialitée": "None",
+            "spécialitée": "etagere",
             "acces": [
                 true,
                 true,
                 true,
                 true
-            ]
+            ],
+            "produits": []
         },
         "rayon": {
-            "nom": null
+            "nom": "gh",
+            "couleur": {
+                "rouge": 85,
+                "vert": 255,
+                "bleu": 0,
+                "alpha": 128
+            }
         }
     },
     {
@@ -311,7 +413,13 @@
             ]
         },
         "rayon": {
-            "nom": null
+            "nom": "gh",
+            "couleur": {
+                "rouge": 85,
+                "vert": 255,
+                "bleu": 0,
+                "alpha": 128
+            }
         }
     },
     {
@@ -336,13 +444,14 @@
             }
         ],
         "fonction": {
-            "spécialitée": "chemin",
+            "spécialitée": "etagere",
             "acces": [
                 true,
                 true,
                 true,
                 true
-            ]
+            ],
+            "produits": []
         },
         "rayon": {
             "nom": null
@@ -361,18 +470,53 @@
                 "y": 2
             },
             {
+                "x": 2,
+                "y": 4
+            },
+            {
                 "x": 3,
                 "y": 3
             }
         ],
         "fonction": {
-            "spécialitée": "None",
+            "spécialitée": "chemin",
             "acces": [
                 true,
                 true,
                 true,
                 true
             ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 2,
+        "y": 4,
+        "voisins": [
+            {
+                "x": 1,
+                "y": 4
+            },
+            {
+                "x": 2,
+                "y": 3
+            },
+            {
+                "x": 3,
+                "y": 4
+            }
+        ],
+        "fonction": {
+            "spécialitée": "etagere",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "produits": []
         },
         "rayon": {
             "nom": null
@@ -389,16 +533,21 @@
             {
                 "x": 3,
                 "y": 1
+            },
+            {
+                "x": 4,
+                "y": 0
             }
         ],
         "fonction": {
-            "spécialitée": "None",
+            "spécialitée": "etagere",
             "acces": [
                 true,
                 true,
                 true,
                 true
-            ]
+            ],
+            "produits": []
         },
         "rayon": {
             "nom": null
@@ -419,6 +568,10 @@
             {
                 "x": 3,
                 "y": 2
+            },
+            {
+                "x": 4,
+                "y": 1
             }
         ],
         "fonction": {
@@ -449,6 +602,10 @@
             {
                 "x": 3,
                 "y": 3
+            },
+            {
+                "x": 4,
+                "y": 2
             }
         ],
         "fonction": {
@@ -475,6 +632,187 @@
             {
                 "x": 3,
                 "y": 2
+            },
+            {
+                "x": 3,
+                "y": 4
+            },
+            {
+                "x": 4,
+                "y": 3
+            }
+        ],
+        "fonction": {
+            "spécialitée": "chemin",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 3,
+        "y": 4,
+        "voisins": [
+            {
+                "x": 2,
+                "y": 4
+            },
+            {
+                "x": 3,
+                "y": 3
+            },
+            {
+                "x": 4,
+                "y": 4
+            }
+        ],
+        "fonction": {
+            "spécialitée": "etagere",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "produits": []
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 4,
+        "y": 0,
+        "voisins": [
+            {
+                "x": 3,
+                "y": 0
+            },
+            {
+                "x": 4,
+                "y": 1
+            }
+        ],
+        "fonction": {
+            "spécialitée": "None",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 4,
+        "y": 1,
+        "voisins": [
+            {
+                "x": 3,
+                "y": 1
+            },
+            {
+                "x": 4,
+                "y": 0
+            },
+            {
+                "x": 4,
+                "y": 2
+            }
+        ],
+        "fonction": {
+            "spécialitée": "entree",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 4,
+        "y": 2,
+        "voisins": [
+            {
+                "x": 3,
+                "y": 2
+            },
+            {
+                "x": 4,
+                "y": 1
+            },
+            {
+                "x": 4,
+                "y": 3
+            }
+        ],
+        "fonction": {
+            "spécialitée": "None",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 4,
+        "y": 3,
+        "voisins": [
+            {
+                "x": 3,
+                "y": 3
+            },
+            {
+                "x": 4,
+                "y": 2
+            },
+            {
+                "x": 4,
+                "y": 4
+            }
+        ],
+        "fonction": {
+            "spécialitée": "entree",
+            "acces": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        "rayon": {
+            "nom": null
+        }
+    },
+    {
+        "x": 4,
+        "y": 4,
+        "voisins": [
+            {
+                "x": 3,
+                "y": 4
+            },
+            {
+                "x": 4,
+                "y": 3
             }
         ],
         "fonction": {

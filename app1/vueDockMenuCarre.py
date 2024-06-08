@@ -74,6 +74,9 @@ class VueDockMenuCarre(QWidget):
         """
         self.nb_carre_x.clear()
         self.nb_carre_y.clear()
+        self.tableRayon.clear()
+        if not self.fonction.mode_fonction:
+            self.fonction.toggle_mode()
 
 
     def toggle_grid(self):

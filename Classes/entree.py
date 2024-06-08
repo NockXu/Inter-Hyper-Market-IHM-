@@ -2,9 +2,8 @@ import os, sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Classes.fonction import Fonction
-from Classes.chemin import Chemin
 
-class Entree(Chemin):
+class Entree(Fonction):
     def __init__(self, nom : str = None) -> None:
         super().__init__("entree")
         self._nomEntree = nom
