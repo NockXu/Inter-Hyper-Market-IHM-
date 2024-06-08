@@ -7,7 +7,7 @@ class VueEtagere(QWidget):
     etagereSelectionnee = pyqtSignal(str)
     etagereAjoutee = pyqtSignal(str)
     etagereSupprimee = pyqtSignal(str)
-    produitAjouteAvecEtagere = pyqtSignal(str, str)
+    produitAjouteAvecEtagere = pyqtSignal(str, tuple)
 
     def __init__(self):
         super().__init__()
@@ -63,7 +63,7 @@ class VueEtagere(QWidget):
             if etagere in self.etageres:
                 self.etageres[etagere].append(produit)
                 self.afficher_produits_etagere(self.table_etageres.currentRow(), 0)
-                # Émettre le signal pour ajouter le produit à l'étagère
+                etagere = self.nom_etagere_vers_tuple(etagere)
                 self.produitAjouteAvecEtagere.emit(produit, etagere)
 
 
@@ -79,13 +79,38 @@ class VueEtagere(QWidget):
                 item_produit = QTableWidgetItem(produit)
                 self.table_produits.setItem(row_position, 0, item_produit)
 
-
     def get_produits_etagere(self, nom_etagere: str) -> list:
         if nom_etagere == 'Etagere_1_0':
             return [{'nom': 'Produit A'}, {'nom': 'Produit B'}]
         elif nom_etagere == 'Etagere_2_1':
             return [{'nom': 'Produit C'}, {'nom': 'Produit D'}]
         return []
+    
+    def nom_etagere_vers_tuple(self, nom_etagere):
+        """Convertit le nom de l'étagère en tuple"""
+        if nom_etagere.startswith('Etagere_'):
+            parts = nom_etagere.split('_')
+            if len(parts) == 3:
+                return int(parts[1]), int(parts[2])
+        return None
+
+    def set_data(self, dico: dict[tuple[int, int], list]):
+        for point, produits in dico.items():
+            nom_etagere = f"Etagere_{point[0]}_{point[1]}"
+            if nom_etagere in self.etageres:
+                self.etageres[nom_etagere] = produits
+            else:
+                self.etageres[nom_etagere] = produits
+                row_position = self.table_etageres.rowCount()
+                self.table_etageres.insertRow(row_position)
+                item_nom = QTableWidgetItem(nom_etagere)
+                self.table_etageres.setItem(row_position, 0, item_nom)
+        print("Étagères après mise à jour:", self.etageres)
+
+    def reset(self):
+        self.table_etageres.setRowCount(0)
+        self.table_produits.setRowCount(0)
+        self.etageres.clear()
 
 # Exemple d'utilisation
 if __name__ == "__main__":

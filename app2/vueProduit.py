@@ -21,9 +21,21 @@ class ProduitWidget(QWidget):
         super().__init__()
         self.nom_produit = nom_produit
 
+##########################################################
+#                                                        #
+#                       Layouts                          #
+#                                                        #
+##########################################################
+
         produit_layout = QHBoxLayout(self)
         produit_layout2 = QVBoxLayout()
         
+##########################################################
+#                                                        #
+#                        Widgets                         #
+#                                                        #
+##########################################################
+
         image_produit = QLabel()
         produit_layout.addWidget(image_produit)
         image = QPixmap('app2/image/magasin.jpg').scaled(100, 100, Qt.AspectRatioMode.KeepAspectRatio)
@@ -42,6 +54,12 @@ class ProduitWidget(QWidget):
         produit_layout.addWidget(ajouter)
 
         ajouter.clicked.connect(self.ajouter_produit)
+
+##########################################################
+#                                                        #
+#                       Fonction                         #
+#                                                        #
+##########################################################
 
     def ajouter_produit(self):
         self.produit_ajoute.emit(self.nom_produit)
@@ -113,6 +131,7 @@ class VueProduit(QWidget):
 
         self.afficher_produits(self.produits)  # Appel la fonction pour afficher les produits
 
+    # Fonction qui affiche les produits du magasin
     def afficher_produits(self, produits):
         layout_produit = QVBoxLayout()
         for produit in produits:
@@ -136,6 +155,7 @@ class VueProduit(QWidget):
         self.scroll_bar.setWidget(produits_widget)
         self.scroll_bar.setWidgetResizable(True)
 
+    # Fonction qui permet de n'afficher que lmes produits qui sont ciblé par le filtre
     def filtrer_produits(self):
         self.produits_a_afficher = []
         type_produit = self.filtre1.currentText()

@@ -169,6 +169,7 @@ class MainWindow(QMainWindow):
     #------------------------------------------------------------------------------------
 
     def load_plan(self, file_name : str):
+        """Charge un plan à partir du fichier spécifié et l'affiche sur l'étiquette de plan."""
         if file_name:
             pixmap = QPixmap(file_name)
             pixmap = pixmap.scaled(self.plan_label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
@@ -177,19 +178,23 @@ class MainWindow(QMainWindow):
             self.imageAjouter.emit(file_name)
     
     def reset_all(self):
+        """Réinitialise tous les éléments de l'IHM à leur état initial."""
         self.plan_label.clear()
         self.plan_label.clearAll()
         self.plan_label.update()
         self.vueCarre.reset()
         self.vueOutil.reset()
+        self.vueEtagere.reset()
 
     def create_grid(self):
+        """Crée une grille sur le plan en fonction des dimensions spécifiées."""
         rows = int(self.vueCarre.nb_carre_x.valeur)
         cols = int(self.vueCarre.nb_carre_y.valeur)
         if rows > 0 and cols > 0:
             self.plan_label.set_grid(rows, cols)
 
     def set_plan(self, rects: List[QRectF]):
+        """Définit le plan en fonction des rectangles spécifiés."""
         rows = int(self.vueCarre.nb_carre_x.valeur)
         cols = int(self.vueCarre.nb_carre_y.valeur)
         nom = self.vueOutil.nom_magasin.text()
@@ -200,6 +205,7 @@ class MainWindow(QMainWindow):
         self.planCree.emit(rows, cols, nom, auteur, date, adresse, image)
         
     def setRayonActuelle(self, nom: str, couleur: QColor) -> None:
+        """Définit le rayon actuellement sélectionné avec le nom et la couleur spécifiés."""
         if self.vueCarre.fonction.mode_fonction:
             self.vueCarre.fonction.bouton_fonction.click()
         self.nomRayon = nom
@@ -208,9 +214,11 @@ class MainWindow(QMainWindow):
         self.plan_label.set_brush_color(couleur)
     
     def updateCouleur(self, rects: dict[tuple[int, int], QColor]) -> None:
+        """Met à jour les couleurs des rectangles spécifiés sur le plan."""
         self.plan_label.updateColor(rects)
         
     def setFonctionActuelle(self, name :str = None, color : QColor = None) -> None:
+        """Définit la fonction actuellement sélectionnée avec le nom et la couleur spécifiés."""
         if self.vueCarre.fonction.chemin_active:
             self.nomFonction = name
             self.couleurFonction = color
@@ -228,17 +236,21 @@ class MainWindow(QMainWindow):
             self.couleurFonction = None
     
     def getRectFonc(self, rect : tuple) -> None:
+        """Émet un signal avec le rectangle et les attributs de la fonction associée."""
         if self.nomFonction and self.couleurFonction:
             self.rectFoncAttribuee.emit(rect, self.nomFonction, self.couleurFonction)
             
     def getRectRay(self, rect : tuple) -> None:
+        """Émet un signal avec le rectangle et les attributs du rayon associé."""
         if self.nomRayon and self.couleurRayon:
             self.rectRayAttribuee.emit(rect, self.nomRayon, self.couleurRayon)
 
     def mettre_a_jour_etageres(self, etagere_nom: str) -> None:
+        """Met à jour les étagères avec le nom spécifié."""
         self.vueProduit.mettre_a_jour_liste_rayons(etagere_nom)
 
     def supprimer_etageres(self, etagere_nom: str) -> None:
+        """Supprime les étagères avec le nom spécifié."""
         self.vueProduit.supprimer_etagere_selectionnee(etagere_nom)
             
 

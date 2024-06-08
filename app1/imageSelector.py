@@ -38,8 +38,11 @@ class ImageSelector(QWidget):
         self.lineEdit.returnPressed.connect(self.getImage)
         
     def showDialog(self):
+        # Obtenir le répertoire deux niveaux en arrière du répertoire du fichier actuel
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Magasin/', 'images/'))
+        
         # Ouvrir la boîte de dialogue de fichier pour choisir une image PNG
-        fileName, _ = QFileDialog.getOpenFileName(self, 'Choisir une image PNG', '', 'Images PNG (*.png)')
+        fileName, _ = QFileDialog.getOpenFileName(self, 'Choisir une image PNG', project_root, 'Images PNG (*.png)')
         if fileName:
             # Mettre à jour le QLineEdit avec le chemin du fichier choisi
             self.lineEdit.setText(fileName)
