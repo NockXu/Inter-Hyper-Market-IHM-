@@ -3,6 +3,7 @@ from typing import List
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
+from TableWidget import TableWidget
 import vueDockMenuOutil
 import vueDockMenuCarre
 import vueDockProduit
@@ -99,7 +100,8 @@ class MainWindow(QMainWindow):
         self.dock2.setMaximumHeight(700)
 
         self.dock3 = QDockWidget("Produits")
-        self.vueProduit = vueDockProduit.VueDockProduit(self.vueCarre.tableRayon)
+        table_widget = TableWidget()
+        self.vueProduit = vueDockProduit.VueDockProduit(table_widget)
         self.dock3.setWidget(self.vueProduit)
         self.dock3.setFixedWidth(300)
 
@@ -139,6 +141,7 @@ class MainWindow(QMainWindow):
         self.vueCarre.fonction.modeChangee.connect(self.plan_label.switch_est_fonction)
         self.plan_label.rectFoncAttribuee.connect(self.getRectFonc)
         self.plan_label.etagereAjoutee.connect(self.vueEtagere.ajouterEtagere)
+        
     
         # TableWidget
         self.nomRayon = None
