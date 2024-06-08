@@ -15,6 +15,7 @@ class VuePlan(QWidget):
         self.largeur = self.width()
         self.longueur = self.height()
 
+    # Extraction du chemin de fichier pour récuperer un chemin utilisable
     def extraire_chemin(self, chemin_complet, sous_chemin):
         index = chemin_complet.find(sous_chemin)
         if index != -1:
@@ -22,6 +23,7 @@ class VuePlan(QWidget):
         else:
             return None
 
+    # Affichage de l'image du plan
     def afficher_plan(self, image):
         sous_chemin = "Magasin"
         chemin_relatif = self.extraire_chemin(image, sous_chemin)
@@ -31,10 +33,12 @@ class VuePlan(QWidget):
         else:
             print("Sous-chemin non trouvé dans le chemin complet.")
 
+    # Supprime l'image du plan en lui implantant la valeur None 
     def supprimer_plan(self):
         self.image = None
         self.update()
         
+    # Suppression du chemin et de la valeur des lignes et colonnes
     def supprimer_chemin(self):
         self.rects.clear()
         self.chemins.clear()
@@ -42,17 +46,19 @@ class VuePlan(QWidget):
         self.cols = 0
         self.update()
 
+    # Fonction qui redimentionne la grille du plan à la taille de la fenetre
     def resizeEvent(self, event):
         super().resizeEvent(event)
         self.largeur = self.width()
         self.longueur = self.height()
         self.update_grid()
 
+    # Fonction de mise à jour de la taille des lignes et colonnes 
     def update_grid(self):
         self.rects.clear()
         if self.rows > 0 and self.cols > 0:
-            cell_width = self.largeur / self.cols
-            cell_height = self.longueur / self.rows
+            cell_width = self.largeur / self.cols # Largeur d'une case est égale à la taille de la page par le nombre de colonnes
+            cell_height = self.longueur / self.rows # Longueur d'une case est égale à la taille de la page par le nombre de lignes
             
             for row in range(self.rows):
                 for col in range(self.cols):
@@ -60,6 +66,7 @@ class VuePlan(QWidget):
                     self.rects[(row, col)] = rect
         self.update()
 
+    # Fonction qui affiche le chemin et la grille en suppreposition sur l'image du plan
     def paintEvent(self, event):
         super().paintEvent(event)
         painter = QPainter(self)
@@ -94,6 +101,7 @@ class VuePlan(QWidget):
                 painter.setFont(font)
                 painter.drawText(entree_point, "Entrée")
 
+    # Initalisation du nombre de lignes et colonnes
     def afficher_chemin(self, chemins, rows, cols):
         self.rows = rows
         self.cols = cols
