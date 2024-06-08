@@ -17,6 +17,10 @@ class VueDockProduit(QWidget):
         self.etagere_combo_box = QComboBox()
         self.search_line_edit = QLineEdit()
 
+        self.etagere_label = QLabel("Etageres")
+        
+        
+
         self.category_combo_box.addItems(self.categories.keys())
 
         self.layout.addWidget(QLabel("Catégories"))
@@ -25,8 +29,10 @@ class VueDockProduit(QWidget):
         self.layout.addWidget(self.search_line_edit)
         self.layout.addWidget(QLabel("Produits"))
         self.layout.addWidget(self.product_list_widget)
-        self.layout.addWidget(QLabel("Etageres"))
+        self.layout.addWidget(self.etagere_label)
         self.layout.addWidget(self.etagere_combo_box)
+        self.etagere_label.hide()
+        self.etagere_combo_box.hide()
 
         self.setLayout(self.layout)
 
