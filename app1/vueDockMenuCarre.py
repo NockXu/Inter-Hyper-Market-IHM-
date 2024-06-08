@@ -74,13 +74,6 @@ class VueDockMenuCarre(QWidget):
         """
         self.nb_carre_x.clear()
         self.nb_carre_y.clear()
-
-
-    def toggle_grid(self):
-        if self.bouton_fonction.text() == 'Activer ?':
-            self.bouton_fonction.setText('Desactiver?')
-        else:
-            self.bouton_fonction.setText('Activer ?')
     
 
 if __name__ == "__main__":

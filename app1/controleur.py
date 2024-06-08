@@ -41,6 +41,10 @@ class Controleur:
         self.main_window.vueOutil.dateChanger.connect(self.main_window.set_plan)
         self.main_window.vueOutil.auteurChanger.connect(self.main_window.set_plan)
 
+        self.main_window.plan_label.etagereAjoutee.connect(self.afficher_etageres)
+
+        self.main_window.vueEtagere.etagereSelectionnee.connect(self.get_produits_etagere)
+
         self.main_window.show()
 
     def nouveau_projet(self):
@@ -153,6 +157,25 @@ class Controleur:
             if x == rect[0] and y == rect[1]:
                 point.set_fonction(Fonction())
 
+    def afficher_etageres(self, coords):
+        print("Coordonnées des étagères :", coords)
+
+    def get_produits_etagere(self) -> dict[tuple[int, int], dict]:
+        dico = {}
+        for point in self.model.get_plan():
+            x = point.get_x()
+            y = point.get_y()
+            etagere = point.get_fonction()
+            if isinstance(etagere, Etagere):
+                co = (x, y)
+                dico[co] = {'nom': 'Etagere_{x}_{y}', 'produits': []}
+                produits = etagere.get_produits()
+                if produits:
+                    for produit in produits:
+                        dico[co]['produits'].append({'nom': produit.get_nom()})
+        return dico
+        
+                        
     def get_rayons_data(self):
         data = []
         
@@ -185,7 +208,8 @@ class Controleur:
             }
             data.append(rayon)
         
-        return data
+        return data    
+
 
 
 # Programme principal : test du controleur ------------------------------------

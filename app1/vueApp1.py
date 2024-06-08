@@ -96,6 +96,7 @@ class MainWindow(QMainWindow):
         self.vueCarre = vueDockMenuCarre.VueDockMenuCarre(self)
         self.dock2.setWidget(self.vueCarre)
         self.dock2.setFixedWidth(300)
+        self.dock2.setMaximumHeight(700)
 
         self.dock3 = QDockWidget("Produits")
         self.vueProduit = vueDockProduit.VueDockProduit(self.vueCarre.tableRayon)
@@ -106,11 +107,12 @@ class MainWindow(QMainWindow):
         self.vueEtagere = vueDockEtagere.VueEtagere()
         self.dock4.setWidget(self.vueEtagere)
         self.dock4.setFixedWidth(300)
+        self.dock4.setMaximumHeight(400)
 
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock1)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock2)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock3)
-        self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.dock4)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock4)
 
         menu_affichage.addAction(self.dock1.toggleViewAction())
         menu_affichage.addAction(self.dock2.toggleViewAction())
@@ -136,6 +138,7 @@ class MainWindow(QMainWindow):
         self.vueCarre.fonction.boutonCliquee.connect(self.plan_label.set_fonction_actuelle)
         self.vueCarre.fonction.modeChangee.connect(self.plan_label.switch_est_fonction)
         self.plan_label.rectFoncAttribuee.connect(self.getRectFonc)
+        self.plan_label.etagereAjoutee.connect(self.vueEtagere.ajouterEtagere)
     
         # TableWidget
         self.nomRayon = None
